@@ -1,0 +1,81 @@
+enum registerStatus {
+  NOT_REGISTERED
+  REGISTERED
+}
+
+enum loanStatus {
+  INACTIVE
+  ACTIVE
+  CLOSED
+  CANCELLED
+  DEFAULTED
+  TERMINATED
+}
+
+type twitterDetails @entity {
+    id: ID!
+    twitterId: Bytes!
+    twitterSignMessage: String!
+    timeRegistered: DateTime!  
+}
+
+type LendingDetails @entity {
+  id: ID!
+  poolHash: Bytes!
+  lenderAddress: Bytes!
+  amountSupplied: BigInt!
+  percentWithdrawable: BigInt!
+  amountWithdrawn: BigInt
+  collateralCalled: Bool!
+  ifVotedOnRequestExtension: Bool!
+  collateralCalled: Bool!
+  user:Account
+}
+
+type Pool @entity {
+  poolId: Bytes! @id
+  poolOwner: Bytes!
+  borrowTokenType: Bytes!
+  collateralTokenType: Bytes!
+  interestRate: BigInt!
+  loanDuration: BigInt!
+  status: LoanStatus!
+  collateralRatio: BigInt!
+  nextDueBlock: BigInt!
+  ifExtensionRequested: Int!
+  borrowRate: BigInt!
+  loanStatus: loanStatus!
+  collectedAmount: BigInt
+  collateralCalls: BigInt
+  amountRepaid: BigInt
+  votingCalls: BigInt
+  totalRepaidAmount: BigInt
+  isWithDrawable: Bool!
+  user:Account
+}
+
+type lendingPools @entity{
+  # will add once completed in contracts
+}
+
+type privatePools @entity{
+  #will add once completed in contracts
+}
+
+type Account @entity{
+    id: ID!
+    address: Bytes!
+    BorrowingPools: [Pool!] @derivedFrom(field: "user")
+    lending: [LendingDetails!]
+    lendingpoolsDetails: [lendingPools!] @derivedFrom(field: "user")
+    privatePoolsDetails: [privatePools!] @derivedFrom(field: "user")
+    status: registerStatus!
+    registeredUser: Account
+}
+
+
+type registeredUser @entity{
+  id: ID!
+  twitterIntegration: twitterDetails!
+  allAccounts: [Account!]! @derivedFrom(field: "registeredUser")
+}

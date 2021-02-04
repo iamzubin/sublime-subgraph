@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+description: Sublime Protocol Subgraph
+repository: https://github.com/sublime-protocol/sublime-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: PoolFactory
+    network: mainnet
+    source:
+      address: "0x5B7B5632149653B974e75b18F7B02dEeEac38E47"
+      abi: PoolFactory
+      startBlock: 11579000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Pool
+      abis:
+        - name: PoolFactory
+          file: ./abis/PoolFactory.json
+      eventHandlers:
+        - event: PoolCreated(bytes32,address)
+          handler: handlePoolCreated
+        - event: openBorrowPoolClosed(bytes32)
+          handler: handleOpenBorrowPoolClosed
+        - event: openBorrowPoolTerminated(bytes32)
+          handler: handleopenBorrowPoolTerminated
+        - event: opneBorrowPoolCanceled(bytes32)
+          handler: handleOpneBorrowPoolCanceled
