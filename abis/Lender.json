@@ -1,0 +1,264 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "lenderAddress",
+                "type": "address"
+            }
+        ],
+        "name": "collateralRequested",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "lenderRegistered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountSupplied",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "lenderAddress",
+                "type": "address"
+            }
+        ],
+        "name": "liquiditySupplied",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "lenderAddress",
+                "type": "address"
+            }
+        ],
+        "name": "liquiditywithdrawn",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "averageBlocks",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "poolCounter",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "poolLenders",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountSupplied",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "percentWithdrawable",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountWithdrawn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountWithdrawable",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "exists",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "votedOnExtension",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "defaultVote",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "collateralCalled",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "registeredBorrowers",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "lenderAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountSupplied",
+                "type": "uint256"
+            }
+        ],
+        "name": "supplyLiquidity",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "lenderAddress",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawLiquidity",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolID",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "lenderAddress",
+                "type": "address"
+            }
+        ],
+        "name": "requestCollateralCall",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getResultOfVoting",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

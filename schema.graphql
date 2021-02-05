@@ -1,9 +1,9 @@
-enum registerStatus {
-  NOT_REGISTERED
-  REGISTERED
+enum Status {
+  VERIFIED
+  UNVERIFIED
 }
 
-enum loanStatus {
+enum LoanStatus {
   INACTIVE
   ACTIVE
   CLOSED
@@ -12,70 +12,53 @@ enum loanStatus {
   TERMINATED
 }
 
-type twitterDetails @entity {
-    id: ID!
-    twitterId: Bytes!
-    twitterSignMessage: String!
-    timeRegistered: DateTime!  
-}
-
-type LendingDetails @entity {
+type LendingDetail @entity {
   id: ID!
-  poolHash: Bytes!
-  lenderAddress: Bytes!
+  pool: Pool!
+  lender: User!
   amountSupplied: BigInt!
-  percentWithdrawable: BigInt!
-  amountWithdrawn: BigInt
-  collateralCalled: Bool!
-  ifVotedOnRequestExtension: Bool!
-  collateralCalled: Bool!
-  user:Account
+  amountWithdrawn: BigInt!
+  percentWithdrawable: BigInt
+  collateralCalled: Boolean!
 }
 
 type Pool @entity {
-  poolId: Bytes! @id
-  poolOwner: Bytes!
+  id: ID!
+  poolId: Bytes!
+  poolOwner: User!
   borrowTokenType: Bytes!
   collateralTokenType: Bytes!
-  interestRate: BigInt!
-  loanDuration: BigInt!
-  status: LoanStatus!
-  collateralRatio: BigInt!
-  nextDueBlock: BigInt!
-  ifExtensionRequested: Int!
+  lendingRate: BigInt!
   borrowRate: BigInt!
-  loanStatus: loanStatus!
+  loanDuration: BigInt
+  collateralRatio: BigInt!
+  nextDueBlock: BigInt
+  extensionRequested: BigInt
+  loanStatus: LoanStatus!
   collectedAmount: BigInt
   collateralCalls: BigInt
   amountRepaid: BigInt
   votingCalls: BigInt
-  totalRepaidAmount: BigInt
-  isWithDrawable: Bool!
-  user:Account
+  colleteralDeposited: BigInt!
+  vaultShares: BigInt
+  lenders: [LendingDetail!] @derivedFrom(field: "pool")
+  whitelistedAddress: [Bytes!]
+  isPrivate: Boolean!
 }
 
-type lendingPools @entity{
-  # will add once completed in contracts
-}
-
-type privatePools @entity{
-  #will add once completed in contracts
-}
-
-type Account @entity{
-    id: ID!
-    address: Bytes!
-    BorrowingPools: [Pool!] @derivedFrom(field: "user")
-    lending: [LendingDetails!]
-    lendingpoolsDetails: [lendingPools!] @derivedFrom(field: "user")
-    privatePoolsDetails: [privatePools!] @derivedFrom(field: "user")
-    status: registerStatus!
-    registeredUser: Account
-}
-
-
-type registeredUser @entity{
+type User @entity {
   id: ID!
-  twitterIntegration: twitterDetails!
-  allAccounts: [Account!]! @derivedFrom(field: "registeredUser")
+  address: Bytes!
+  borrowingPools: [Pool!] @derivedFrom(field: "poolOwner")
+  lendingPools: [LendingDetail!] @derivedFrom(field: "lender")
+  status: Status!
+  twitterDetails: TwitterDetails
+}
+
+type TwitterDetails @entity {
+  id: ID!
+  twitterId: Bytes!
+  twitterSignMessage: String!
+  timeRegistered: BigInt!  
+  linkedAddresses: [Bytes!]!
 }
