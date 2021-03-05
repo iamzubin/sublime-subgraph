@@ -6,7 +6,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: PoolFactory
-    network: mainnet
+    network: kovan
     source:
       address: "0x5B7B5632149653B974e75b18F7B02dEeEac38E47"
       abi: PoolFactory
@@ -18,49 +18,77 @@ dataSources:
       file: ./src/mapping.ts
       entities:
         - Pool
-        - User
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
       eventHandlers:
-        - event: PoolCreated(bytes32,address)
+        - event: PoolCreated(address,address)
           handler: handlePoolCreated
-        - event: openBorrowPoolClosed(bytes32)
-          handler: handleOpenBorrowPoolClosed
-        - event: openBorrowPoolTerminated(bytes32)
-          handler: handleopenBorrowPoolTerminated
-        - event: opneBorrowPoolCanceled(bytes32)
-          handler: handleOpneBorrowPoolCanceled
-        - event: extraCollateralDeposited(bytes32,uint256)
-          handler: handleExtraCollateralDeposited
-        - event: withdrawnExtraCollateral(bytes32,address,uint256)
-          handler: handleWithdrawnExtraCollateral
-        - event: LockedCollateral(bytes32,address,uint256)
-          handler: handleLockedCollateral
-        - event: UnlockedCollateral(bytes32,address,uint256)
-          handler: handleUnlockedCollateral
+templates: 
   - kind: ethereum/contract
-    name: Lender
-    network: mainnet
+    name: Pool
+    network: kovan
     source:
-      address: "0x5B7B5632149653B974e75b18F7B02dEeEac38E47"
-      abi: Lender
-      startBlock: 11579000
+      abi: Pool
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       file: ./src/mapping.ts
       entities:
+        - Pool
         - User
-        - LendingDetail
       abis:
-        - name: Lender
-          file: ./abis/Lender.json
+        - name: Pool
+          file: ./abis/Pool.json
       eventHandlers:
-        - event: liquiditySupplied(bytes32,uint256,address)
+        - event: OpenBorrowPoolClosed()
+          handler: handleOpenBorrowPoolClosed
+        - event: OpenBorrowPoolTerminated()
+          handler: handleOpenBorrowPoolTerminated
+        - event: OpenBorrowPoolCancelled()
+          handler: handleOpenBorrowPoolCancelled
+        - event: OpenBorrowPoolDefaulted()
+          handler: handleOpenBorrowPoolDefaulted
+        - event: CollateralAdded(address,uint256,uint256)
+          handler: handleCollataralAdded
+        - event: CollateralWithdrawn(address,uint256)
+          handler: handleCollateralWithdrawn
+        - event: liquiditySupplied(uint256,address)
           handler: handleLiquiditySupplied
-        - event: liquiditywithdrawn(bytes32,uint256,address)
-          handler: handleLiquiditywithdrawn
-        - event: collateralRequested(bytes32,address)
-          handler: handleCollateralRequested
+        - event: AmountBorrowed(address,uint256)
+          handler: handleAmountBorrowed
+        - event: liquiditywithdrawn(uint256,address)
+          handler: handleliquiditywithdrawn
+        - event: CollateralCalled(address)
+          handler: handleCollateralCalled
+        - event: lenderVoted(address)
+          handler: handleLenderVoted
+        - event: MarginCallCollateralAdded(address,address,uint256,uint256)
+          handler: handleLenderVoted
+
+  # - kind: ethereum/contract
+  #   name: Lender
+  #   network: mainnet
+  #   source:
+  #     address: "0x5B7B5632149653B974e75b18F7B02dEeEac38E47"
+  #     abi: Lender
+  #     startBlock: 11579000
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.4
+  #     language: wasm/assemblyscript
+  #     file: ./src/mapping.ts
+  #     entities:
+  #       - User
+  #       - LendingDetail
+  #     abis:
+  #       - name: Lender
+  #         file: ./abis/Lender.json
+  #     eventHandlers:
+  #       - event: liquiditySupplied(bytes32,uint256,address)
+  #         handler: handleLiquiditySupplied
+  #       - event: liquiditywithdrawn(bytes32,uint256,address)
+  #         handler: handleLiquiditywithdrawn
+  #       - event: collateralRequested(bytes32,address)
+  #         handler: handleCollateralRequested

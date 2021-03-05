@@ -12,7 +12,7 @@ enum LoanStatus {
   TERMINATED
 }
 
-type LendingDetail @entity {
+type LendingDetails @entity {
   id: ID!
   pool: Pool!
   lender: User!
@@ -41,7 +41,7 @@ type Pool @entity {
   votingCalls: BigInt
   colleteralDeposited: BigInt!
   vaultShares: BigInt
-  lenders: [LendingDetail!] @derivedFrom(field: "pool")
+  lenders: [LendingDetails!] @derivedFrom(field: "pool")
   whitelistedAddress: [Bytes!]
   isPrivate: Boolean!
 }
@@ -50,7 +50,7 @@ type User @entity {
   id: ID!
   address: Bytes!
   borrowingPools: [Pool!] @derivedFrom(field: "poolOwner")
-  lendingPools: [LendingDetail!] @derivedFrom(field: "lender")
+  lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
   status: Status!
   twitterDetails: TwitterDetails
 }
