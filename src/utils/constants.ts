@@ -9,11 +9,11 @@ export const STATUS_UNVERIFIED = "UNVERIFIED";
 
 export const LOAN_STATUS_ACTIVE = "ACTIVE";
 export const LOAN_STATUS_CLOSED = "CLOSED";
-export const LOAN_STATUS_INACTIVE = "INACTIVE";
 export const LOAN_STATUS_CANCELLED = "CANCELLED";
 export const LOAN_STATUS_DEFAULTED = "DEFAULTED";
 export const LOAN_STATUS_TERMINATED = "TERMINATED";
+export const LOAN_STATUS_COLLECTION = "COLLECTION";
 
-export let POOL_FACTORY_ADDRSS = Address.fromString(
+export let SAVING_ACCOUNT_ADDRSS = Address.fromString(
     "0x5124324e4f185C55dff566A71d8666fEf0297cd7"
 );

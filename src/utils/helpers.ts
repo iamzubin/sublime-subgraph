@@ -5,17 +5,17 @@ import {
     LOAN_STATUS_CLOSED,
     LOAN_STATUS_DEFAULTED,
     LOAN_STATUS_CANCELLED,
-    LOAN_STATUS_INACTIVE,
     LOAN_STATUS_TERMINATED,
+    LOAN_STATUS_COLLECTION,
     STATUS_UNVERIFIED,
 } from './constants';
 
 export function getLoanStatus(
-    value: Bytes
+    value: i32
 ): string {
-    switch (value.toU32()) {
+    switch (value) {
         case 0:
-            return LOAN_STATUS_INACTIVE;
+            return LOAN_STATUS_COLLECTION;
         case 1:
             return LOAN_STATUS_ACTIVE;
         case 2:
@@ -43,8 +43,7 @@ export function updateUserPools(
     if (user == null) {
         user = new User(userId);
         user.address = userAddress;
-        user.lendingPools = [];
-        user.borrowingPools = [];
+        user.savingAccount = userId;
         user.status = STATUS_UNVERIFIED;
     }
 

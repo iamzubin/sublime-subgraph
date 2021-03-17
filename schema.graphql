@@ -25,32 +25,34 @@ type LendingDetails @entity {
 type Pool @entity {
   id: ID!
   poolId: Bytes!
-  poolOwner: User!
-  borrowTokenType: Bytes!
-  collateralTokenType: Bytes!
+  borrower: User!
+  borrowAsset: Bytes!
+  collateralAsset: Bytes!
   lendingRate: BigInt!
   borrowRate: BigInt!
   loanDuration: BigInt
   collateralRatio: BigInt!
-  nextDueBlock: BigInt
-  extensionRequested: BigInt
   loanStatus: LoanStatus!
-  collectedAmount: BigInt
+  lentAmount: BigInt!
+  borrowedAmount: BigInt!
+  colleteralAmount: BigInt!
+  amountRepaid: BigInt!
+  loanStartTime: BigInt!
+  nextRepayTime: BigInt
   collateralCalls: BigInt
-  amountRepaid: BigInt
-  votingCalls: BigInt
-  colleteralDeposited: BigInt!
-  vaultShares: BigInt
-  lenders: [LendingDetails!] @derivedFrom(field: "pool")
-  whitelistedAddress: [Bytes!]
   isPrivate: Boolean!
+  whitelistedAddress: [Bytes!]
+  voteWeight: BigInt
+  repayExtensionEndTime: BigInt
+  lenders: [LendingDetails!] @derivedFrom(field: "pool")
 }
 
 type User @entity {
   id: ID!
   address: Bytes!
-  borrowingPools: [Pool!] @derivedFrom(field: "poolOwner")
+  borrowingPools: [Pool!] @derivedFrom(field: "borrower")
   lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
+  savingAccount: SavingAccount!
   status: Status!
   twitterDetails: TwitterDetails
 }
@@ -59,6 +61,20 @@ type TwitterDetails @entity {
   id: ID!
   twitterId: Bytes!
   twitterSignMessage: String!
-  timeRegistered: BigInt!  
+  registarationTime: BigInt!  
   linkedAddresses: [Bytes!]!
+}
+
+type SavingAccount @entity {
+  id: ID!
+  user: User!
+  deposits: [SavingDeposit!]! @derivedFrom(field: "savingAccount")
+}
+
+type SavingDeposit @entity {
+  id: ID!
+  asset: Bytes!
+  amount: BigInt!
+  strategy: Bytes!
+  savingAccount: SavingAccount!
 }

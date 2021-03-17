@@ -1,5 +1,5 @@
 specVersion: 0.0.2
-description: Sublime Protocol Subgraph
+description: Sublime Finance Subgraph
 repository: https://github.com/sublime-finance/sublime-subgraph
 schema:
   file: ./schema.graphql
@@ -8,9 +8,9 @@ dataSources:
     name: PoolFactory
     network: kovan
     source:
-      address: "0x5B7B5632149653B974e75b18F7B02dEeEac38E47"
+      address: "0xCc740cDd0Ba263Ca55F26187149e20ACE040cb3c"
       abi: PoolFactory
-      startBlock: 11579000
+      startBlock: 23885000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -24,7 +24,33 @@ dataSources:
       eventHandlers:
         - event: PoolCreated(address,address)
           handler: handlePoolCreated
-templates: 
+  - kind: ethereum/contract
+    name: SavingsAccount
+    network: kovan
+    source:
+      address: "0xdEc67778ff2373FE57383ee602e6247FC3aeC2bF"
+      abi: SavingsAccount
+      startBlock: 23885000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/savingsAccount.ts
+      entities:
+        - SavingAccount
+      abis:
+        - name: SavingsAccount
+          file: ./abis/SavingsAccount.json
+      eventHandlers:
+        - event: Deposited(address,uint256,address,address)
+          handler: handleDeposited
+        - event: StrategySwitched(address,address,address,address)
+          handler: handleStrategySwitched
+        - event: Withdrawn(address,uint256,address,address)
+          handler: handleWithdrawn
+        - event: WithdrawnAll(address,uint256,address)
+          handler: handleWithdrawnAll
+templates:
   - kind: ethereum/contract
     name: Pool
     network: kovan
@@ -34,7 +60,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mappings/pool.ts
       entities:
         - Pool
         - User
@@ -54,41 +80,13 @@ templates:
           handler: handleCollataralAdded
         - event: CollateralWithdrawn(address,uint256)
           handler: handleCollateralWithdrawn
-        - event: liquiditySupplied(uint256,address)
+        - event: LiquiditySupplied(uint256,address)
           handler: handleLiquiditySupplied
         - event: AmountBorrowed(address,uint256)
           handler: handleAmountBorrowed
-        - event: liquiditywithdrawn(uint256,address)
-          handler: handleliquiditywithdrawn
+        - event: LiquidityWithdrawn(uint256,address)
+          handler: handleLiquidityWithdrawn
         - event: CollateralCalled(address)
           handler: handleCollateralCalled
-        - event: lenderVoted(address)
-          handler: handleLenderVoted
         - event: MarginCallCollateralAdded(address,address,uint256,uint256)
           handler: handleLenderVoted
-
-  # - kind: ethereum/contract
-  #   name: Lender
-  #   network: mainnet
-  #   source:
-  #     address: "0x5B7B5632149653B974e75b18F7B02dEeEac38E47"
-  #     abi: Lender
-  #     startBlock: 11579000
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.4
-  #     language: wasm/assemblyscript
-  #     file: ./src/mapping.ts
-  #     entities:
-  #       - User
-  #       - LendingDetail
-  #     abis:
-  #       - name: Lender
-  #         file: ./abis/Lender.json
-  #     eventHandlers:
-  #       - event: liquiditySupplied(bytes32,uint256,address)
-  #         handler: handleLiquiditySupplied
-  #       - event: liquiditywithdrawn(bytes32,uint256,address)
-  #         handler: handleLiquiditywithdrawn
-  #       - event: collateralRequested(bytes32,address)
-  #         handler: handleCollateralRequested
