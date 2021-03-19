@@ -40,12 +40,12 @@ type Pool @entity {
   loanStartTime: BigInt
   nextRepayTime: BigInt
   collateralCalls: BigInt
-  isPrivate: Boolean
   whitelistedAddress: [Bytes!]
   voteWeight: BigInt
   repayExtensionEndTime: BigInt
   lenders: [LendingDetails!] @derivedFrom(field: "pool")
-}
+  liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
+  poolLiquidated: poolLiquidation 
 
 type User @entity {
   id: ID!
@@ -78,3 +78,37 @@ type SavingDeposit @entity {
   strategy: Bytes!
   savingAccount: SavingAccount!
 }
+
+type CreditLines @entity{
+  id: ID!
+  CreditLineHash: bytes!
+  lender: Bytes!
+  BorrowLimit:BigInt!
+  liquidationThreshold:BigInt
+  borrowRate:BigInt!
+  AutoLiquidation:BigInt!
+  idealCollateralRatio: BigInt!
+  BorrowAsset: Bytes!
+  Borrower: Bytes!
+  liquidatedCreditLine: creditLineLiquidation
+}
+
+type poolLiquidation @entity{
+  id:ID!
+  pool: Pool!
+  lender: bytes
+  liquidator:bytes!
+  liquidatedAmount: BigInt!
+  timeStamp:BigInt!
+  suppliedAmount: BigInt!
+}
+
+type creditLineLiquidation @entity{
+  id:ID!
+  creditLine: CreditLines!
+  liquidator:bytes!
+  liquidatedAmount: BigInt!
+  suppliedAmount: BigInt!
+  timeStamp:BigInt!
+}
+
