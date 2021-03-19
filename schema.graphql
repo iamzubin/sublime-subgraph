@@ -106,9 +106,9 @@ type poolLiquidation @entity{
 type creditLineLiquidation @entity{
   id:ID!
   creditLine: CreditLines!
+  Borrower: bytes!
   liquidator:bytes!
   liquidatedAmount: BigInt!
   suppliedAmount: BigInt!
   timeStamp:BigInt!
 }
-

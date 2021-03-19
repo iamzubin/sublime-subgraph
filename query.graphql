@@ -1,0 +1,32 @@
+{
+  poolLiquidations(where: {lender:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643", liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643"}) {
+    id
+    pool
+    liquidatedAmount
+    suppliedAmount
+    timeStamp
+  }
+}
+
+#doubt need help with prince
+{
+  Pool(where: {borrower:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643", liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643"}) {
+    id
+    pool
+    liquidatedAmount
+    suppliedAmount
+    timeStamp
+  }
+}
+
+
+{
+  creditLineLiquidation(where: {liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",Borrower:"0x5d3a536e4ef6dbd6114cc1ead35777bab948e3643"}) {
+    id
+    creditLine
+    liquidatedAmount
+    suppliedAmount
+    timeStamp
+  }
+}
+
