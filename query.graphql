@@ -1,3 +1,5 @@
+
+#query to find relation if one is lender and other is liquidator 
 {
   poolLiquidations(where: {lender:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643", liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643"}) {
     id
@@ -19,6 +21,16 @@
   }
 }
 
+
+{
+  creditLineLiquidation(where: {liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",Borrower:"0x5d3a536e4ef6dbd6114cc1ead35777bab948e3643"}) {
+    id
+    creditLine
+    liquidatedAmount
+    suppliedAmount
+    timeStamp
+  }
+}
 
 {
   creditLineLiquidation(where: {liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",Borrower:"0x5d3a536e4ef6dbd6114cc1ead35777bab948e3643"}) {
