@@ -32,12 +32,12 @@
   }
 }
 
+
+
 {
-  creditLineLiquidation(where: {liquidator:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",Borrower:"0x5d3a536e4ef6dbd6114cc1ead35777bab948e3643"}) {
+  CreditLines(where: {lender:"0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",Borrower:"0x5d3a536e4ef6dbd6114cc1ead35777bab948e3643"}) {
     id
-    creditLine
-    liquidatedAmount
-    suppliedAmount
+    CreditLineHash
     timeStamp
   }
 }

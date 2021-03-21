@@ -107,11 +107,11 @@ type TwitterDetails @entity {
 type SavingAccount @entity {
   id: ID!
   user: User!
-  deposits: [SavingDeposit!]! @derivedFrom(field: "savingAccount")
-  #needs to add user locked balance and allownace mapping 
+  deposits: [SavingsAccountInfo!]! @derivedFrom(field: "savingAccount")
+  allowances: [SavingsAccountInfo!]! @derivedFrom(field: "savingAccount")
 }
 
-type SavingDeposit @entity {
+type SavingsAccountInfo @entity {
   id: ID!
   asset: Bytes!
   amount: BigInt!
@@ -125,6 +125,13 @@ enum CreditLineStatus {
  ACTIVE
  CLOSED
  CANCELLED
+}
+
+type CreditLineCollateralInfo @entity {
+  id: ID!
+  amount: BigInt!
+  strategy: Bytes!
+  creditLines: CreditLines!
 }
 
 type CreditLines @entity{
@@ -147,6 +154,7 @@ type CreditLines @entity{
   collateralAmount:BigInt!
   autoLiquidation:Boolean!
   requestByLender:Boolean!
+  collateralShareInStrategy: [CreditLineCollateralInfo!]! @derivedFrom(field: "CreditLines")
 }
 
 type creditLineLiquidation @entity{
