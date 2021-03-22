@@ -10,6 +10,21 @@ import {
     STATUS_UNVERIFIED,
 } from './constants';
 
+export function getCreditLineStatus(
+    value: i32
+): string {
+    switch (value) {
+        case 0:
+            return "REQUESTED";
+        case 1:
+            return "ACTIVE";
+        case 2:
+            return "CLOSED";
+        case 3:
+            return "CANCELLED";
+    }
+}
+
 export function getLoanStatus(
     value: i32
 ): string {
