@@ -56,6 +56,7 @@ type Pool @entity {
   loanDuration: BigInt
   collateralRatio: BigInt!
   loanStatus: LoanStatus!
+  collateralShare:BigInt!
   # lentAmount: BigInt!
   # borrowedAmount: BigInt!
   # colleteralAmount: BigInt!

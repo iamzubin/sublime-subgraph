@@ -79,9 +79,9 @@ export function handleCollateralWithdrawn(
 
     pool.colleteralAmount = pool.colleteralAmount
         .minus(event.params.amount);
-
     pool.save();
 }
+
 
 export function handleLiquiditySupplied(
     event: LiquiditySupplied

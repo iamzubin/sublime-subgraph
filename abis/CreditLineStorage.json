@@ -1,0 +1,2133 @@
+{
+  "contractName": "CreditLineStorage",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "creditLineInfo",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "exists",
+          "type": "bool"
+        },
+        {
+          "internalType": "address",
+          "name": "lender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "borrower",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "idealCollateralRatio",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "liquidationThreshold",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowRate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "borrowAsset",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "collateralAsset",
+          "type": "address"
+        },
+        {
+          "internalType": "enum CreditLineStorage.creditLineStatus",
+          "name": "currentStatus",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bool",
+          "name": "autoLiquidation",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "requestByLender",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "creditLineUsage",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "principal",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalInterestRepaid",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastPrincipalUpdateTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "interestAccruedTillPrincipalUpdate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "collateralAmount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "yearInSeconds",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.7.0+commit.9e61f92b\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"creditLineInfo\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"lender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"borrower\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"borrowLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"idealCollateralRatio\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"liquidationThreshold\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowRate\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"borrowAsset\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"collateralAsset\",\"type\":\"address\"},{\"internalType\":\"enum CreditLineStorage.creditLineStatus\",\"name\":\"currentStatus\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"autoLiquidation\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"requestByLender\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"name\":\"creditLineUsage\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"principal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalInterestRepaid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lastPrincipalUpdateTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"interestAccruedTillPrincipalUpdate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"yearInSeconds\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Sublime*\",\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"title\":\"Credit Line contract with Methods related to credit Line\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Implements the functions related to Credit Line\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"/C/Users/Harshita/Documents/sublime-v1/sublime-v1/contracts/CreditLine/CreditLineStorage.sol\":\"CreditLineStorage\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Harshita/Documents/sublime-v1/sublime-v1/contracts/CreditLine/CreditLineStorage.sol\":{\"keccak256\":\"0xf0aa85aae7de8ba9f86cebe34ab45a691a6726ca013bae2f3749aed2b716a747\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://892064230397329704061b6235e48f200828aed107b54ebcadc82692827f3874\",\"dweb:/ipfs/QmQwVzJXgzpgTQu7zpvwiDtHaQeydqbynctETrFHpDT7JQ\"]},\"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\":{\"keccak256\":\"0xb419e68addcb82ecda3ad3974b0d2db76435ce9b08435a04d5b119a0c5d45ea5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a85355cc4f2554f4a8d334336d66b48d616abf1d90ec3d6b602e825c6fe63f0c\",\"dweb:/ipfs/QmTJYtsKJjBy3ShAt4kEjvM6nfVS8ZAFQqE29fG16tUP8d\"]},\"@openzeppelin/contracts-upgradeable/proxy/Initializable.sol\":{\"keccak256\":\"0xd8e4eb08dcc1d1860fb347ba5ffd595242b9a1b66d49a47f2b4cb51c3f35017e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7dbc89479d30592e82442edc38053b380f611037a5e6ceafc7bf57a7aa1f0305\",\"dweb:/ipfs/QmcdYtt56WmjeYvsFjK69FnahnAriw88VzY3XRZwXkQKKN\"]},\"@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol\":{\"keccak256\":\"0xfc5ea91fa9ceb1961023b2a6c978b902888c52b90847ac7813fe3b79524165f6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a6b81dcc816857a9d981386f6d8de49198420ee41cdc0ecade366ab412174d03\",\"dweb:/ipfs/QmV2vznMT6m9qo3pFMAWi3Nz3UDhwesgwFxeXe6Tod3v8A\"]},\"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol\":{\"keccak256\":\"0xbbf8a21b9a66c48d45ff771b8563c6df19ba451d63dfb8380a865c1e1f29d1a0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://062688aac76e27ab50157a9d645700cf92e3c0d51d3d860be1d2e1a0c04a87d0\",\"dweb:/ipfs/QmfXxppWAiSTeH8YNn2EtMPDgzrLeJ5rjRq8knEbje88mX\"]},\"@openzeppelin/contracts/math/SafeMath.sol\":{\"keccak256\":\"0xcc78a17dd88fa5a2edc60c8489e2f405c0913b377216a5b26b35656b2d0dab52\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://526dc85e1f9b9b45830e202568d267d93dde7a4fcccf4ad7798dadcd92304d3c\",\"dweb:/ipfs/QmaoXMB972J3cSDLtBq3xBo4jLwqD2uzXTwujtSPqkYVhR\"]},\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x5f02220344881ce43204ae4a6281145a67bc52c2bb1290a791857df3d19d78f5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://24427744bd3e6cb73c17010119af12a318289c0253a4d9acb8576c9fb3797b08\",\"dweb:/ipfs/QmTLDqpKRBuxGxRAmjgXt9AkXyACW3MtKzi7PYjm5iMfGC\"]},\"@openzeppelin/contracts/token/ERC20/SafeERC20.sol\":{\"keccak256\":\"0xf12dfbe97e6276980b83d2830bb0eb75e0cf4f3e626c2471137f82158ae6a0fc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b3a849c2d95e85463909e5b5c920b13e7a11216ca14127085e16d22b9379d52a\",\"dweb:/ipfs/QmUg3CZDbCCcQdroEpexBy5ZFd5vD1UWijWQq9qHZjtJNQ\"]},\"@openzeppelin/contracts/utils/Address.sol\":{\"keccak256\":\"0x28911e614500ae7c607a432a709d35da25f3bc5ddc8bd12b278b66358070c0ea\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://256c8c8af5eb072bc473226ab2b2187149b8fc04f5f4a4820db22527f5ce8e3c\",\"dweb:/ipfs/QmRvi5BhnL7Rxf85KrJhwM6RRhukm4tzoctRdgQEheNyiN\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506104c2806100206000396000f3fe608060405234801561001057600080fd5b50600436106100625760003560e01c80634059d59614610067578063715018a6146100815780638da5cb5b1461008b578063a164b423146100af578063ae974ff6146100f7578063f2fde38b146101ac575b600080fd5b61006f6101d2565b60408051918252519081900360200190f35b6100896101da565b005b610093610298565b604080516001600160a01b039092168252519081900360200190f35b6100cc600480360360208110156100c557600080fd5b50356102a7565b6040805195865260208601949094528484019290925260608401526080830152519081900360a00190f35b6101146004803603602081101561010d57600080fd5b50356102d6565b604051808d151581526020018c6001600160a01b031681526020018b6001600160a01b031681526020018a8152602001898152602001888152602001878152602001866001600160a01b03168152602001856001600160a01b0316815260200184600381111561018057fe5b8152602001831515815260200182151581526020019c5050505050505050505050505060405180910390f35b610089600480360360208110156101c257600080fd5b50356001600160a01b031661034d565b6301e1338081565b6101e2610462565b6001600160a01b03166101f3610298565b6001600160a01b03161461024e576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b6033546040516000916001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3603380546001600160a01b0319169055565b6033546001600160a01b031690565b606760205260009081526040902080546001820154600283015460038401546004909401549293919290919085565b6068602052600090815260409020805460018201546002830154600384015460048501546005860154600687015460079097015460ff808816986001600160a01b03610100909904891698978816979081169290811691600160a01b8204811691600160a81b8104821691600160b01b909104168c565b610355610462565b6001600160a01b0316610366610298565b6001600160a01b0316146103c1576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b6001600160a01b0381166104065760405162461bcd60e51b81526004018080602001828103825260268152602001806104676026913960400191505060405180910390fd5b6033546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3603380546001600160a01b0319166001600160a01b0392909216919091179055565b339056fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373a26469706673582212203625b666729fcc11fc067985e9c54e77b85fc21af097a617a6d5cca148b502bb64736f6c63430007000033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100625760003560e01c80634059d59614610067578063715018a6146100815780638da5cb5b1461008b578063a164b423146100af578063ae974ff6146100f7578063f2fde38b146101ac575b600080fd5b61006f6101d2565b60408051918252519081900360200190f35b6100896101da565b005b610093610298565b604080516001600160a01b039092168252519081900360200190f35b6100cc600480360360208110156100c557600080fd5b50356102a7565b6040805195865260208601949094528484019290925260608401526080830152519081900360a00190f35b6101146004803603602081101561010d57600080fd5b50356102d6565b604051808d151581526020018c6001600160a01b031681526020018b6001600160a01b031681526020018a8152602001898152602001888152602001878152602001866001600160a01b03168152602001856001600160a01b0316815260200184600381111561018057fe5b8152602001831515815260200182151581526020019c5050505050505050505050505060405180910390f35b610089600480360360208110156101c257600080fd5b50356001600160a01b031661034d565b6301e1338081565b6101e2610462565b6001600160a01b03166101f3610298565b6001600160a01b03161461024e576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b6033546040516000916001600160a01b0316907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3603380546001600160a01b0319169055565b6033546001600160a01b031690565b606760205260009081526040902080546001820154600283015460038401546004909401549293919290919085565b6068602052600090815260409020805460018201546002830154600384015460048501546005860154600687015460079097015460ff808816986001600160a01b03610100909904891698978816979081169290811691600160a01b8204811691600160a81b8104821691600160b01b909104168c565b610355610462565b6001600160a01b0316610366610298565b6001600160a01b0316146103c1576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b6001600160a01b0381166104065760405162461bcd60e51b81526004018080602001828103825260268152602001806104676026913960400191505060405180910390fd5b6033546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3603380546001600160a01b0319166001600160a01b0392909216919091179055565b339056fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373a26469706673582212203625b666729fcc11fc067985e9c54e77b85fc21af097a617a6d5cca148b502bb64736f6c63430007000033",
+  "immutableReferences": {},
+  "sourceMap": "415:1405:1:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "415:1405:1:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;729:48;;;:::i;:::-;;;;;;;;;;;;;;;;1967:145:50;;;:::i;:::-;;1335:85;;;:::i;:::-;;;;-1:-1:-1;;;;;1335:85:50;;;;;;;;;;;;;;1691:62:1;;;;;;;;;;;;;;;;-1:-1:-1;1691:62:1;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1760:56;;;;;;;;;;;;;;;;-1:-1:-1;1760:56:1;;:::i;:::-;;;;;;;;;;;;-1:-1:-1;;;;;1760:56:1;;;;;;-1:-1:-1;;;;;1760:56:1;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1760:56:1;;;;;;-1:-1:-1;;;;;1760:56:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2261:240:50;;;;;;;;;;;;;;;;-1:-1:-1;2261:240:50;-1:-1:-1;;;;;2261:240:50;;:::i;729:48:1:-;769:8;729:48;:::o;1967:145:50:-;1558:12;:10;:12::i;:::-;-1:-1:-1;;;;;1547:23:50;:7;:5;:7::i;:::-;-1:-1:-1;;;;;1547:23:50;;1539:68;;;;;-1:-1:-1;;;1539:68:50;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2057:6:::1;::::0;2036:40:::1;::::0;2073:1:::1;::::0;-1:-1:-1;;;;;2057:6:50::1;::::0;2036:40:::1;::::0;2073:1;;2036:40:::1;2086:6;:19:::0;;-1:-1:-1;;;;;;2086:19:50::1;::::0;;1967:145::o;1335:85::-;1407:6;;-1:-1:-1;;;;;1407:6:50;1335:85;:::o;1691:62:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;1760:56::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1760:56:1;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;1760:56:1;;;;;-1:-1:-1;;;1760:56:1;;;;;-1:-1:-1;;;1760:56:1;;;;;:::o;2261:240:50:-;1558:12;:10;:12::i;:::-;-1:-1:-1;;;;;1547:23:50;:7;:5;:7::i;:::-;-1:-1:-1;;;;;1547:23:50;;1539:68;;;;;-1:-1:-1;;;1539:68:50;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;2349:22:50;::::1;2341:73;;;;-1:-1:-1::0;;;2341:73:50::1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2450:6;::::0;2429:38:::1;::::0;-1:-1:-1;;;;;2429:38:50;;::::1;::::0;2450:6:::1;::::0;2429:38:::1;::::0;2450:6:::1;::::0;2429:38:::1;2477:6;:17:::0;;-1:-1:-1;;;;;;2477:17:50::1;-1:-1:-1::0;;;;;2477:17:50;;;::::1;::::0;;;::::1;::::0;;2261:240::o;828:104:53:-;915:10;828:104;:::o",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity 0.7.0;\r\n\r\nimport \"@openzeppelin/contracts/token/ERC20/SafeERC20.sol\";\r\nimport \"@openzeppelin/contracts/math/SafeMath.sol\";\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\n\r\n/**\r\n * @title Credit Line contract with Methods related to credit Line\r\n * @notice Implements the functions related to Credit Line\r\n * @author Sublime\r\n **/\r\n\r\ncontract CreditLineStorage is OwnableUpgradeable {\r\n    using SafeERC20 for IERC20;\r\n    using SafeMath for uint256;\r\n\r\n    \r\n    enum creditLineStatus {REQUESTED, ACTIVE, CLOSED, CANCELLED}\r\n\r\n    uint256 CreditLineCounter;\r\n\r\n    // assuming number of days in year is 365 more discussion is needed for this\r\n    uint256 public constant yearInSeconds = 365 days;\r\n\r\n    /*struct repayments {\r\n        uint256 lastRepaymentTime;\r\n        uint256 currentDebt;\r\n        uint256 netPrinciple;\r\n        uint256 accrueInterest;\r\n    }*/\r\n\r\n\r\n\r\n    struct CreditLineUsageVars {\r\n        uint256 principal;\r\n        uint256 totalInterestRepaid;\r\n        uint256 lastPrincipalUpdateTime;\r\n        uint256 interestAccruedTillPrincipalUpdate;\r\n        uint256 collateralAmount;\r\n    }\r\n\r\n    struct CreditLineVars {\r\n        bool exists;\r\n        address lender;\r\n        address borrower;\r\n        uint256 borrowLimit;\r\n        uint256 idealCollateralRatio;\r\n        uint256 liquidationThreshold;\r\n        uint256 borrowRate;\r\n        address borrowAsset;\r\n        address collateralAsset;\r\n        creditLineStatus currentStatus;\r\n        bool autoLiquidation;\r\n        bool requestByLender;\r\n    }\r\n    mapping(bytes32 => mapping(address => uint256)) collateralShareInStrategy;\r\n    mapping(bytes32 => CreditLineUsageVars) public creditLineUsage;\r\n    mapping(bytes32 => CreditLineVars) public creditLineInfo;\r\n}\r\n",
+  "sourcePath": "C:\\Users\\Harshita\\Documents\\sublime-v1\\sublime-v1\\contracts\\CreditLine\\CreditLineStorage.sol",
+  "ast": {
+    "absolutePath": "/C/Users/Harshita/Documents/sublime-v1/sublime-v1/contracts/CreditLine/CreditLineStorage.sol",
+    "exportedSymbols": {
+      "CreditLineStorage": [
+        2624
+      ]
+    },
+    "id": 2625,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2551,
+        "literals": [
+          "solidity",
+          "0.7",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:22:1"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+        "file": "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+        "id": 2552,
+        "nodeType": "ImportDirective",
+        "scope": 2625,
+        "sourceUnit": 21898,
+        "src": "59:59:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/math/SafeMath.sol",
+        "file": "@openzeppelin/contracts/math/SafeMath.sol",
+        "id": 2553,
+        "nodeType": "ImportDirective",
+        "scope": 2625,
+        "sourceUnit": 20442,
+        "src": "120:51:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        "file": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+        "id": 2554,
+        "nodeType": "ImportDirective",
+        "scope": 2625,
+        "sourceUnit": 19336,
+        "src": "173:75:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 2556,
+              "name": "OwnableUpgradeable",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 19335,
+              "src": "445:18:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_OwnableUpgradeable_$19335",
+                "typeString": "contract OwnableUpgradeable"
+              }
+            },
+            "id": 2557,
+            "nodeType": "InheritanceSpecifier",
+            "src": "445:18:1"
+          }
+        ],
+        "contractDependencies": [
+          19335,
+          19401,
+          19690
+        ],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 2555,
+          "nodeType": "StructuredDocumentation",
+          "src": "254:157:1",
+          "text": " @title Credit Line contract with Methods related to credit Line\n @notice Implements the functions related to Credit Line\n @author Sublime*"
+        },
+        "fullyImplemented": true,
+        "id": 2624,
+        "linearizedBaseContracts": [
+          2624,
+          19335,
+          19690,
+          19401
+        ],
+        "name": "CreditLineStorage",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 2560,
+            "libraryName": {
+              "contractScope": null,
+              "id": 2558,
+              "name": "SafeERC20",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 21897,
+              "src": "477:9:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeERC20_$21897",
+                "typeString": "library SafeERC20"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "471:27:1",
+            "typeName": {
+              "contractScope": null,
+              "id": 2559,
+              "name": "IERC20",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 21684,
+              "src": "491:6:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IERC20_$21684",
+                "typeString": "contract IERC20"
+              }
+            }
+          },
+          {
+            "id": 2563,
+            "libraryName": {
+              "contractScope": null,
+              "id": 2561,
+              "name": "SafeMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 20441,
+              "src": "510:8:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_SafeMath_$20441",
+                "typeString": "library SafeMath"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "504:27:1",
+            "typeName": {
+              "id": 2562,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "523:7:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            }
+          },
+          {
+            "canonicalName": "CreditLineStorage.creditLineStatus",
+            "id": 2568,
+            "members": [
+              {
+                "id": 2564,
+                "name": "REQUESTED",
+                "nodeType": "EnumValue",
+                "src": "568:9:1"
+              },
+              {
+                "id": 2565,
+                "name": "ACTIVE",
+                "nodeType": "EnumValue",
+                "src": "579:6:1"
+              },
+              {
+                "id": 2566,
+                "name": "CLOSED",
+                "nodeType": "EnumValue",
+                "src": "587:6:1"
+              },
+              {
+                "id": 2567,
+                "name": "CANCELLED",
+                "nodeType": "EnumValue",
+                "src": "595:9:1"
+              }
+            ],
+            "name": "creditLineStatus",
+            "nodeType": "EnumDefinition",
+            "src": "545:60:1"
+          },
+          {
+            "constant": false,
+            "id": 2570,
+            "mutability": "mutable",
+            "name": "CreditLineCounter",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 2624,
+            "src": "613:25:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2569,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "613:7:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": true,
+            "functionSelector": "4059d596",
+            "id": 2573,
+            "mutability": "constant",
+            "name": "yearInSeconds",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 2624,
+            "src": "729:48:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 2571,
+              "name": "uint256",
+              "nodeType": "ElementaryTypeName",
+              "src": "729:7:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "333635",
+              "id": 2572,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "number",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "769:8:1",
+              "subdenomination": "days",
+              "typeDescriptions": {
+                "typeIdentifier": "t_rational_31536000_by_1",
+                "typeString": "int_const 31536000"
+              },
+              "value": "365"
+            },
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "CreditLineStorage.CreditLineUsageVars",
+            "id": 2584,
+            "members": [
+              {
+                "constant": false,
+                "id": 2575,
+                "mutability": "mutable",
+                "name": "principal",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2584,
+                "src": "996:17:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2574,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "996:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2577,
+                "mutability": "mutable",
+                "name": "totalInterestRepaid",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2584,
+                "src": "1024:27:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2576,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1024:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2579,
+                "mutability": "mutable",
+                "name": "lastPrincipalUpdateTime",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2584,
+                "src": "1062:31:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2578,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1062:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2581,
+                "mutability": "mutable",
+                "name": "interestAccruedTillPrincipalUpdate",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2584,
+                "src": "1104:42:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2580,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1104:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2583,
+                "mutability": "mutable",
+                "name": "collateralAmount",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2584,
+                "src": "1157:24:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2582,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1157:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "CreditLineUsageVars",
+            "nodeType": "StructDefinition",
+            "scope": 2624,
+            "src": "958:231:1",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "CreditLineStorage.CreditLineVars",
+            "id": 2609,
+            "members": [
+              {
+                "constant": false,
+                "id": 2586,
+                "mutability": "mutable",
+                "name": "exists",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1230:11:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 2585,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1230:4:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2588,
+                "mutability": "mutable",
+                "name": "lender",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1252:14:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 2587,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1252:7:1",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2590,
+                "mutability": "mutable",
+                "name": "borrower",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1277:16:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 2589,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1277:7:1",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2592,
+                "mutability": "mutable",
+                "name": "borrowLimit",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1304:19:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2591,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1304:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2594,
+                "mutability": "mutable",
+                "name": "idealCollateralRatio",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1334:28:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2593,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1334:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2596,
+                "mutability": "mutable",
+                "name": "liquidationThreshold",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1373:28:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2595,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1373:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2598,
+                "mutability": "mutable",
+                "name": "borrowRate",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1412:18:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2597,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1412:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2600,
+                "mutability": "mutable",
+                "name": "borrowAsset",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1441:19:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 2599,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1441:7:1",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2602,
+                "mutability": "mutable",
+                "name": "collateralAsset",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1471:23:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 2601,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1471:7:1",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2604,
+                "mutability": "mutable",
+                "name": "currentStatus",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1505:30:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_enum$_creditLineStatus_$2568",
+                  "typeString": "enum CreditLineStorage.creditLineStatus"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 2603,
+                  "name": "creditLineStatus",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 2568,
+                  "src": "1505:16:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_creditLineStatus_$2568",
+                    "typeString": "enum CreditLineStorage.creditLineStatus"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2606,
+                "mutability": "mutable",
+                "name": "autoLiquidation",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1546:20:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 2605,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1546:4:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2608,
+                "mutability": "mutable",
+                "name": "requestByLender",
+                "nodeType": "VariableDeclaration",
+                "overrides": null,
+                "scope": 2609,
+                "src": "1577:20:1",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 2607,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1577:4:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "CreditLineVars",
+            "nodeType": "StructDefinition",
+            "scope": 2624,
+            "src": "1197:408:1",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 2615,
+            "mutability": "mutable",
+            "name": "collateralShareInStrategy",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 2624,
+            "src": "1611:73:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_bytes32_$_t_mapping$_t_address_$_t_uint256_$_$",
+              "typeString": "mapping(bytes32 => mapping(address => uint256))"
+            },
+            "typeName": {
+              "id": 2614,
+              "keyType": {
+                "id": 2610,
+                "name": "bytes32",
+                "nodeType": "ElementaryTypeName",
+                "src": "1619:7:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "1611:47:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_bytes32_$_t_mapping$_t_address_$_t_uint256_$_$",
+                "typeString": "mapping(bytes32 => mapping(address => uint256))"
+              },
+              "valueType": {
+                "id": 2613,
+                "keyType": {
+                  "id": 2611,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1638:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "nodeType": "Mapping",
+                "src": "1630:27:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
+                  "typeString": "mapping(address => uint256)"
+                },
+                "valueType": {
+                  "id": 2612,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1649:7:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                }
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "functionSelector": "a164b423",
+            "id": 2619,
+            "mutability": "mutable",
+            "name": "creditLineUsage",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 2624,
+            "src": "1691:62:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_CreditLineUsageVars_$2584_storage_$",
+              "typeString": "mapping(bytes32 => struct CreditLineStorage.CreditLineUsageVars)"
+            },
+            "typeName": {
+              "id": 2618,
+              "keyType": {
+                "id": 2616,
+                "name": "bytes32",
+                "nodeType": "ElementaryTypeName",
+                "src": "1699:7:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "1691:39:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_CreditLineUsageVars_$2584_storage_$",
+                "typeString": "mapping(bytes32 => struct CreditLineStorage.CreditLineUsageVars)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 2617,
+                "name": "CreditLineUsageVars",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 2584,
+                "src": "1710:19:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CreditLineUsageVars_$2584_storage_ptr",
+                  "typeString": "struct CreditLineStorage.CreditLineUsageVars"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "functionSelector": "ae974ff6",
+            "id": 2623,
+            "mutability": "mutable",
+            "name": "creditLineInfo",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 2624,
+            "src": "1760:56:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_CreditLineVars_$2609_storage_$",
+              "typeString": "mapping(bytes32 => struct CreditLineStorage.CreditLineVars)"
+            },
+            "typeName": {
+              "id": 2622,
+              "keyType": {
+                "id": 2620,
+                "name": "bytes32",
+                "nodeType": "ElementaryTypeName",
+                "src": "1768:7:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "1760:34:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_CreditLineVars_$2609_storage_$",
+                "typeString": "mapping(bytes32 => struct CreditLineStorage.CreditLineVars)"
+              },
+              "valueType": {
+                "contractScope": null,
+                "id": 2621,
+                "name": "CreditLineVars",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 2609,
+                "src": "1779:14:1",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_CreditLineVars_$2609_storage_ptr",
+                  "typeString": "struct CreditLineStorage.CreditLineVars"
+                }
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2625,
+        "src": "415:1405:1"
+      }
+    ],
+    "src": "33:1789:1"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "/C/Users/Harshita/Documents/sublime-v1/sublime-v1/contracts/CreditLine/CreditLineStorage.sol",
+      "exportedSymbols": {
+        "CreditLineStorage": [
+          2624
+        ]
+      },
+      "license": "MIT"
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.7",
+            ".0"
+          ]
+        },
+        "id": 2551,
+        "name": "PragmaDirective",
+        "src": "33:22:1"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 21898,
+          "absolutePath": "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+          "file": "@openzeppelin/contracts/token/ERC20/SafeERC20.sol",
+          "scope": 2625,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2552,
+        "name": "ImportDirective",
+        "src": "59:59:1"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 20442,
+          "absolutePath": "@openzeppelin/contracts/math/SafeMath.sol",
+          "file": "@openzeppelin/contracts/math/SafeMath.sol",
+          "scope": 2625,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2553,
+        "name": "ImportDirective",
+        "src": "120:51:1"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 19336,
+          "absolutePath": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+          "file": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
+          "scope": 2625,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2554,
+        "name": "ImportDirective",
+        "src": "173:75:1"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "contractDependencies": [
+            19335,
+            19401,
+            19690
+          ],
+          "contractKind": "contract",
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            2624,
+            19335,
+            19690,
+            19401
+          ],
+          "name": "CreditLineStorage",
+          "scope": 2625
+        },
+        "children": [
+          {
+            "attributes": {
+              "text": " @title Credit Line contract with Methods related to credit Line\n @notice Implements the functions related to Credit Line\n @author Sublime*"
+            },
+            "id": 2555,
+            "name": "StructuredDocumentation",
+            "src": "254:157:1"
+          },
+          {
+            "attributes": {
+              "arguments": null
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "OwnableUpgradeable",
+                  "referencedDeclaration": 19335,
+                  "type": "contract OwnableUpgradeable"
+                },
+                "id": 2556,
+                "name": "UserDefinedTypeName",
+                "src": "445:18:1"
+              }
+            ],
+            "id": 2557,
+            "name": "InheritanceSpecifier",
+            "src": "445:18:1"
+          },
+          {
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "SafeERC20",
+                  "referencedDeclaration": 21897,
+                  "type": "library SafeERC20"
+                },
+                "id": 2558,
+                "name": "UserDefinedTypeName",
+                "src": "477:9:1"
+              },
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "IERC20",
+                  "referencedDeclaration": 21684,
+                  "type": "contract IERC20"
+                },
+                "id": 2559,
+                "name": "UserDefinedTypeName",
+                "src": "491:6:1"
+              }
+            ],
+            "id": 2560,
+            "name": "UsingForDirective",
+            "src": "471:27:1"
+          },
+          {
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "SafeMath",
+                  "referencedDeclaration": 20441,
+                  "type": "library SafeMath"
+                },
+                "id": 2561,
+                "name": "UserDefinedTypeName",
+                "src": "510:8:1"
+              },
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2562,
+                "name": "ElementaryTypeName",
+                "src": "523:7:1"
+              }
+            ],
+            "id": 2563,
+            "name": "UsingForDirective",
+            "src": "504:27:1"
+          },
+          {
+            "attributes": {
+              "canonicalName": "CreditLineStorage.creditLineStatus",
+              "name": "creditLineStatus"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "REQUESTED"
+                },
+                "id": 2564,
+                "name": "EnumValue",
+                "src": "568:9:1"
+              },
+              {
+                "attributes": {
+                  "name": "ACTIVE"
+                },
+                "id": 2565,
+                "name": "EnumValue",
+                "src": "579:6:1"
+              },
+              {
+                "attributes": {
+                  "name": "CLOSED"
+                },
+                "id": 2566,
+                "name": "EnumValue",
+                "src": "587:6:1"
+              },
+              {
+                "attributes": {
+                  "name": "CANCELLED"
+                },
+                "id": 2567,
+                "name": "EnumValue",
+                "src": "595:9:1"
+              }
+            ],
+            "id": 2568,
+            "name": "EnumDefinition",
+            "src": "545:60:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "mutability": "mutable",
+              "name": "CreditLineCounter",
+              "overrides": null,
+              "scope": 2624,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2569,
+                "name": "ElementaryTypeName",
+                "src": "613:7:1"
+              }
+            ],
+            "id": 2570,
+            "name": "VariableDeclaration",
+            "src": "613:25:1"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "functionSelector": "4059d596",
+              "mutability": "constant",
+              "name": "yearInSeconds",
+              "overrides": null,
+              "scope": 2624,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint256",
+                  "type": "uint256"
+                },
+                "id": 2571,
+                "name": "ElementaryTypeName",
+                "src": "729:7:1"
+              },
+              {
+                "attributes": {
+                  "argumentTypes": null,
+                  "hexvalue": "333635",
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "subdenomination": "days",
+                  "token": "number",
+                  "type": "int_const 31536000",
+                  "value": "365"
+                },
+                "id": 2572,
+                "name": "Literal",
+                "src": "769:8:1"
+              }
+            ],
+            "id": 2573,
+            "name": "VariableDeclaration",
+            "src": "729:48:1"
+          },
+          {
+            "attributes": {
+              "canonicalName": "CreditLineStorage.CreditLineUsageVars",
+              "name": "CreditLineUsageVars",
+              "scope": 2624,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "principal",
+                  "overrides": null,
+                  "scope": 2584,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2574,
+                    "name": "ElementaryTypeName",
+                    "src": "996:7:1"
+                  }
+                ],
+                "id": 2575,
+                "name": "VariableDeclaration",
+                "src": "996:17:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "totalInterestRepaid",
+                  "overrides": null,
+                  "scope": 2584,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2576,
+                    "name": "ElementaryTypeName",
+                    "src": "1024:7:1"
+                  }
+                ],
+                "id": 2577,
+                "name": "VariableDeclaration",
+                "src": "1024:27:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "lastPrincipalUpdateTime",
+                  "overrides": null,
+                  "scope": 2584,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2578,
+                    "name": "ElementaryTypeName",
+                    "src": "1062:7:1"
+                  }
+                ],
+                "id": 2579,
+                "name": "VariableDeclaration",
+                "src": "1062:31:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "interestAccruedTillPrincipalUpdate",
+                  "overrides": null,
+                  "scope": 2584,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2580,
+                    "name": "ElementaryTypeName",
+                    "src": "1104:7:1"
+                  }
+                ],
+                "id": 2581,
+                "name": "VariableDeclaration",
+                "src": "1104:42:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "collateralAmount",
+                  "overrides": null,
+                  "scope": 2584,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2582,
+                    "name": "ElementaryTypeName",
+                    "src": "1157:7:1"
+                  }
+                ],
+                "id": 2583,
+                "name": "VariableDeclaration",
+                "src": "1157:24:1"
+              }
+            ],
+            "id": 2584,
+            "name": "StructDefinition",
+            "src": "958:231:1"
+          },
+          {
+            "attributes": {
+              "canonicalName": "CreditLineStorage.CreditLineVars",
+              "name": "CreditLineVars",
+              "scope": 2624,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "exists",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bool",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 2585,
+                    "name": "ElementaryTypeName",
+                    "src": "1230:4:1"
+                  }
+                ],
+                "id": 2586,
+                "name": "VariableDeclaration",
+                "src": "1230:11:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "lender",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "stateMutability": "nonpayable",
+                      "type": "address"
+                    },
+                    "id": 2587,
+                    "name": "ElementaryTypeName",
+                    "src": "1252:7:1"
+                  }
+                ],
+                "id": 2588,
+                "name": "VariableDeclaration",
+                "src": "1252:14:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "borrower",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "stateMutability": "nonpayable",
+                      "type": "address"
+                    },
+                    "id": 2589,
+                    "name": "ElementaryTypeName",
+                    "src": "1277:7:1"
+                  }
+                ],
+                "id": 2590,
+                "name": "VariableDeclaration",
+                "src": "1277:16:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "borrowLimit",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2591,
+                    "name": "ElementaryTypeName",
+                    "src": "1304:7:1"
+                  }
+                ],
+                "id": 2592,
+                "name": "VariableDeclaration",
+                "src": "1304:19:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "idealCollateralRatio",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2593,
+                    "name": "ElementaryTypeName",
+                    "src": "1334:7:1"
+                  }
+                ],
+                "id": 2594,
+                "name": "VariableDeclaration",
+                "src": "1334:28:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "liquidationThreshold",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2595,
+                    "name": "ElementaryTypeName",
+                    "src": "1373:7:1"
+                  }
+                ],
+                "id": 2596,
+                "name": "VariableDeclaration",
+                "src": "1373:28:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "borrowRate",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 2597,
+                    "name": "ElementaryTypeName",
+                    "src": "1412:7:1"
+                  }
+                ],
+                "id": 2598,
+                "name": "VariableDeclaration",
+                "src": "1412:18:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "borrowAsset",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "stateMutability": "nonpayable",
+                      "type": "address"
+                    },
+                    "id": 2599,
+                    "name": "ElementaryTypeName",
+                    "src": "1441:7:1"
+                  }
+                ],
+                "id": 2600,
+                "name": "VariableDeclaration",
+                "src": "1441:19:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "collateralAsset",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "stateMutability": "nonpayable",
+                      "type": "address"
+                    },
+                    "id": 2601,
+                    "name": "ElementaryTypeName",
+                    "src": "1471:7:1"
+                  }
+                ],
+                "id": 2602,
+                "name": "VariableDeclaration",
+                "src": "1471:23:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "currentStatus",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "enum CreditLineStorage.creditLineStatus",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "creditLineStatus",
+                      "referencedDeclaration": 2568,
+                      "type": "enum CreditLineStorage.creditLineStatus"
+                    },
+                    "id": 2603,
+                    "name": "UserDefinedTypeName",
+                    "src": "1505:16:1"
+                  }
+                ],
+                "id": 2604,
+                "name": "VariableDeclaration",
+                "src": "1505:30:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "autoLiquidation",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bool",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 2605,
+                    "name": "ElementaryTypeName",
+                    "src": "1546:4:1"
+                  }
+                ],
+                "id": 2606,
+                "name": "VariableDeclaration",
+                "src": "1546:20:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "mutability": "mutable",
+                  "name": "requestByLender",
+                  "overrides": null,
+                  "scope": 2609,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bool",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 2607,
+                    "name": "ElementaryTypeName",
+                    "src": "1577:4:1"
+                  }
+                ],
+                "id": 2608,
+                "name": "VariableDeclaration",
+                "src": "1577:20:1"
+              }
+            ],
+            "id": 2609,
+            "name": "StructDefinition",
+            "src": "1197:408:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "mutability": "mutable",
+              "name": "collateralShareInStrategy",
+              "overrides": null,
+              "scope": 2624,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "mapping(bytes32 => mapping(address => uint256))",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "type": "mapping(bytes32 => mapping(address => uint256))"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 2610,
+                    "name": "ElementaryTypeName",
+                    "src": "1619:7:1"
+                  },
+                  {
+                    "attributes": {
+                      "type": "mapping(address => uint256)"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 2611,
+                        "name": "ElementaryTypeName",
+                        "src": "1638:7:1"
+                      },
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 2612,
+                        "name": "ElementaryTypeName",
+                        "src": "1649:7:1"
+                      }
+                    ],
+                    "id": 2613,
+                    "name": "Mapping",
+                    "src": "1630:27:1"
+                  }
+                ],
+                "id": 2614,
+                "name": "Mapping",
+                "src": "1611:47:1"
+              }
+            ],
+            "id": 2615,
+            "name": "VariableDeclaration",
+            "src": "1611:73:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "functionSelector": "a164b423",
+              "mutability": "mutable",
+              "name": "creditLineUsage",
+              "overrides": null,
+              "scope": 2624,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "mapping(bytes32 => struct CreditLineStorage.CreditLineUsageVars)",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "type": "mapping(bytes32 => struct CreditLineStorage.CreditLineUsageVars)"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 2616,
+                    "name": "ElementaryTypeName",
+                    "src": "1699:7:1"
+                  },
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "CreditLineUsageVars",
+                      "referencedDeclaration": 2584,
+                      "type": "struct CreditLineStorage.CreditLineUsageVars"
+                    },
+                    "id": 2617,
+                    "name": "UserDefinedTypeName",
+                    "src": "1710:19:1"
+                  }
+                ],
+                "id": 2618,
+                "name": "Mapping",
+                "src": "1691:39:1"
+              }
+            ],
+            "id": 2619,
+            "name": "VariableDeclaration",
+            "src": "1691:62:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "functionSelector": "ae974ff6",
+              "mutability": "mutable",
+              "name": "creditLineInfo",
+              "overrides": null,
+              "scope": 2624,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "mapping(bytes32 => struct CreditLineStorage.CreditLineVars)",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "type": "mapping(bytes32 => struct CreditLineStorage.CreditLineVars)"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 2620,
+                    "name": "ElementaryTypeName",
+                    "src": "1768:7:1"
+                  },
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "CreditLineVars",
+                      "referencedDeclaration": 2609,
+                      "type": "struct CreditLineStorage.CreditLineVars"
+                    },
+                    "id": 2621,
+                    "name": "UserDefinedTypeName",
+                    "src": "1779:14:1"
+                  }
+                ],
+                "id": 2622,
+                "name": "Mapping",
+                "src": "1760:34:1"
+              }
+            ],
+            "id": 2623,
+            "name": "VariableDeclaration",
+            "src": "1760:56:1"
+          }
+        ],
+        "id": 2624,
+        "name": "ContractDefinition",
+        "src": "415:1405:1"
+      }
+    ],
+    "id": 2625,
+    "name": "SourceUnit",
+    "src": "33:1789:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.7.0+commit.9e61f92b.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.3.3",
+  "updatedAt": "2021-03-22T07:18:06.954Z",
+  "devdoc": {
+    "author": "Sublime*",
+    "kind": "dev",
+    "methods": {
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "title": "Credit Line contract with Methods related to credit Line",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "Implements the functions related to Credit Line",
+    "version": 1
+  }
+}

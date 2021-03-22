@@ -1,4 +1,4 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt,Address } from "@graphprotocol/graph-ts";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 export let BIGINT_ZERO = BigInt.fromI32(0);
@@ -13,3 +13,4 @@ export const LOAN_STATUS_CANCELLED = "CANCELLED";
 export const LOAN_STATUS_DEFAULTED = "DEFAULTED";
 export const LOAN_STATUS_TERMINATED = "TERMINATED";
 export const LOAN_STATUS_COLLECTION = "COLLECTION";
+export let CREDIT_LINE_Storage_ADDRESS = Address.fromString("0xa454683Aed13A3D117408c61477b40677E227C6e");
