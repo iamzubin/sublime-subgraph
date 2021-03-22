@@ -80,19 +80,6 @@
         "inputs": [
             {
                 "indexed": false,
-                "internalType": "uint256",
-                "name": "extensionVoteEndTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "ExtensionRequested",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
                 "internalType": "address",
                 "name": "liquidator",
                 "type": "address"
@@ -111,31 +98,6 @@
             }
         ],
         "name": "LenderLiquidated",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "lender",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "totalExtensionSupport",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "lastVoteTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "LenderVoted",
         "type": "event"
     },
     {
@@ -251,25 +213,6 @@
         "type": "event"
     },
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "nextDuePeriod",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "periodWhenExtensionIsPassed",
-                "type": "uint256"
-            }
-        ],
-        "name": "VotingPassed",
-        "type": "event"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
@@ -324,7 +267,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "minborrowAmountFraction",
+                "name": "minborrowAmount",
                 "type": "uint256"
             },
             {
@@ -382,11 +325,6 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "periodWhenExtensionIsPassed",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
                 "name": "baseLiquidityShares",
                 "type": "uint256"
             },
@@ -399,16 +337,6 @@
                 "internalType": "enum Pool.LoanStatus",
                 "name": "loanStatus",
                 "type": "uint8"
-            },
-            {
-                "internalType": "uint256",
-                "name": "totalExtensionSupport",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "extensionVoteEndTime",
-                "type": "uint256"
             },
             {
                 "internalType": "uint256",
@@ -437,7 +365,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "_minborrowAmountFraction",
+                "name": "_minborrowAmount",
                 "type": "uint256"
             },
             {
@@ -489,6 +417,16 @@
                 "internalType": "bool",
                 "name": "_transferFromSavingsAccount",
                 "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_matchCollateralRatioInterval",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_collectionPeriod",
+                "type": "uint256"
             }
         ],
         "name": "initialize",
@@ -721,6 +659,24 @@
     {
         "inputs": [
             {
+                "internalType": "bool",
+                "name": "_transferToSavingsAccount",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "_recieveLiquidityShare",
+                "type": "bool"
+            }
+        ],
+        "name": "liquidatePool",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "address",
                 "name": "lender",
                 "type": "address"
@@ -776,19 +732,33 @@
     {
         "inputs": [
             {
-                "internalType": "bool",
-                "name": "_transferToSavingsAccount",
-                "type": "bool"
-            },
-            {
-                "internalType": "bool",
-                "name": "_recieveLiquidityShare",
-                "type": "bool"
+                "internalType": "address",
+                "name": "_borrower",
+                "type": "address"
             }
         ],
-        "name": "liquidatePool",
-        "outputs": [],
-        "stateMutability": "payable",
+        "name": "getNextDueTimeIfBorrower",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getNextDueTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -857,15 +827,83 @@
     },
     {
         "inputs": [],
-        "name": "requestExtension",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "name": "getNextDuePeriod",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_lender",
+                "type": "address"
+            }
+        ],
+        "name": "getMarginCallEndTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
         "inputs": [],
-        "name": "voteOnExtension",
-        "outputs": [],
+        "name": "getTotalSupply",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_lender",
+                "type": "address"
+            }
+        ],
+        "name": "getBalanceDetails",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "grantExtension",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     },

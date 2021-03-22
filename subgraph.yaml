@@ -8,9 +8,9 @@ dataSources:
     name: PoolFactory
     network: kovan
     source:
-      address: "0xCc740cDd0Ba263Ca55F26187149e20ACE040cb3c"
+      address: "0xa4Eca2Eae5A6A90fb32868E050986Ea3B900c95d"
       abi: PoolFactory
-      startBlock: 23885000
+      startBlock: 23949500
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
+        - name: Pool
+          file: ./abis/Pool.json
       eventHandlers:
         - event: PoolCreated(address,address)
           handler: handlePoolCreated
@@ -28,9 +30,9 @@ dataSources:
     name: SavingsAccount
     network: kovan
     source:
-      address: "0xdEc67778ff2373FE57383ee602e6247FC3aeC2bF"
+      address: "0xBbD4558d69df4F0F411AeF2353aB622107C946Fa"
       abi: SavingsAccount
-      startBlock: 23885000
+      startBlock: 23949500
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -46,7 +48,7 @@ dataSources:
           handler: handleDeposited
         - event: StrategySwitched(address,address,address,address)
           handler: handleStrategySwitched
-        - event: Withdrawn(address,uint256,address,address)
+        - event: Withdrawn(address,address,uint256,address,address)
           handler: handleWithdrawn
         - event: WithdrawnAll(address,uint256,address)
           handler: handleWithdrawnAll
@@ -77,7 +79,7 @@ templates:
         - event: OpenBorrowPoolDefaulted()
           handler: handleOpenBorrowPoolDefaulted
         - event: CollateralAdded(address,uint256,uint256)
-          handler: handleCollataralAdded
+          handler: handleCollateralAdded
         - event: CollateralWithdrawn(address,uint256)
           handler: handleCollateralWithdrawn
         - event: LiquiditySupplied(uint256,address)

@@ -36,6 +36,31 @@
             {
                 "indexed": false,
                 "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "CreditLineAllowanceRefreshed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
                 "name": "user",
                 "type": "address"
             },
@@ -154,7 +179,13 @@
             {
                 "indexed": false,
                 "internalType": "address",
-                "name": "user",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
                 "type": "address"
             },
             {
@@ -203,6 +234,19 @@
         ],
         "name": "WithdrawnAll",
         "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "CreditLine",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [
@@ -322,6 +366,11 @@
             {
                 "internalType": "address",
                 "name": "_strategyRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_creditLine",
                 "type": "address"
             }
         ],
@@ -466,7 +515,46 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "amountReceived",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "asset",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "strategy",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "withdrawShares",
+                "type": "bool"
+            }
+        ],
+        "name": "withdrawFrom",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountReceived",
                 "type": "uint256"
             }
         ],
@@ -511,6 +599,29 @@
             }
         ],
         "name": "approve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "approveFromToCreditLine",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

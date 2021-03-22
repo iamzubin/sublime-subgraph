@@ -1,15 +1,16 @@
 import {
-  Address,
   DataSourceContext,
 } from "@graphprotocol/graph-ts";
 import { Pool } from '../generated/schema';
 import { BIGINT_ZERO } from "./utils/constants";
 import {
   getLoanStatus,
-  updateUserPools,
+  createUser,
 } from "./utils/helpers";
 import {
   Pool as PoolContract,
+  Pool__poolVarsResult,
+  Pool__poolConstantsResult,
 } from '../generated/templates/Pool/Pool';
 import {
   PoolCreated,
@@ -20,13 +21,10 @@ let context = new DataSourceContext();
 export function handlePoolCreated(
   event: PoolCreated
 ): void {
-  NewPool.createWithContext(
-    event.params.pool, context
-  );
-
   let id = event.params.pool.toHexString();
   let pool = Pool.load(id);
   if (pool == null) {
+    pool = new Pool(id);
     pool = new Pool(id);
   }
   pool.poolId = event.params.pool;
@@ -34,33 +32,46 @@ export function handlePoolCreated(
   pool.isPrivate = false;
 
   let poolContract = PoolContract.bind(
-    Address.fromString(id),
+    event.params.pool
   );
 
-  let poolVars = poolContract.poolVars();
-  let poolContstants = poolContract.poolConstants();
+  let resultVars = poolContract.try_poolVars();
+  let resultConstants = poolContract.try_poolConstants();
 
-  pool.borrowAsset = poolContstants.value5;
-  pool.collateralAsset = poolContstants.value10;
-  pool.borrowRate = poolContstants.value7;
-  // pool.lendingRate = poolContstants.
-  // pool.loanDuration = 
-  pool.collateralRatio = poolContstants.value6;
-  pool.loanStartTime = poolContstants.value3;
-  pool.nextRepayTime = poolVars.value7;
-  pool.loanStatus = getLoanStatus(poolVars.value3);
+  let poolVars: Pool__poolVarsResult;
+  let poolConstants: Pool__poolConstantsResult;
+
+  if (!resultVars.reverted) {
+    poolVars = resultVars.value;
+  }
+  if (!resultConstants.reverted) {
+    poolConstants = resultConstants.value;
+  }
+
+  // pool.borrowAsset = poolConstants.value5;
+  // pool.collateralAsset = poolConstants.value10;
+  // pool.borrowRate = poolConstants.value7;
+  // pool.collateralRatio = poolConstants.value6;
+  // pool.loanStartTime = poolConstants.value3;
+
+  // TODO: Change this
+  pool.lendingRate = BIGINT_ZERO;
+  pool.loanDuration = BIGINT_ZERO;
+
   pool.lentAmount = BIGINT_ZERO;
   pool.borrowedAmount = BIGINT_ZERO;
-  pool.colleteralAmount = poolVars.value1;
   pool.amountRepaid = BIGINT_ZERO;
   pool.collateralCalls = BIGINT_ZERO;
 
-  pool.save();
+  pool.nextRepayTime = poolVars.value4;
+  pool.loanStatus = getLoanStatus(poolVars.value2);
+  pool.colleteralAmount = poolVars.value1;
 
-  updateUserPools(
-    event.params.borrower,
-    event.params.pool.toHexString(),
-    "created",
-    "borrow-pool"
+  pool.save();
+  
+  NewPool.createWithContext(
+    event.params.pool, context
   );
+
+  createUser(event.params.borrower);
 }

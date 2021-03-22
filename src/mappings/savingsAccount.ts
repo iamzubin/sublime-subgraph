@@ -16,6 +16,7 @@ export function handleDeposited(
     let savingAccount = SavingAccount.load(userId);
 
     if (savingAccount == null) {
+        savingAccount = new SavingAccount(userId);
         savingAccount.user = userId;
         savingAccount.save();
     }
@@ -24,9 +25,11 @@ export function handleDeposited(
     let savingDeposit = SavingDeposit.load(depositId);
 
     if (savingDeposit == null) {
+        savingDeposit = new SavingDeposit(depositId);
         savingDeposit.asset = event.params.asset;
         savingDeposit.strategy = event.params.strategy;
-        savingDeposit.amount = BIGINT_ZERO
+        savingDeposit.amount = BIGINT_ZERO;
+        savingDeposit.savingAccount = userId;
     }
 
     savingDeposit.amount = savingDeposit.amount.plus(
@@ -53,7 +56,7 @@ export function handleStrategySwitched(
 export function handleWithdrawn(
     event: Withdrawn
 ): void {
-    let depositId = event.params.user.toHexString() +
+    let depositId = event.params.from.toHexString() +
         event.params.token.toHexString();
 
     let savingDeposit = SavingDeposit.load(depositId);

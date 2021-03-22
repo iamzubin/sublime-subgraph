@@ -7,7 +7,7 @@ import {
     LOAN_STATUS_CANCELLED,
 } from "../utils/constants";
 import {
-    updateUserPools,
+    createUser,
 } from "../utils/helpers";
 import {
     OpenBorrowPoolClosed,
@@ -60,14 +60,14 @@ export function handleOpneBorrowPoolCanceled(
 export function handleCollateralAdded(
     event: CollateralAdded
 ): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+    // let pool = Pool.load(
+    //     event.transaction.to.toHexString()
+    // );
 
-    pool.colleteralAmount = pool.colleteralAmount
-        .plus(event.params.amount);
+    // pool.colleteralAmount = pool.colleteralAmount
+    //     .plus(event.params.amount);
 
-    pool.save();
+    // pool.save();
 }
 
 export function handleCollateralWithdrawn(
@@ -96,21 +96,17 @@ export function handleLiquiditySupplied(
 
     if (lendingDetail == null) {
         lendingDetail = new LendingDetails(lendingDetailId);
+        lendingDetail.pool = poolAddress;
+        lendingDetail.collateralCalled = false;
+        lendingDetail.lender = event.params.lenderAddress.toHexString();
     }
 
-    lendingDetail.pool = poolAddress;
-    lendingDetail.collateralCalled = false;
     lendingDetail.amountSupplied = lendingDetail
         .amountSupplied.plus(event.params.amountSupplied);
 
     lendingDetail.save();
 
-    updateUserPools(
-        event.params.lenderAddress,
-        poolAddress,
-        "supplied",
-        "lending-pool"
-    );
+    createUser(event.params.lenderAddress);
 
     let pool = Pool.load(poolAddress);
     pool.lentAmount = pool.lentAmount

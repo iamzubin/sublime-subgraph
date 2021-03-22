@@ -4,6 +4,44 @@
         "inputs": [
             {
                 "indexed": false,
+                "internalType": "address",
+                "name": "borrowToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "BorrowTokenUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "collateralToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "CollateralTokenUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
                 "internalType": "uint256",
                 "name": "updatedCollateralVolatilityThreshold",
                 "type": "uint256"
@@ -285,24 +323,6 @@
     },
     {
         "inputs": [],
-        "name": "extensionData",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "votingPassRatio",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "votingExtensionlength",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "gracePeriodFraction",
         "outputs": [
             {
@@ -498,6 +518,19 @@
     },
     {
         "inputs": [],
+        "name": "votingPassRatio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "owner",
         "outputs": [
             {
@@ -601,7 +634,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "_minBorrowAmountFraction",
+                "name": "_minBorrowAmount",
                 "type": "uint256"
             },
             {
@@ -658,6 +691,42 @@
     {
         "inputs": [],
         "name": "destroyPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_borrowToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "updateSupportedBorrowTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_collateralToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "updateSupportedCollateralTokens",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

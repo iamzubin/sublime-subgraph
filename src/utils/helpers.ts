@@ -31,11 +31,8 @@ export function getLoanStatus(
     }
 }
 
-export function updateUserPools(
+export function createUser(
     userAddress: Bytes,
-    poolId: string,
-    action: string,
-    poolType: string,
 ): void {
     let userId = userAddress.toHexString()
     let user = User.load(userId);
@@ -45,18 +42,6 @@ export function updateUserPools(
         user.address = userAddress;
         user.savingAccount = userId;
         user.status = STATUS_UNVERIFIED;
-    }
-
-    if (action == "created" || action == "supplied") {
-        if (poolType == "borrow-pool") {
-            let borrowingPools = user.borrowingPools;
-            borrowingPools.push(poolId);
-            user.borrowingPools = borrowingPools;
-        } else if (poolType == "lending-pool") {
-            let lendingPools = user.lendingPools;
-            lendingPools.push(poolId);
-            user.lendingPools = lendingPools;
-        }
     }
 
     user.save();

@@ -24,23 +24,23 @@ type LendingDetails @entity {
 
 type Pool @entity {
   id: ID!
-  poolId: Bytes!
-  borrower: User!
-  borrowAsset: Bytes!
-  collateralAsset: Bytes!
-  lendingRate: BigInt!
-  borrowRate: BigInt!
+  poolId: Bytes
+  borrower: User
+  borrowAsset: Bytes
+  collateralAsset: Bytes
+  lendingRate: BigInt
+  borrowRate: BigInt
   loanDuration: BigInt
-  collateralRatio: BigInt!
-  loanStatus: LoanStatus!
-  lentAmount: BigInt!
-  borrowedAmount: BigInt!
-  colleteralAmount: BigInt!
-  amountRepaid: BigInt!
-  loanStartTime: BigInt!
+  collateralRatio: BigInt
+  loanStatus: LoanStatus
+  lentAmount: BigInt
+  borrowedAmount: BigInt
+  colleteralAmount: BigInt
+  amountRepaid: BigInt
+  loanStartTime: BigInt
   nextRepayTime: BigInt
   collateralCalls: BigInt
-  isPrivate: Boolean!
+  isPrivate: Boolean
   whitelistedAddress: [Bytes!]
   voteWeight: BigInt
   repayExtensionEndTime: BigInt
@@ -52,7 +52,7 @@ type User @entity {
   address: Bytes!
   borrowingPools: [Pool!] @derivedFrom(field: "borrower")
   lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
-  savingAccount: SavingAccount!
+  savingAccount: SavingAccount
   status: Status!
   twitterDetails: TwitterDetails
 }
