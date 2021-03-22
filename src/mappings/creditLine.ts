@@ -12,11 +12,11 @@ import {
     PartialCreditLineRepaid ,
     CreditLine as creditLineContract
 } from '../../generated/CreditLine/CreditLine';
-import { BIGINT_ZERO,CREDIT_LINE_Storage_ADDRESS } from "../utils/constants";
+import { BIGINT_ZERO,CREDIT_LINE_ADDRESS } from "../utils/constants";
 import {getCreditLineStatus} from  "../utils/helpers.ts"
 
 let creditLinesContract = creditLineContract.bind(
-    CREDIT_LINE_Storage_ADDRESS
+    CREDIT_LINE_ADDRESS
 );
 
 export function handleCreditLineRequestedToLender(

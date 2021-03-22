@@ -36,7 +36,7 @@ type LendingDetails @entity {
   # collateralCalled: Boolean!
   lastVoteTime:BigInt
   marginCallEndTime:BigInt
-  extraLiquidityShares:BigInt!
+  exraLiquidityShares:BigInt!
   Balance:BigInt!
 }
 
@@ -118,6 +118,7 @@ type SavingsAccountInfo @entity {
   amount: BigInt!
   strategy: Bytes!
   savingAccount: SavingAccount!
+  liquidityShare: BigInt!
 }
 
 enum CreditLineStatus {

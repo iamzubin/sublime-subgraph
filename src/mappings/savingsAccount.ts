@@ -6,8 +6,15 @@ import {
     StrategySwitched,
     Withdrawn,
     WithdrawnAll,
+    SavingsAccount as savingsAccountContract
 } from '../../generated/SavingsAccount/SavingsAccount';
-import { BIGINT_ZERO } from "../utils/constants";
+import { BIGINT_ZERO,SAVINGS_ACCOUNT_ADDRESS} from "../utils/constants";
+
+
+let savingAccountContract = savingsAccountContract.bind(
+    SAVINGS_ACCOUNT_ADDRESS
+);
+
 
 export function handleDeposited(
     event: Deposited
@@ -21,7 +28,7 @@ export function handleDeposited(
         savingAccount.save();
     }
 
-    let depositId = userId + event.params.asset.toHexString();
+    let depositId = userId + event.params.asset.toHexString() + event.params.strategy.toHexString();
     let savingDeposit = SavingDeposit.load(depositId);
 
     if (savingDeposit == null) {
@@ -29,9 +36,11 @@ export function handleDeposited(
         savingDeposit.asset = event.params.asset;
         savingDeposit.strategy = event.params.strategy;
         savingDeposit.amount = BIGINT_ZERO;
+        savingDeposit.liquidityShare = BIGINT_ZERO;
         savingDeposit.savingAccount = userId;
     }
-
+    savingDeposit.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.strategy, event.params.token);
+    
     savingDeposit.amount = savingDeposit.amount.plus(
         event.params.amount
     );
@@ -42,14 +51,18 @@ export function handleDeposited(
 export function handleStrategySwitched(
     event: StrategySwitched
 ): void {
-    let depositId = event.params.user.toHexString() +
-        event.params.asset.toHexString();
+    let depositIdFrom = event.params.user.toHexString() +
+        event.params.asset.toHexString() + event.params.currentStrategy.toHexString();
+    let depositIdTo = event.params.user.toHexString() +
+        event.params.asset.toHexString() + event.params.newStrategy.toHexString();
+                
+    let savingDepositFrom = SavingDeposit.load(depositIdFrom);
+    let savingDepositTo = SavingDeposit.load(depositIdTo);
 
-    let savingDeposit = SavingDeposit.load(depositId);
-
-    savingDeposit.strategy = event.params.newStrategy;
-
-    savingDeposit.save();
+    savingDepositFrom.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.asset,event.params.currentStrategy);
+    savingDepositTo.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.asset,event.params.newStrategy);
+    savingDepositFrom.save();
+    savingDepositTo.save();
 }
 
 
@@ -57,10 +70,11 @@ export function handleWithdrawn(
     event: Withdrawn
 ): void {
     let depositId = event.params.from.toHexString() +
-        event.params.token.toHexString();
+        event.params.token.toHexString()+ event.params.strategy.toHexString();
 
     let savingDeposit = SavingDeposit.load(depositId);
 
+    savingDeposit.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.strategy);
     savingDeposit.amount = savingDeposit.amount.minus(
         event.params.amountReceived
     );
