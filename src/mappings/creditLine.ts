@@ -1,5 +1,5 @@
 import {
-    CreditLines, CreditLineCollateralInfo,creditLineLiquidation, CreditLineStatus
+    CreditLines, CreditLineCollateralInfo, creditLineLiquidation
 } from '../../generated/schema';
 import {
     BorrowedFromCreditLine,
@@ -12,7 +12,7 @@ import {
     CreditLine as creditLineContract
 } from '../../generated/CreditLine/CreditLine';
 import { BIGINT_ZERO,CREDIT_LINE_ADDRESS } from "../utils/constants";
-import {getCreditLineStatus} from  "../utils/helpers.ts"
+import {getCreditLineStatus} from "../utils/helpers";
 
 let creditLinesContract = creditLineContract.bind(
     CREDIT_LINE_ADDRESS
@@ -22,29 +22,31 @@ export function handleCreditLineRequestedToLender(
     event: CreditLineRequestedToLender
 ): void {
     let creditLineHash = event.params.creditLineHash.toHexString();
-    let lender = event.params.lender.toHexString();
-    let borrower = event.params.borrower.toHexString();
+    let lender = event.params.lender;
+    let borrower = event.params.borrower;
     
     let creditLine = CreditLines.load(creditLineHash)
   
     if (creditLine == null) {
         creditLine = new CreditLines(creditLineHash);
         creditLine.CreditLineHash = event.params.creditLineHash;
-        creditLine.BorrowLimit = BIGINT_ZERO;
-        creditLine.liquidationThreshold = BIGINT_ZERO;
-        creditLine.borrowRate = BIGINT_ZERO;
-        creditLine.AutoLiquidation = BIGINT_ZERO;
-        creditLine.idealCollateralRatio = BIGINT_ZERO;
-        creditLine.BorrowAsset=  event.params.creditLineHash;
+        let CreditLineVars  = creditLinesContract.creditLineInfo( event.params.creditLineHash);
+        creditLine.lender = lender;
+        creditLine.Borrower = borrower;
+        creditLine.BorrowLimit = CreditLineVars.value3;
+        creditLine.idealCollateralRatio = CreditLineVars.value4;
+        creditLine.liquidationThreshold = CreditLineVars.value5;
+        creditLine.borrowRate = CreditLineVars.value6;
+        creditLine.BorrowAsset=  CreditLineVars.value7;
+        creditLine.collateralAsset=  CreditLineVars.value8;
         creditLine.creditLineStatus = getCreditLineStatus(0);
+        creditLine.autoLiquidation = CreditLineVars.value10;
+        creditLine.requestByLender = CreditLineVars.value11;
         creditLine.principal = BIGINT_ZERO;
         creditLine.totalInterestRepaid = BIGINT_ZERO;
         creditLine.lastPrincipalUpdateTime = BIGINT_ZERO;
         creditLine.interestAccruedTillPrincipalUpdate = BIGINT_ZERO;
         creditLine.collateralAmount = BIGINT_ZERO;
-        creditLine.autoLiquidation = false;
-        creditLine.requestByLender = false;
-
         creditLine.save();
     }
 }
@@ -64,32 +66,35 @@ export function handleCreditLineRequestedToBorrower(
     event: CreditLineRequestedToBorrower
 ): void {
     let creditLineHash = event.params.creditLineHash.toHexString();
-    let lender = event.params.lender.toHexString();
-    let borrower = event.params.borrower.toHexString();
+    let lender = event.params.lender;
+    let borrower = event.params.borrower;
     
     let creditLine = CreditLines.load(creditLineHash)
   
     if (creditLine == null) {
         creditLine = new CreditLines(creditLineHash);
         creditLine.CreditLineHash = event.params.creditLineHash;
-        creditLine.BorrowLimit = BIGINT_ZERO;
-        creditLine.liquidationThreshold = BIGINT_ZERO;
-        creditLine.borrowRate = BIGINT_ZERO;
-        creditLine.AutoLiquidation = BIGINT_ZERO;
-        creditLine.idealCollateralRatio = BIGINT_ZERO;
-        creditLine.BorrowAsset=  event.params.creditLineHash;
+        let CreditLineVars  = creditLinesContract.creditLineInfo( event.params.creditLineHash);
+        creditLine.lender = lender;
+        creditLine.Borrower = borrower;
+        creditLine.BorrowLimit = CreditLineVars.value3;
+        creditLine.idealCollateralRatio = CreditLineVars.value4;
+        creditLine.liquidationThreshold = CreditLineVars.value5;
+        creditLine.borrowRate = CreditLineVars.value6;
+        creditLine.BorrowAsset=  CreditLineVars.value7;
+        creditLine.collateralAsset=  CreditLineVars.value8;
         creditLine.creditLineStatus = getCreditLineStatus(0);
+        creditLine.autoLiquidation = CreditLineVars.value10;
+        creditLine.requestByLender = CreditLineVars.value11;
         creditLine.principal = BIGINT_ZERO;
         creditLine.totalInterestRepaid = BIGINT_ZERO;
         creditLine.lastPrincipalUpdateTime = BIGINT_ZERO;
         creditLine.interestAccruedTillPrincipalUpdate = BIGINT_ZERO;
         creditLine.collateralAmount = BIGINT_ZERO;
-        creditLine.autoLiquidation = false;
-        creditLine.requestByLender = false;
-
         creditLine.save();
     }
 }
+
 
 export function handleCreditLineClosed(
     event: CreditLineClosed
@@ -98,7 +103,7 @@ export function handleCreditLineClosed(
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
         creditLine.creditLineStatus = getCreditLineStatus(2);
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage( event.params.creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.creditLineUsage( event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
@@ -116,7 +121,7 @@ export function handleBorrowedFromCreditLine(
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
         creditLine.creditLineStatus = getCreditLineStatus(2);
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(event.params.creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.creditLineUsage(event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
@@ -133,7 +138,7 @@ export function handlePartialCreditLineRepaid(
     let creditLineHash = event.params.creditLineHash.toHexString();
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(event.params.creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.creditLineUsage(event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
@@ -150,7 +155,7 @@ export function handleCreditLineReset(
     let creditLineHash = event.params.creditLineHash.toHexString();
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(event.params.creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.creditLineUsage(event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2

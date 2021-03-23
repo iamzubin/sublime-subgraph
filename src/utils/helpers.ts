@@ -22,6 +22,8 @@ export function getCreditLineStatus(
             return "CLOSED";
         case 3:
             return "CANCELLED";
+        default:
+            return "CANCELLED";
     }
 }
 

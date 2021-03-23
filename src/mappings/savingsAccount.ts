@@ -39,7 +39,7 @@ export function handleDeposited(
         savingDeposit.liquidityShare = BIGINT_ZERO;
         savingDeposit.savingAccount = userId;
     }
-    savingDeposit.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.asset, event.params.strategy);
+    savingDeposit.liquidityShare = savingAccountContract.userLockedBalance(event.params.user, event.params.asset, event.params.strategy);
     
     savingDeposit.amount = savingDeposit.amount.plus(
         event.params.amount
@@ -59,8 +59,8 @@ export function handleStrategySwitched(
     let savingDepositFrom = SavingsDeposit.load(depositIdFrom);
     let savingDepositTo = SavingsDeposit.load(depositIdTo);
 
-    savingDepositFrom.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.asset,event.params.currentStrategy);
-    savingDepositTo.liquidityShare = savingAccountContract.try_userLockedBalance(event.params.user, event.params.asset,event.params.newStrategy);
+    savingDepositFrom.liquidityShare = savingAccountContract.userLockedBalance(event.params.user, event.params.asset,event.params.currentStrategy);
+    savingDepositTo.liquidityShare = savingAccountContract.userLockedBalance(event.params.user, event.params.asset,event.params.newStrategy);
     savingDepositFrom.save();
     savingDepositTo.save();
 }
@@ -74,7 +74,7 @@ export function handleWithdrawn(
 
     let savingDeposit = SavingsDeposit.load(depositId);
 
-    let temp = savingAccountContract.try_userLockedBalance(event.params.from, event.params.token, event.params.strategy);
+    let temp = savingAccountContract.userLockedBalance(event.params.from, event.params.token, event.params.strategy);
     savingDeposit.liquidityShare = temp;
     savingDeposit.amount = savingDeposit.amount.minus(
         event.params.amountReceived

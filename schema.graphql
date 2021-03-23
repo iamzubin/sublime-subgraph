@@ -143,12 +143,12 @@ type CreditLines @entity{
   BorrowLimit:BigInt!
   liquidationThreshold:BigInt
   borrowRate:BigInt!
-  AutoLiquidation:BigInt!
   idealCollateralRatio: BigInt!
   BorrowAsset: Bytes!
   Borrower: Bytes!
-  liquidatedCreditLine: creditLineLiquidation
+  collateralAsset:Bytes!
   creditLineStatus:CreditLineStatus!
+  liquidatedCreditLine: creditLineLiquidation
   principal:BigInt!
   totalInterestRepaid:BigInt!
   lastPrincipalUpdateTime:BigInt!

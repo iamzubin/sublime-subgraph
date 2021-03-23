@@ -1,20 +1,24 @@
 {
-  "name": "sublime-subgraph",
+  "name": "Sublimev11",
   "version": "0.1.0",
   "scripts": {
-    "create": "graph create sublime-finance/sublime --node https://api.thegraph.com/deploy/",
-    "create-local": "graph create sublime-finance/sublime --node http://127.0.0.1:8020",
+    "build-contract": "solc contracts/Gravity.sol --abi -o abis --overwrite && solc contracts/Gravity.sol --bin -o bin --overwrite",
+    "create": "graph create ayush2843/Sublimev11 --node https://api.thegraph.com/deploy/",
+    "create-local": "graph create ayush2843/Sublimev11 --node http://127.0.0.1:8020",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy sublime-finance/sublime --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token",
-    "deploy-local": "graph deploy sublime-finance/sublime --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
+    "deploy": "graph deploy ayush2843/Sublimev11 --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "deploy-local": "graph deploy ayush2843/Sublimev11 --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.19.0",
-    "@graphprotocol/graph-ts": "^0.19.0"
+    "@graphprotocol/graph-cli": "^0.20.0",
+    "@graphprotocol/graph-ts": "^0.20.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "truffle": "^5.0.4",
+    "truffle-contract": "^4.0.5",
+    "truffle-hdwallet-provider": "^1.0.4"
   }
 }
