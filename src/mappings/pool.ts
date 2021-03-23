@@ -64,7 +64,7 @@ export function handleCollateralAdded(
     //     event.transaction.to.toHexString()
     // );
 
-    // pool.colleteralAmount = pool.colleteralAmount
+    // pool.collateralAmount = pool.collateralAmount
     //     .plus(event.params.amount);
 
     // pool.save();
@@ -77,8 +77,8 @@ export function handleCollateralWithdrawn(
         event.transaction.to.toHexString()
     );
 
-    pool.colleteralAmount = pool.colleteralAmount
-        .minus(event.params.amount);
+    // pool.collateralAmount = pool.collateralAmount
+    //     .minus(event.params.amount);
     pool.save();
 }
 
@@ -97,20 +97,20 @@ export function handleLiquiditySupplied(
     if (lendingDetail == null) {
         lendingDetail = new LendingDetails(lendingDetailId);
         lendingDetail.pool = poolAddress;
-        lendingDetail.collateralCalled = false;
+        // lendingDetail.collateralCalled = false;
         lendingDetail.lender = event.params.lenderAddress.toHexString();
     }
 
-    lendingDetail.amountSupplied = lendingDetail
-        .amountSupplied.plus(event.params.amountSupplied);
+    // lendingDetail.amountSupplied = lendingDetail
+    //     .amountSupplied.plus(event.params.amountSupplied);
 
     lendingDetail.save();
 
     createUser(event.params.lenderAddress);
 
     let pool = Pool.load(poolAddress);
-    pool.lentAmount = pool.lentAmount
-        .plus(event.params.amountSupplied);
+    // pool.lentAmount = pool.lentAmount
+    //     .plus(event.params.amountSupplied);
 
     pool.save();
 }
@@ -128,18 +128,19 @@ export function handleLiquidityWithdrawn(
     lendingDetail.amountWithdrawn = lendingDetail.amountWithdrawn
         .plus(event.params.amount);
 
-    if (
-        lendingDetail.amountWithdrawn ==
-        lendingDetail.amountSupplied
-    ) {
-        store.remove('LendingDetail', lendingDetailId);
-    } else {
-        lendingDetail.save();
-    }
+    lendingDetail.save();
+    // if (
+    //     lendingDetail.amountWithdrawn ==
+    //     lendingDetail.amountSupplied
+    // ) {
+    //     store.remove('LendingDetail', lendingDetailId);
+    // } else {
+    //     lendingDetail.save();
+    // }
 
     let pool = Pool.load(poolAddress);
-    pool.lentAmount = pool.lentAmount
-        .minus(event.params.amount);
+    // pool.lentAmount = pool.lentAmount
+    //     .minus(event.params.amount);
 
     pool.save();
 }
@@ -153,12 +154,12 @@ export function handleCollateralCalled(
         event.params.lenderAddress.toHexString();
 
     let lendingDetail = LendingDetails.load(lendingDetailId);
-    lendingDetail.collateralCalled = true;
+    // lendingDetail.collateralCalled = true;
     lendingDetail.save();
 
     let pool = Pool.load(poolAddress);
-    pool.collateralCalls = pool.collateralCalls
-        .plus(lendingDetail.amountSupplied);
+    // pool.collateralCalls = pool.collateralCalls
+    //     .plus(lendingDetail.amountSupplied);
 
     pool.save();
 }
@@ -169,8 +170,8 @@ export function handleAmountBorrowed(
     let poolAddress = event.transaction.to.toHexString();
 
     let pool = Pool.load(poolAddress);
-    pool.borrowedAmount = pool.borrowedAmount
-        .plus(event.params.amount);
+    // pool.borrowedAmount = pool.borrowedAmount
+    //     .plus(event.params.amount);
 
     pool.save();
 }

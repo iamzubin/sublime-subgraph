@@ -8,7 +8,6 @@ import {
     CreditLineRequestedToBorrower,
     CreditLineRequestedToLender,
     CreditLineReset,
-    OwnershipTransferred,
     PartialCreditLineRepaid ,
     CreditLine as creditLineContract
 } from '../../generated/CreditLine/CreditLine';
@@ -30,13 +29,13 @@ export function handleCreditLineRequestedToLender(
   
     if (creditLine == null) {
         creditLine = new CreditLines(creditLineHash);
-        creditLine.CreditLineHash = creditLineHash;
+        creditLine.CreditLineHash = event.params.creditLineHash;
         creditLine.BorrowLimit = BIGINT_ZERO;
         creditLine.liquidationThreshold = BIGINT_ZERO;
         creditLine.borrowRate = BIGINT_ZERO;
         creditLine.AutoLiquidation = BIGINT_ZERO;
         creditLine.idealCollateralRatio = BIGINT_ZERO;
-        creditLine.BorrowAsset=  BIGINT_ZERO.toHexString();
+        creditLine.BorrowAsset=  event.params.creditLineHash;
         creditLine.creditLineStatus = getCreditLineStatus(0);
         creditLine.principal = BIGINT_ZERO;
         creditLine.totalInterestRepaid = BIGINT_ZERO;
@@ -72,13 +71,13 @@ export function handleCreditLineRequestedToBorrower(
   
     if (creditLine == null) {
         creditLine = new CreditLines(creditLineHash);
-        creditLine.CreditLineHash = creditLineHash;
+        creditLine.CreditLineHash = event.params.creditLineHash;
         creditLine.BorrowLimit = BIGINT_ZERO;
         creditLine.liquidationThreshold = BIGINT_ZERO;
         creditLine.borrowRate = BIGINT_ZERO;
         creditLine.AutoLiquidation = BIGINT_ZERO;
         creditLine.idealCollateralRatio = BIGINT_ZERO;
-        creditLine.BorrowAsset=  BIGINT_ZERO.toHexString();
+        creditLine.BorrowAsset=  event.params.creditLineHash;
         creditLine.creditLineStatus = getCreditLineStatus(0);
         creditLine.principal = BIGINT_ZERO;
         creditLine.totalInterestRepaid = BIGINT_ZERO;
@@ -99,7 +98,7 @@ export function handleCreditLineClosed(
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
         creditLine.creditLineStatus = getCreditLineStatus(2);
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage( event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
@@ -117,7 +116,7 @@ export function handleBorrowedFromCreditLine(
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
         creditLine.creditLineStatus = getCreditLineStatus(2);
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
@@ -134,7 +133,7 @@ export function handlePartialCreditLineRepaid(
     let creditLineHash = event.params.creditLineHash.toHexString();
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
@@ -151,7 +150,7 @@ export function handleCreditLineReset(
     let creditLineHash = event.params.creditLineHash.toHexString();
     let creditLine = CreditLines.load(creditLineHash)
     if (creditLine != null) {
-        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(creditLineHash);
+        let CreditLineUsageVars = creditLinesContract.try_creditLineUsage(event.params.creditLineHash);
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2

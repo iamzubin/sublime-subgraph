@@ -82,8 +82,6 @@ dataSources:
           handler: handleCreditLineRequestedToLender
         - event: CreditLineReset(bytes32)
           handler: handleCreditLineReset
-        - event: OwnershipTransferred(address,address)
-          handler: handleOwnershipTransferred
         - event: PartialCreditLineRepaid(bytes32,uint256)
           handler: handlePartialCreditLineRepaid
 templates:

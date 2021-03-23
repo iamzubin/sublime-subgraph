@@ -56,10 +56,10 @@ type Pool @entity {
   loanDuration: BigInt
   collateralRatio: BigInt!
   loanStatus: LoanStatus!
-  collateralShare:BigInt!
+  # collateralShare:BigInt!
   # lentAmount: BigInt!
   # borrowedAmount: BigInt!
-  # colleteralAmount: BigInt!
+  # collateralAmount: BigInt!
   amountRepaid: BigInt!
   loanStartTime: BigInt!
   nextRepayTime: BigInt
@@ -79,8 +79,8 @@ type Pool @entity {
 type poolLiquidation @entity{
   id:ID!
   pool: Pool!
-  lender: bytes
-  liquidator:bytes!
+  lender: Bytes
+  liquidator:Bytes!
   liquidatedAmount: BigInt!
   timeStamp:BigInt!
   suppliedAmount: BigInt!
@@ -108,11 +108,11 @@ type TwitterDetails @entity {
 type SavingAccount @entity {
   id: ID!
   user: User!
-  deposits: [SavingsAccountInfo!]! @derivedFrom(field: "savingAccount")
-  allowances: [SavingsAccountInfo!]! @derivedFrom(field: "savingAccount")
+  deposits: [SavingsDeposit!]! @derivedFrom(field: "savingAccount")
+  allowances: [SavingsDeposit!]! @derivedFrom(field: "savingAccount")
 }
 
-type SavingsAccountInfo @entity {
+type SavingsDeposit @entity {
   id: ID!
   asset: Bytes!
   amount: BigInt!
@@ -138,7 +138,7 @@ type CreditLineCollateralInfo @entity {
 
 type CreditLines @entity{
   id: ID!
-  CreditLineHash: bytes!
+  CreditLineHash: Bytes!
   lender: Bytes!
   BorrowLimit:BigInt!
   liquidationThreshold:BigInt
@@ -156,14 +156,14 @@ type CreditLines @entity{
   collateralAmount:BigInt!
   autoLiquidation:Boolean!
   requestByLender:Boolean!
-  collateralShareInStrategy: [CreditLineCollateralInfo!]! @derivedFrom(field: "CreditLines")
+  collateralShareInStrategy: [CreditLineCollateralInfo!]! @derivedFrom(field: "creditLines")
 }
 
 type creditLineLiquidation @entity{
   id:ID!
   creditLine: CreditLines!
-  Borrower: bytes!
-  liquidator:bytes!
+  Borrower: Bytes!
+  liquidator:Bytes!
   liquidatedAmount: BigInt!
   suppliedAmount: BigInt!
   timeStamp:BigInt!
