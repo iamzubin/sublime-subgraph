@@ -1,5 +1,5 @@
 type PoolFactory @entity {
   id: ID!
-  pools: [Bytes!]
-  borrowers: [Bytes!]
+  pools: [String!]
+  borrowers: [String!]
 }

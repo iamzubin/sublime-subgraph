@@ -10,8 +10,10 @@ export function handlePoolCreated(
   let poolFactory = PoolFactory.load('0')
   if (poolFactory == null){
     poolFactory = new PoolFactory('0');
+    poolFactory.pools = [];
+    poolFactory.borrowers = []
   }
-  poolFactory.pools.push(event.params.pool);
-  poolFactory.borrowers.push(event.params.borrower);
+  poolFactory.pools.push(event.params.pool.toHexString());
+  poolFactory.borrowers.push(event.params.borrower.toHexString());
   poolFactory.save()
 }
