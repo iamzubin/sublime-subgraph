@@ -1,27 +1,26 @@
 specVersion: 0.0.2
-description: Gravatar for Ethereum
-repository: https://github.com/graphprotocol/example-subgraph
+description: Sublime Finance Subgraph
+repository: https://github.com/sublime-finance/sublime-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Gravity
-    network: mainnet
+    name: PoolFactory
+    network: kovan
     source:
-      address: '0x2E645469f354BB4F5c8a05B3b30A929361cf77eC'
-      abi: Gravity
+      address: "0xa4Eca2Eae5A6A90fb32868E050986Ea3B900c95d"
+      abi: PoolFactory
+      startBlock: 23949500
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      entities:
-        - Gravatar
-      abis:
-        - name: Gravity
-          file: ./abis/Gravity.json
-      eventHandlers:
-        - event: NewGravatar(uint256,address,string,string)
-          handler: handleNewGravatar
-        - event: UpdatedGravatar(uint256,address,string,string)
-          handler: handleUpdatedGravatar
       file: ./src/mapping.ts
+      entities:
+        - PoolFactory
+      abis:
+        - name: PoolFactory
+          file: ./abis/PoolFactory.json
+      eventHandlers:
+        - event: PoolCreated(address,address)
+          handler: handlePoolCreated

@@ -1,0 +1,980 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "borrowToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "BorrowTokenUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "collateralToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "CollateralTokenUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "updatedCollateralVolatilityThreshold",
+                "type": "uint256"
+            }
+        ],
+        "name": "CollateralVolatilityThresholdUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "updatedCollectionPeriod",
+                "type": "uint256"
+            }
+        ],
+        "name": "CollectionPeriodUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "updatedGracePeriodPenaltyFraction",
+                "type": "uint256"
+            }
+        ],
+        "name": "GracePeriodPenaltyFractionUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes4",
+                "name": "updatedFunctionId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "InitializeFunctionUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "limitType",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "max",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "min",
+                "type": "uint256"
+            }
+        ],
+        "name": "LimitsUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "updatedLiquidatorRewardFraction",
+                "type": "uint256"
+            }
+        ],
+        "name": "LiquidatorRewardFractionUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "updatedMarginCallDuration",
+                "type": "uint256"
+            }
+        ],
+        "name": "MarginCallDurationUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "updatedMatchCollateralRatioInterval",
+                "type": "uint256"
+            }
+        ],
+        "name": "MatchCollateralRatioIntervalUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "borrower",
+                "type": "address"
+            }
+        ],
+        "name": "PoolCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "updatedPoolLogic",
+                "type": "address"
+            }
+        ],
+        "name": "PoolLogicUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "updatedPriceOracle",
+                "type": "address"
+            }
+        ],
+        "name": "PriceOracleUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "updatedRepaymentImpl",
+                "type": "address"
+            }
+        ],
+        "name": "RepaymentImplUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "updatedStrategyRegistry",
+                "type": "address"
+            }
+        ],
+        "name": "StrategyRegistryUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "updatedBorrowerRegistry",
+                "type": "address"
+            }
+        ],
+        "name": "UserRegistryUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "MINTER_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PAUSER_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collateralVolatilityThreshold",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collectionPeriod",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "extension",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gracePeriodFraction",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gracePeriodPenaltyFraction",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "initializeFunctionId",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "liquidatorRewardFraction",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "marginCallDuration",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "matchCollateralRatioInterval",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "openBorrowPoolRegistry",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "poolImpl",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceOracle",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "repaymentImpl",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "savingsAccount",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "strategyRegistry",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "userRegistry",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "votingPassRatio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_poolImpl",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_userRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_strategyRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_admin",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_collectionPeriod",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_matchCollateralRatioInterval",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_marginCallDuration",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_collateralVolatilityThreshold",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_gracePeriodPenaltyFraction",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes4",
+                "name": "_initializeFunctionId",
+                "type": "bytes4"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_liquidatorRewardFraction",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_repaymentImpl",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_priceOracle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_savingsAccount",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_extension",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_poolSize",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minBorrowAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_borrowTokenType",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_collateralTokenType",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_collateralRatio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_borrowRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_repaymentInterval",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_noOfRepaymentIntervals",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_investedTo",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_collateralAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_transferFromSavingsAccount",
+                "type": "bool"
+            }
+        ],
+        "name": "createPool",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "destroyPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_borrowToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "updateSupportedBorrowTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_collateralToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isSupported",
+                "type": "bool"
+            }
+        ],
+        "name": "updateSupportedCollateralTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "_functionId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "updateInitializeFunctionId",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_poolLogic",
+                "type": "address"
+            }
+        ],
+        "name": "updatePoolLogic",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_userRegistry",
+                "type": "address"
+            }
+        ],
+        "name": "updateUserRegistry",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_strategyRegistry",
+                "type": "address"
+            }
+        ],
+        "name": "updateStrategyRegistry",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_repaymentImpl",
+                "type": "address"
+            }
+        ],
+        "name": "updateRepaymentImpl",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_priceOracle",
+                "type": "address"
+            }
+        ],
+        "name": "updatePriceoracle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_collectionPeriod",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateCollectionPeriod",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_matchCollateralRatioInterval",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateMatchCollateralRatioInterval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_marginCallDuration",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateMarginCallDuration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_collateralVolatilityThreshold",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateCollateralVolatilityThreshold",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_gracePeriodPenaltyFraction",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateGracePeriodPenaltyFraction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_liquidatorRewardFraction",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateLiquidatorRewardFraction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_max",
+                "type": "uint256"
+            }
+        ],
+        "name": "updatePoolSizeLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_max",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateCollateralRatioLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_max",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateBorrowRateLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_max",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateRepaymentIntervalLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_min",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_max",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateNoOfRepaymentIntervalsLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

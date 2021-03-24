@@ -1,22 +1,17 @@
-import { NewGravatar, UpdatedGravatar } from '../generated/Gravity/Gravity'
-import { Gravatar } from '../generated/schema'
+import { PoolFactory } from '../generated/schema';
+import {
+  PoolCreated,
+} from '../generated/PoolFactory/PoolFactory';
 
-export function handleNewGravatar(event: NewGravatar): void {
-  let gravatar = new Gravatar(event.params.id.toHex())
-  gravatar.owner = event.params.owner
-  gravatar.displayName = event.params.displayName
-  gravatar.imageUrl = event.params.imageUrl
-  gravatar.save()
-}
-
-export function handleUpdatedGravatar(event: UpdatedGravatar): void {
-  let id = event.params.id.toHex()
-  let gravatar = Gravatar.load(id)
-  if (gravatar == null) {
-    gravatar = new Gravatar(id)
+export function handlePoolCreated(
+  event: PoolCreated
+): void {
+  
+  let poolFactory = PoolFactory.load('0')
+  if (poolFactory == null){
+    poolFactory = new PoolFactory('0');
   }
-  gravatar.owner = event.params.owner
-  gravatar.displayName = event.params.displayName
-  gravatar.imageUrl = event.params.imageUrl
-  gravatar.save()
+  poolFactory.pools.push(event.params.pool);
+  poolFactory.borrowers.push(event.params.borrower);
+  poolFactory.save()
 }

@@ -1,6 +1,5 @@
-type Gravatar @entity {
+type PoolFactory @entity {
   id: ID!
-  owner: Bytes!
-  displayName: String!
-  imageUrl: String!
+  pools: [Bytes!]
+  borrowers: [Bytes!]
 }
