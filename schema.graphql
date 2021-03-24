@@ -3,3 +3,8 @@ type PoolFactory @entity {
   pools: [String!]
   borrowers: [String!]
 }
+
+type pool @entity {
+  id: ID!
+  borrower: String!
+}

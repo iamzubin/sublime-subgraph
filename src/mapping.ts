@@ -13,7 +13,11 @@ export function handlePoolCreated(
     poolFactory.pools = [];
     poolFactory.borrowers = []
   }
-  poolFactory.pools.push(event.params.pool.toHexString());
-  poolFactory.borrowers.push(event.params.borrower.toHexString());
+  let pools = poolFactory.pools
+  pools.push(event.params.pool.toHexString());
+  poolFactory.pools = pools
+  let borrowers = poolFactory.borrowers
+  borrowers.push(event.params.borrower.toHexString());
+  poolFactory.borrowers = borrowers
   poolFactory.save()
 }
