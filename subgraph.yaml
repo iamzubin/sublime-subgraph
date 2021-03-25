@@ -19,6 +19,7 @@ dataSources:
       entities:
         - Pool
         - User
+        - GlobalPoolDetails
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
@@ -27,6 +28,8 @@ dataSources:
       eventHandlers:
         - event: PoolCreated(address,address)
           handler: handlePoolCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
 
 templates:
   - kind: ethereum/contract
@@ -38,9 +41,37 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mappings/pool.ts
       entities:
         - Pool
+        - User
+        - poolLiquidation
+        - LendingDetails
       abis:
         - name: Pool
           file: ./abis/Pool.json
+      eventHandlers:
+        - event: OpenBorrowPoolClosed()
+          handler: handleOpenBorrowPoolClosed
+        - event: OpenBorrowPoolTerminated()
+          handler: handleOpenBorrowPoolTerminated
+        - event: OpenBorrowPoolCancelled()
+          handler: handleOpenBorrowPoolCancelled
+        - event: OpenBorrowPoolDefaulted()
+          handler: handleOpenBorrowPoolDefaulted
+        - event: CollateralWithdrawn(address,uint256)
+          handler: handleCollateralWithdrawn
+        - event: LiquiditySupplied(uint256,address)
+          handler: handleLiquiditySupplied
+        - event: AmountBorrowed(address,uint256)
+          handler: handleAmountBorrowed
+        - event: LiquidityWithdrawn(uint256,address)
+          handler: handleLiquidityWithdrawn
+        - event: CollateralCalled(address)
+          handler: handleCollateralCalled
+        - event: MarginCallCollateralAdded(address,address,uint256,uint256)
+          handler: handleLenderVoted
+        - event: CollateralAdded(address,uint256,uint256)
+          handler: handleCollateralAdded
+        - event: LoanDefaulted()
+          handler: handleLoanDefaulted

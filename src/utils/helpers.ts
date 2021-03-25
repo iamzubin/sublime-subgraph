@@ -56,8 +56,6 @@ export function createUser(
 
     if (user == null) {
         user = new User(userId);
-        user.address = userAddress;
-        user.savingAccount = userId;
         user.status = STATUS_UNVERIFIED;
     }
 

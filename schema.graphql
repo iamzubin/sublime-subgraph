@@ -12,17 +12,17 @@ enum LoanStatus {
   TERMINATED
 }
 
-type GlobalPoolDetails @entity{
-
+type GlobalPoolDetail @entity{
   id:ID!
-  collectionPeriod:BigInt!
-  matchCollateralRatioInterval:BigInt!
-  marginCallDuration:BigInt!
-  collateralVolatilityThreshold:BigInt!
-  gracePeriodPenaltyFraction:BigInt!
-  liquidatorRewardFraction:BigInt!
-  votingPassRatio:BigInt!
-  gracePeriodFraction:BigInt!
+  admin: String!
+  collectionPeriod:BigInt
+  matchCollateralRatioInterval:BigInt
+  marginCallDuration:BigInt
+  collateralVolatilityThreshold:BigInt
+  gracePeriodPenaltyFraction:BigInt
+  liquidatorRewardFraction:BigInt
+  votingPassRatio:BigInt
+  gracePeriodFraction:BigInt
 
 }
 
@@ -33,7 +33,7 @@ type LendingDetails @entity {
   # amountSupplied: BigInt
   amountWithdrawn: BigInt
   repaymentWithdrawn: BigInt
-  # collateralCalled: Boolean
+  collateralCalled: Boolean
   lastVoteTime:BigInt
   marginCallEndTime:BigInt
   exraLiquidityShares:BigInt
@@ -43,7 +43,6 @@ type LendingDetails @entity {
 
 type Pool @entity {
   id: ID!
-  poolId: Bytes
   borrower: User
   borrowAsset: Bytes
   borrowAmountRequested:BigInt
@@ -73,8 +72,8 @@ type Pool @entity {
   nextDuePeriod:BigInt
   repayExtensionEndTime: BigInt
   lenders: [LendingDetails!] @derivedFrom(field: "pool")
-  # liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
-  # poolLiquidated: poolLiquidation 
+  liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
+  poolLiquidated: poolLiquidation 
 }
 
 type poolLiquidation @entity{
@@ -89,10 +88,16 @@ type poolLiquidation @entity{
 
 type User @entity {
   id: ID!
-  address: Bytes!
   borrowingPools: [Pool!] @derivedFrom(field: "borrower")
   lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
-  savingAccount: SavingAccount
   status: Status!
   twitterDetails: TwitterDetails
+}
+
+type TwitterDetails @entity {
+  id: ID!
+  twitterId: Bytes!
+  twitterSignMessage: String!
+  registarationTime: BigInt!  
+  linkedAddresses: [Bytes!]!
 }
