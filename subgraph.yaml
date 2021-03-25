@@ -17,10 +17,28 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mapping.ts
       entities:
-        - PoolFactory
+        - Pool
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
+        - name: Pool
+          file: ./abis/Pool.json
       eventHandlers:
         - event: PoolCreated(address,address)
           handler: handlePoolCreated
+templates:
+  - kind: ethereum/contract
+    name: Pool
+    network: kovan
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Pool
+      abis:
+        - name: Pool
+          file: ./abis/Pool.json

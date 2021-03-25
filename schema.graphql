@@ -1,10 +1,4 @@
-type PoolFactory @entity {
-  id: ID!
-  pools: [String!]
-  borrowers: [String!]
-}
-
-type pool @entity {
+type Pool @entity {
   id: ID!
   borrower: String!
 }
