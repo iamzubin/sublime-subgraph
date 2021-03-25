@@ -1,4 +1,10 @@
 type Pool @entity {
   id: ID!
-  borrower: String!
+  borrower: User!
+  details: BigInt
+}
+
+type User @entity {
+  id: ID!
+  borrowingPools: [Pool!] @derivedFrom(field: "borrower")
 }

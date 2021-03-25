@@ -18,6 +18,7 @@ dataSources:
       file: ./src/mapping.ts
       entities:
         - Pool
+        - User
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
