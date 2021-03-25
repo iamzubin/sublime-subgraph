@@ -1,3 +1,10 @@
+enum Status {
+  VERIFIED
+  UNVERIFIED
+}
+
+
+
 type Pool @entity {
   id: ID!
   borrower: User!

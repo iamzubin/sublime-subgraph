@@ -27,6 +27,34 @@ dataSources:
       eventHandlers:
         - event: PoolCreated(address,address)
           handler: handlePoolCreated
+
+
+  - kind: ethereum/contract
+    name: SavingsAccount
+    network: kovan
+    source:
+      address: "0xBbD4558d69df4F0F411AeF2353aB622107C946Fa"
+      abi: SavingsAccount
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/savingsAccount.ts
+      entities:
+        - SavingAccount
+      abis:
+        - name: SavingsAccount
+          file: ./abis/SavingsAccount.json
+      eventHandlers:
+        - event: Deposited(address,uint256,address,address)
+          handler: handleDeposited
+        - event: StrategySwitched(address,address,address,address)
+          handler: handleStrategySwitched
+        - event: Withdrawn(address,address,uint256,address,address)
+          handler: handleWithdrawn
+        - event: WithdrawnAll(address,uint256,address)
+          handler: handleWithdrawnAll
 templates:
   - kind: ethereum/contract
     name: Pool
