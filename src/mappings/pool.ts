@@ -57,18 +57,18 @@ export function handleOpneBorrowPoolCanceled(
     pool.save();
 }
 
-export function handleCollateralAdded(
-    event: CollateralAdded
-): void {
-    // let pool = Pool.load(
-    //     event.transaction.to.toHexString()
-    // );
+// export function handleCollateralAdded(
+//     event: CollateralAdded
+// ): void {
+//     // let pool = Pool.load(
+//     //     event.transaction.to.toHexString()
+//     // );
 
-    // // pool.collateralAmount = pool.collateralAmount
-    // //     .plus(event.params.amount);
+//     // // pool.collateralAmount = pool.collateralAmount
+//     // //     .plus(event.params.amount);
 
-    // pool.save();
-}
+//     // pool.save();
+// }
 
 export function handleCollateralWithdrawn(
     event: CollateralWithdrawn
