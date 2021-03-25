@@ -64,8 +64,8 @@ export function handleCollateralAdded(
     //     event.transaction.to.toHexString()
     // );
 
-    // pool.collateralAmount = pool.collateralAmount
-    //     .plus(event.params.amount);
+    // // pool.collateralAmount = pool.collateralAmount
+    // //     .plus(event.params.amount);
 
     // pool.save();
 }

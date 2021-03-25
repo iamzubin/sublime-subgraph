@@ -1,8 +1,8 @@
 import {
-  DataSourceContext,
+  DataSourceContext,Bytes,Address
 } from "@graphprotocol/graph-ts";
 import { Pool } from '../generated/schema';
-import { BIGINT_ZERO } from "./utils/constants";
+import { BIGINT_ZERO, ZERO_ADDRESS } from "./utils/constants";
 import {
   getLoanStatus,
   createUser,
@@ -48,7 +48,8 @@ export function handlePoolCreated(
     poolConstants = resultConstants.value;
   }
 
-  pool.borrowAsset = poolConstants.value5;
+  // pool.borrowAsset = poolConstants.value5;
+  pool.borrowAsset = Address.fromString(ZERO_ADDRESS);
   // pool.collateralAsset = poolConstants.value10;
   // pool.borrowRate = poolConstants.value7;
   // pool.collateralRatio = poolConstants.value6;
@@ -62,22 +63,24 @@ export function handlePoolCreated(
   // pool.borrowedAmount = BIGINT_ZERO;
   pool.amountRepaid = BIGINT_ZERO;
   // pool.collateralCalls = BIGINT_ZERO;
-  pool.borrowAmountRequested = BIGINT_ZERO 
-  pool.minborrowAmountFraction = BIGINT_ZERO
-  pool.matchCollateralRatioEndTime = BIGINT_ZERO
-  pool.noOfRepaymentIntervals = BIGINT_ZERO
-  pool.investedTo = event.params.pool
-  pool.collateralAsset =  event.params.pool
-  pool.lendingRate = BIGINT_ZERO
-  pool.borrowRate = BIGINT_ZERO
-  pool.loanDuration = BIGINT_ZERO
-  pool.collateralRatio = BIGINT_ZERO
-  pool.nextRepayTime = poolVars.value4;
-  pool.loanStatus = getLoanStatus(poolVars.value2);
-  pool.baseLiquidityShares = BIGINT_ZERO
-  pool.extraLiquidityShares = BIGINT_ZERO
-  pool.noOfGracePeriodsTaken = BIGINT_ZERO
-  pool.nextDuePeriod = BIGINT_ZERO
+  pool.borrowAmountRequested = BIGINT_ZERO; 
+  pool.minborrowAmountFraction = BIGINT_ZERO;
+  pool.matchCollateralRatioEndTime = BIGINT_ZERO;
+  pool.noOfRepaymentIntervals = BIGINT_ZERO;
+  pool.investedTo = event.params.pool;
+  pool.collateralAsset =  event.params.pool;
+  pool.lendingRate = BIGINT_ZERO;
+  pool.borrowRate = BIGINT_ZERO;
+  pool.loanDuration = BIGINT_ZERO;
+  pool.collateralRatio = BIGINT_ZERO;
+  // pool.nextRepayTime = poolVars.value4;
+  pool.nextRepayTime = BIGINT_ZERO;
+  // pool.loanStatus = getLoanStatus(poolVars.value2);
+  pool.loanStatus = getLoanStatus(0);
+  pool.baseLiquidityShares = BIGINT_ZERO;
+  pool.extraLiquidityShares = BIGINT_ZERO;
+  pool.noOfGracePeriodsTaken = BIGINT_ZERO;
+  pool.nextDuePeriod = BIGINT_ZERO;
   // pool.collateralAmount = poolVars.value1;
 
   pool.save();
