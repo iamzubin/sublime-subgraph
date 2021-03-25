@@ -1,4 +1,48 @@
+enum Status {
+  VERIFIED
+  UNVERIFIED
+}
+
+
+
 type Pool @entity {
   id: ID!
   borrower: String!
 }
+
+
+
+type User @entity {
+  id: ID!
+  address: Bytes!
+  # borrowingPools: [Pool!] @derivedFrom(field: "borrower")
+  # lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
+  savingAccount: SavingAccount
+  status: Status!
+  twitterDetails: TwitterDetails
+}
+
+type TwitterDetails @entity {
+  id: ID!
+  twitterId: Bytes!
+  twitterSignMessage: String!
+  registarationTime: BigInt!  
+  linkedAddresses: [Bytes!]!
+}
+
+type SavingAccount @entity {
+  id: ID!
+  user: User
+  deposits: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
+  allowances: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
+}
+
+type SavingsDeposit @entity {
+  id: ID!
+  asset: Bytes
+  amount: BigInt
+  strategy: Bytes
+  savingAccount: SavingAccount
+  liquidityShare: BigInt
+}
+
