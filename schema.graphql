@@ -3,46 +3,97 @@ enum Status {
   UNVERIFIED
 }
 
+enum LoanStatus {
+  INACTIVE
+  ACTIVE
+  CLOSED
+  CANCELLED
+  DEFAULTED
+  TERMINATED
+}
+
+type GlobalPoolDetails @entity{
+
+  id:ID!
+  collectionPeriod:BigInt!
+  matchCollateralRatioInterval:BigInt!
+  marginCallDuration:BigInt!
+  collateralVolatilityThreshold:BigInt!
+  gracePeriodPenaltyFraction:BigInt!
+  liquidatorRewardFraction:BigInt!
+  votingPassRatio:BigInt!
+  gracePeriodFraction:BigInt!
+
+}
+
+type LendingDetails @entity {
+  id: ID!
+  pool: Pool
+  lender: User
+  # amountSupplied: BigInt
+  amountWithdrawn: BigInt
+  repaymentWithdrawn: BigInt
+  # collateralCalled: Boolean
+  lastVoteTime:BigInt
+  marginCallEndTime:BigInt
+  exraLiquidityShares:BigInt
+  Balance:BigInt
+}
 
 
 type Pool @entity {
   id: ID!
-  borrower: String!
+  poolId: Bytes
+  borrower: User
+  borrowAsset: Bytes
+  borrowAmountRequested:BigInt
+  minborrowAmountFraction:BigInt
+  matchCollateralRatioEndTime:BigInt
+  noOfRepaymentIntervals:BigInt
+  investedTo:Bytes
+  collateralAsset: Bytes
+  lendingRate: BigInt
+  borrowRate: BigInt
+  loanDuration: BigInt
+  collateralRatio: BigInt
+  loanStatus: LoanStatus
+  # collateralShare:BigInt
+  # lentAmount: BigInt
+  # borrowedAmount: BigInt
+  # collateralAmount: BigInt
+  amountRepaid: BigInt
+  loanStartTime: BigInt
+  nextRepayTime: BigInt
+  # collateralCalls: BigInt
+  # whitelistedAddress: [Bytes]
+  # voteWeight: BigInt
+  baseLiquidityShares:BigInt
+  extraLiquidityShares:BigInt
+  noOfGracePeriodsTaken:BigInt
+  nextDuePeriod:BigInt
+  repayExtensionEndTime: BigInt
+  lenders: [LendingDetails!] @derivedFrom(field: "pool")
+  # liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
+  # poolLiquidated: poolLiquidation 
 }
 
-
+type poolLiquidation @entity{
+  id:ID!
+  pool: Pool
+  lender: Bytes
+  liquidator:Bytes
+  liquidatedAmount: BigInt
+  timeStamp:BigInt
+  suppliedAmount: BigInt
+}
 
 type User @entity {
   id: ID!
   address: Bytes!
-  # borrowingPools: [Pool!] @derivedFrom(field: "borrower")
-  # lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
+  borrowingPools: [Pool!] @derivedFrom(field: "borrower")
+  lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
   savingAccount: SavingAccount
   status: Status!
   twitterDetails: TwitterDetails
-}
-
-type TwitterDetails @entity {
-  id: ID!
-  twitterId: Bytes!
-  twitterSignMessage: String!
-  registarationTime: BigInt!  
-  linkedAddresses: [Bytes!]!
-}
-
-type SavingAccount @entity {
-  id: ID!
-  user: User
-  deposits: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
-  allowances: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
-}
-
-type SavingsDeposit @entity {
-  id: ID!
-  asset: Bytes
-  amount: BigInt
-  strategy: Bytes
-  savingAccount: SavingAccount
-  liquidityShare: BigInt
 }
 
