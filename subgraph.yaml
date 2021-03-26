@@ -31,6 +31,68 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
 
+
+  - kind: ethereum/contract
+    name: SavingsAccount
+    network: kovan
+    source:
+      address: "0xBbD4558d69df4F0F411AeF2353aB622107C946Fa"
+      abi: SavingsAccount
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/savingsAccount.ts
+      entities:
+        - SavingAccount
+      abis:
+        - name: SavingsAccount
+          file: ./abis/SavingsAccount.json
+      eventHandlers:
+        - event: Deposited(address,uint256,address,address)
+          handler: handleDeposited
+        - event: StrategySwitched(address,address,address,address)
+          handler: handleStrategySwitched
+        - event: Withdrawn(address,address,uint256,address,address)
+          handler: handleWithdrawn
+        - event: WithdrawnAll(address,uint256,address)
+          handler: handleWithdrawnAll
+
+
+  - kind: ethereum/contract
+    name: CreditLine
+    network: kovan
+    source:
+      address: "0xa454683Aed13A3D117408c61477b40677E227C6e"
+      abi: CreditLine
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/creditLine.ts
+      entities:
+        - CreditLines
+      abis:
+        - name: CreditLine
+          file: ./abis/CreditLine.json
+      eventHandlers:
+        - event: BorrowedFromCreditLine(uint256,bytes32)
+          handler: handleBorrowedFromCreditLine
+        - event: CreditLineAccepted(bytes32)
+          handler: handleCreditLineAccepted
+        - event: CreditLineClosed(bytes32)
+          handler: handleCreditLineClosed
+        - event: CreditLineRequestedToBorrower(bytes32,address,address)
+          handler: handleCreditLineRequestedToBorrower
+        - event: CreditLineRequestedToLender(bytes32,address,address)
+          handler: handleCreditLineRequestedToLender
+        - event: CreditLineReset(bytes32)
+          handler: handleCreditLineReset
+        - event: PartialCreditLineRepaid(bytes32,uint256)
+          handler: handlePartialCreditLineRepaid
+
 templates:
   - kind: ethereum/contract
     name: Pool

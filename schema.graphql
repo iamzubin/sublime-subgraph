@@ -101,3 +101,69 @@ type TwitterDetails @entity {
   registarationTime: BigInt!  
   linkedAddresses: [Bytes!]!
 }
+
+type SavingAccount @entity {
+  id: ID!
+  user: User
+  deposits: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
+  allowances: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
+}
+
+type SavingsDeposit @entity {
+  id: ID!
+  asset: Bytes
+  amount: BigInt
+  strategy: Bytes
+  savingAccount: SavingAccount
+  liquidityShare: BigInt
+}
+
+
+enum CreditLineStatus {
+
+ REQUESTED
+ ACTIVE
+ CLOSED
+ CANCELLED
+}
+
+type CreditLineCollateralInfo @entity {
+  id: ID!
+  amount: BigInt
+  strategy: Bytes
+  creditLines: CreditLines
+}
+
+type CreditLines @entity{
+  id: ID!
+  CreditLineHash: Bytes
+  lender: Bytes
+  BorrowLimit:BigInt
+  liquidationThreshold:BigInt
+  borrowRate:BigInt
+  idealCollateralRatio: BigInt
+  BorrowAsset: Bytes
+  Borrower: Bytes
+  collateralAsset:Bytes
+  creditLineStatus:CreditLineStatus
+  liquidatedCreditLine: creditLineLiquidation
+  principal:BigInt
+  totalInterestRepaid:BigInt
+  lastPrincipalUpdateTime:BigInt
+  interestAccruedTillPrincipalUpdate:BigInt
+  collateralAmount:BigInt
+  autoLiquidation:Boolean
+  requestByLender:Boolean
+  collateralShareInStrategy: [CreditLineCollateralInfo!] @derivedFrom(field: "creditLines")
+}
+
+type creditLineLiquidation @entity{
+  id:ID!
+  creditLine: CreditLines
+  Borrower: Bytes
+  liquidator:Bytes
+  liquidatedAmount: BigInt
+  suppliedAmount: BigInt
+  timeStamp:BigInt
+}
+
