@@ -73,7 +73,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mappings/creditLine.ts
       entities:
-        - CreditLines
+        - CreditLine
       abis:
         - name: CreditLine
           file: ./abis/CreditLine.json

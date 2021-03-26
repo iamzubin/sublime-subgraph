@@ -131,10 +131,10 @@ type CreditLineCollateralInfo @entity {
   id: ID!
   amount: BigInt
   strategy: Bytes
-  creditLines: CreditLines
+  creditLines: CreditLine
 }
 
-type CreditLines @entity{
+type CreditLine @entity{
   id: ID!
   CreditLineHash: Bytes
   lender: Bytes
@@ -159,7 +159,7 @@ type CreditLines @entity{
 
 type creditLineLiquidation @entity{
   id:ID!
-  creditLine: CreditLines
+  creditLine: CreditLine
   Borrower: Bytes
   liquidator:Bytes
   liquidatedAmount: BigInt
