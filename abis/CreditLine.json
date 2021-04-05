@@ -1,0 +1,762 @@
+[
+    {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "borrowAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "BorrowedFromCreditLine",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "CreditLineAccepted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "CreditLineClosed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "lender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "borrower",
+        "type": "address"
+      }
+    ],
+    "name": "CreditLineRequestedToBorrower",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "lender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "borrower",
+        "type": "address"
+      }
+    ],
+    "name": "CreditLineRequestedToLender",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "CreditLineReset",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "repayAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PartialCreditLineRepaid",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "PoolFactory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "creditLineInfo",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "exists",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "lender",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "borrower",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "borrowLimit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "idealCollateralRatio",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "liquidationThreshold",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "borrowRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "borrowAsset",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "collateralAsset",
+        "type": "address"
+      },
+      {
+        "internalType": "enum CreditLineStorage.creditLineStatus",
+        "name": "currentStatus",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bool",
+        "name": "autoLiquidation",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "requestByLender",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "creditLineUsage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "principal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalInterestRepaid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastPrincipalUpdateTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "interestAccruedTillPrincipalUpdate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateralAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "defaultStrategy",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "strategyRegistry",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "yearInSeconds",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_defaultStrategy",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_principal",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_borrowRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "calculateInterestPerSecond",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "calculateInterestAccrued",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "calculateCurrentDebt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_sender",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_asset",
+        "type": "address"
+      }
+    ],
+    "name": "getTotalTokensInStrategies",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_borrowLimit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_liquidationThreshold",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_borrowRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_autoLiquidation",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateralRatio",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_borrowAsset",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_collateralAsset",
+        "type": "address"
+      }
+    ],
+    "name": "requestCreditLineToLender",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_borrower",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_borrowLimit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_liquidationThreshold",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_borrowRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_autoLiquidation",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateralRatio",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_borrowAsset",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_collateralAsset",
+        "type": "address"
+      }
+    ],
+    "name": "requestCreditLineToBorrower",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "acceptCreditLineLender",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "acceptCreditLineBorrower",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_collateralAsset",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateralAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "_transferCollateralFromSavingAccount",
+        "type": "bool"
+      }
+    ],
+    "name": "_depositCollateral",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "borrowAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "borrowFromCreditLine",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "_transferFromSavingAccount",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_repayAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "repay",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "repayAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_transferFromSavingAccount",
+        "type": "bool"
+      }
+    ],
+    "name": "repayCreditLine",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "closeCreditLine",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "calculateCurrentCollateralRatio",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "calculateTotalCollateralTokens",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawCollateralFromCreditLine",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "creditLineHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "liquidation",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+  ]

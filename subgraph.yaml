@@ -19,6 +19,7 @@ dataSources:
       entities:
         - Pool
         - User
+        - GlobalPoolDetails
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
@@ -27,6 +28,71 @@ dataSources:
       eventHandlers:
         - event: PoolCreated(address,address)
           handler: handlePoolCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+
+
+  - kind: ethereum/contract
+    name: SavingsAccount
+    network: kovan
+    source:
+      address: "0xBbD4558d69df4F0F411AeF2353aB622107C946Fa"
+      abi: SavingsAccount
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/savingsAccount.ts
+      entities:
+        - SavingAccount
+      abis:
+        - name: SavingsAccount
+          file: ./abis/SavingsAccount.json
+      eventHandlers:
+        - event: Deposited(address,uint256,address,address)
+          handler: handleDeposited
+        - event: StrategySwitched(address,address,address,address)
+          handler: handleStrategySwitched
+        - event: Withdrawn(address,address,uint256,address,address)
+          handler: handleWithdrawn
+        - event: WithdrawnAll(address,uint256,address)
+          handler: handleWithdrawnAll
+
+
+  - kind: ethereum/contract
+    name: CreditLine
+    network: kovan
+    source:
+      address: "0xa454683Aed13A3D117408c61477b40677E227C6e"
+      abi: CreditLine
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/creditLine.ts
+      entities:
+        - CreditLine
+      abis:
+        - name: CreditLine
+          file: ./abis/CreditLine.json
+      eventHandlers:
+        - event: BorrowedFromCreditLine(uint256,bytes32)
+          handler: handleBorrowedFromCreditLine
+        - event: CreditLineAccepted(bytes32)
+          handler: handleCreditLineAccepted
+        - event: CreditLineClosed(bytes32)
+          handler: handleCreditLineClosed
+        - event: CreditLineRequestedToBorrower(bytes32,address,address)
+          handler: handleCreditLineRequestedToBorrower
+        - event: CreditLineRequestedToLender(bytes32,address,address)
+          handler: handleCreditLineRequestedToLender
+        - event: CreditLineReset(bytes32)
+          handler: handleCreditLineReset
+        - event: PartialCreditLineRepaid(bytes32,uint256)
+          handler: handlePartialCreditLineRepaid
+
 templates:
   - kind: ethereum/contract
     name: Pool
@@ -37,9 +103,37 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mappings/pool.ts
       entities:
         - Pool
+        - User
+        - poolLiquidation
+        - LendingDetails
       abis:
         - name: Pool
           file: ./abis/Pool.json
+      eventHandlers:
+        - event: OpenBorrowPoolClosed()
+          handler: handleOpenBorrowPoolClosed
+        - event: OpenBorrowPoolTerminated()
+          handler: handleOpenBorrowPoolTerminated
+        - event: OpenBorrowPoolCancelled()
+          handler: handleOpenBorrowPoolCancelled
+        - event: OpenBorrowPoolDefaulted()
+          handler: handleOpenBorrowPoolDefaulted
+        - event: CollateralWithdrawn(address,uint256)
+          handler: handleCollateralWithdrawn
+        - event: LiquiditySupplied(uint256,address)
+          handler: handleLiquiditySupplied
+        - event: AmountBorrowed(address,uint256)
+          handler: handleAmountBorrowed
+        - event: LiquidityWithdrawn(uint256,address)
+          handler: handleLiquidityWithdrawn
+        - event: CollateralCalled(address)
+          handler: handleCollateralCalled
+        - event: MarginCallCollateralAdded(address,address,uint256,uint256)
+          handler: handleLenderVoted
+        - event: CollateralAdded(address,uint256,uint256)
+          handler: handleCollateralAdded
+        - event: LoanDefaulted()
+          handler: handleLoanDefaulted
