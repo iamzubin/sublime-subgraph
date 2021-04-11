@@ -8,7 +8,7 @@ dataSources:
     name: PoolFactory
     network: kovan
     source:
-      address: "0xa4Eca2Eae5A6A90fb32868E050986Ea3B900c95d"
+      address: "0xEE10EBA99C5F55DbbEAFc73b4c65a4DB3F2674B7"
       abi: PoolFactory
       startBlock: 23949500
     mapping:
@@ -26,7 +26,7 @@ dataSources:
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
-        - event: PoolCreated(address,address)
+        - event: PoolCreated(address,address,address)
           handler: handlePoolCreated
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
@@ -36,7 +36,7 @@ dataSources:
     name: SavingsAccount
     network: kovan
     source:
-      address: "0xBbD4558d69df4F0F411AeF2353aB622107C946Fa"
+      address: "0x1C10a2da9B224F9f9db449b6D15639831c81DeA2"
       abi: SavingsAccount
       startBlock: 23949500   
     mapping:
@@ -59,12 +59,38 @@ dataSources:
         - event: WithdrawnAll(address,uint256,address)
           handler: handleWithdrawnAll
 
+  - kind: ethereum/contract
+    name: verification
+    network: kovan
+    source:
+      address: "0xbd55E1e1BaB546f333195B22288B20DaA22992F5"
+      abi: Verification
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/Verification.ts
+      entities:
+        - Verification
+      abis:
+        - name: Verification
+          file: ./abis/Verification.json
+      eventHandlers:
+        - event: UserRegistered(address,bytes32)
+          handler: handleUserRegistered
+        - event: UserDetailsUpdated(address,bytes32)
+          handler: handleUserDetailsUpdated
+        - event: UserUnregistered(address)
+          handler: handleUserUnregistered
+
+
 
   - kind: ethereum/contract
     name: CreditLine
     network: kovan
     source:
-      address: "0xa454683Aed13A3D117408c61477b40677E227C6e"
+      address: "0x3a6405626fE267F42Ed638c79D35310833a1F9a0"
       abi: CreditLine
       startBlock: 23949500   
     mapping:

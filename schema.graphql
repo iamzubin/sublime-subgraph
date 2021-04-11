@@ -4,12 +4,12 @@ enum Status {
 }
 
 enum LoanStatus {
-  INACTIVE
-  ACTIVE
-  CLOSED
-  CANCELLED
-  DEFAULTED
-  TERMINATED
+  Collecting
+  Active
+  Closed
+  Cancelled
+  Defaulted
+  Terminated
 }
 
 type GlobalPoolDetail @entity{
@@ -46,7 +46,7 @@ type Pool @entity {
   borrower: User
   borrowAsset: Bytes
   borrowAmountRequested:BigInt
-  minborrowAmountFraction:BigInt
+  minborrowAmount:BigInt
   matchCollateralRatioEndTime:BigInt
   noOfRepaymentIntervals:BigInt
   investedTo:Bytes
@@ -54,12 +54,15 @@ type Pool @entity {
   lendingRate: BigInt
   borrowRate: BigInt
   loanDuration: BigInt
-  collateralRatio: BigInt
+  idealCollateralRatio: BigInt
   loanStatus: LoanStatus
+  repaymentInterval:BigInt
+  poolSavingsStrategy:Bytes
   # collateralShare:BigInt
   # lentAmount: BigInt
   # borrowedAmount: BigInt
   # collateralAmount: BigInt
+  loanWithdrawalDeadline:BigInt
   amountRepaid: BigInt
   loanStartTime: BigInt
   nextRepayTime: BigInt
@@ -93,7 +96,7 @@ type User @entity {
   status: Status!
   twitterDetails: TwitterDetails
 }
-
+  
 type TwitterDetails @entity {
   id: ID!
   twitterId: Bytes!

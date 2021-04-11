@@ -28,54 +28,73 @@ export function handlePoolCreated(
   let poolContract = PoolContract.bind(
     event.params.pool
   );
-  // let resultVars = poolContract.try_poolVars();
-  // // let resultConstants = poolContract.try_poolConstants();
+  let resultVars = poolContract.try_poolVars();
+  let resultConstants = poolContract.try_poolConstants();
 
-  // let poolVars: Pool__poolVarsResult;
-  // // let poolConstants: Pool__poolConstantsResult;
+  let poolVars: Pool__poolVarsResult;
+  let poolConstants: Pool__poolConstantsResult;
 
-  // if (!resultVars.reverted) {
-  //   poolVars = resultVars.value;
-  // }
-  // if (!resultConstants.reverted) {
-  //   poolConstants = resultConstants.value;
-  // }
-  // let poolVars = resultVars.value;
-  // let poolConstants = resultConstants.value;
-  // pool.borrowAsset = poolConstants.value5;
-  // pool.collateralAsset = poolConstants.value10;
-  // pool.borrowRate = poolConstants.value7;
-  // pool.collateralRatio = poolConstants.value6;
-  // pool.loanStartTime = poolConstants.value3;
+  if (!resultVars.reverted) {
+    poolVars = resultVars.value;
+  }
+  if (!resultConstants.reverted) {
+    poolConstants = resultConstants.value;
+  }
+  poolVars = resultVars.value;
+  poolConstants = resultConstants.value;
+
+
+  // Pool constants set
+  pool.borrower = event.params.borrower.toHexString();
+  pool.borrowAmountRequested = poolConstants.value1;
+  pool.minborrowAmount = poolConstants.value2;
+  //minborrowAmount missing
+  pool.loanStartTime = poolConstants.value3;
+  pool.loanWithdrawalDeadline =  poolConstants.value4;
+  pool.borrowAsset = poolConstants.value5;
+  pool.idealCollateralRatio = poolConstants.value6;
+  pool.borrowRate = poolConstants.value7;
+  pool.noOfRepaymentIntervals = poolConstants.value8
+  pool.repaymentInterval = poolConstants.value9;  
+  pool.collateralAsset = poolConstants.value10;
+  pool.poolSavingsStrategy = poolConstants.value11;
+  
+  
+  // pool variables set
+  pool.baseLiquidityShares = poolVars.value0;
+  pool.extraLiquidityShares = poolVars.value1;
+  pool.loanStatus  = getLoanStatus(poolVars.value2)
+  pool.noOfGracePeriodsTaken = poolVars.value3;
+  pool.nextDuePeriod = poolVars.value4;
+
+  // createUser(event.params.borrower)
+  pool.save()
+
 
   // TODO: Change this
-  pool.lendingRate = BIGINT_ZERO;
-  pool.loanDuration = BIGINT_ZERO;
+  // pool.lendingRate = BIGINT_ZERO;
+  // pool.loanDuration = BIGINT_ZERO;
 
-  // pool.lentAmount = BIGINT_ZERO;
-  // pool.borrowedAmount = BIGINT_ZERO;
-  pool.amountRepaid = BIGINT_ZERO;
-  // pool.collateralCalls = BIGINT_ZERO;
-  pool.borrowAmountRequested = BIGINT_ZERO 
-  pool.minborrowAmountFraction = BIGINT_ZERO
-  pool.matchCollateralRatioEndTime = BIGINT_ZERO
-  pool.noOfRepaymentIntervals = BIGINT_ZERO
-  pool.investedTo = event.params.pool
-  pool.collateralAsset =  event.params.pool
-  pool.lendingRate = BIGINT_ZERO
-  pool.borrowRate = BIGINT_ZERO
-  pool.loanDuration = BIGINT_ZERO
-  pool.collateralRatio = BIGINT_ZERO
-  // pool.nextRepayTime = poolVars.value4;
-  // pool.loanStatus = getLoanStatus(poolVars.value2);
-  pool.baseLiquidityShares = BIGINT_ZERO
-  pool.extraLiquidityShares = BIGINT_ZERO
-  pool.noOfGracePeriodsTaken = BIGINT_ZERO
-  pool.nextDuePeriod = BIGINT_ZERO
-
-  pool.borrower = event.params.borrower.toHexString();
-  createUser(event.params.borrower)
-  pool.save()
+  // // pool.lentAmount = BIGINT_ZERO;
+  // // pool.borrowedAmount = BIGINT_ZERO;
+  // pool.amountRepaid = BIGINT_ZERO;
+  // // pool.collateralCalls = BIGINT_ZERO;
+  // pool.borrowAmountRequested = BIGINT_ZERO 
+  // pool.minborrowAmountFraction = BIGINT_ZERO
+  // pool.matchCollateralRatioEndTime = BIGINT_ZERO
+  
+  // pool.investedTo = event.params.pool
+  // pool.collateralAsset =  event.params.pool
+  // pool.lendingRate = BIGINT_ZERO
+  // pool.borrowRate = BIGINT_ZERO
+  // pool.loanDuration = BIGINT_ZERO
+  // pool.collateralRatio = BIGINT_ZERO
+  // // pool.nextRepayTime = poolVars.value4;
+  // // pool.loanStatus = getLoanStatus(poolVars.value2);
+  // pool.baseLiquidityShares = BIGINT_ZERO
+  // pool.extraLiquidityShares = BIGINT_ZERO
+  // pool.noOfGracePeriodsTaken = BIGINT_ZERO
+  // pool.nextDuePeriod = BIGINT_ZERO
 }
 
 export function handleOwnershipTransferred(

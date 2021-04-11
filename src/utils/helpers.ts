@@ -61,3 +61,18 @@ export function createUser(
 
     user.save();
 }
+
+
+export function setTwitterDetails(
+    userAddress: Bytes,TwitterDetails: Bytes
+): void {
+    let userId = userAddress.toHexString()
+    let user = User.load(userId);
+
+    if (user == null) {
+        user = new User(userId);
+        user.status = STATUS_UNVERIFIED;
+    }
+
+    user.save();
+}
