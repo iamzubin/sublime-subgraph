@@ -50,7 +50,5 @@ export function handleUserRegistered(
     // savingDeposit.amount = savingDeposit.amount.plus(
     //     event.params.amount
     // );
-    user
-
-    savingDeposit.save();
+    user.save();
 }
