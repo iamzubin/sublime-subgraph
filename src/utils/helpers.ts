@@ -1,5 +1,5 @@
 import { Bytes } from "@graphprotocol/graph-ts";
-import { User,TwitterDetails } from "../../generated/schema";
+import { User, TwitterDetail } from "../../generated/schema";
 import {
     LOAN_STATUS_ACTIVE,
     LOAN_STATUS_CLOSED,
@@ -64,14 +64,17 @@ export function createUser(
 
 
 export function setTwitterDetails(
-    userAddress: Bytes,TwitterDetail: Bytes
+    userAddress: Bytes, details: Bytes
 ): void {
     let userId = userAddress.toHexString()
-    let user = TwitterDetails.load(userId);
+    let user = TwitterDetail.load(userId);
     if (user == null) {
-        user = new TwitterDetails(userId);
-        user.twitterId = TwitterDetail;
+        user = new TwitterDetail(userId);
+        user.twitterId = details;
     }
     user.save();
+    let rUser = User.load(userId)
+    rUser.twitterDetails = user.id
+    rUser.save()
 }
 

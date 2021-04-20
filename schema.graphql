@@ -94,15 +94,15 @@ type User @entity {
   borrowingPools: [Pool!] @derivedFrom(field: "borrower")
   lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
   status: Status!
-  twitterDetails: TwitterDetails
+  twitterDetails: TwitterDetail
 }
   
-type TwitterDetails @entity {
+type TwitterDetail @entity {
   id: ID!
   twitterId: Bytes!
-  twitterSignMessage: String!
-  registarationTime: BigInt!  
-  linkedAddresses: [Bytes!]!
+  twitterSignMessage: String
+  registrationTime: BigInt  
+  linkedAddresses: [Bytes!]
 }
 
 type SavingAccount @entity {

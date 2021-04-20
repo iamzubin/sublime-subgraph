@@ -1,5 +1,5 @@
 import {
-    TwitterDetails, User,
+    User,
 } from '../../generated/schema';
 
 import {
@@ -32,7 +32,8 @@ export function handleUserRegistered(
     }
 
     user.status = STATUS_VERIFIED;
-    setTwitterDetails(event.params.user.toHexString(),event.params.offChainDetails.toHexString())
+    user.save();
+    setTwitterDetails(event.params.user, event.params.offChainDetails)
 
     // let depositId = userId + event.params.asset.toHexString() + event.params.strategy.toHexString();
     // let savingDeposit = SavingsDeposit.load(depositId);
@@ -50,5 +51,4 @@ export function handleUserRegistered(
     // savingDeposit.amount = savingDeposit.amount.plus(
     //     event.params.amount
     // );
-    user.save();
 }
