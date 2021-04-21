@@ -121,11 +121,11 @@ export function handleLiquiditySupplied(
 
     createUser(event.params.lenderAddress);
 
-    // let pool = Pool.load(poolAddress);
-    // pool.lentAmount = pool.lentAmount
-    //     .plus(event.params.amountSupplied);
+    let pool = Pool.load(poolAddress);
+    pool.lentAmount = pool.lentAmount
+        .plus(event.params.amountSupplied);
 
-    // pool.save();
+    pool.save();
 }
 
 // export function handleLiquidityWithdrawn(

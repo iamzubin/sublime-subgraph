@@ -11,7 +11,7 @@ import {
 
 import { BIGINT_ZERO,SAVINGS_ACCOUNT_ADDRESS} from "../utils/constants";
 import {
-    createUser
+    createUser,setTwitterDetails
   } from "./../utils/helpers"
   
   import {

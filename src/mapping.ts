@@ -76,6 +76,7 @@ export function handlePoolCreated(
   pool.nextDuePeriod = poolVars.value4;
 
   pool.published = event.block.timestamp;
+  pool.lentAmount = new BigInt(0);
 
   
   // createUser(event.params.borrower)

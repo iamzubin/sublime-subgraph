@@ -86,10 +86,11 @@ type Pool @entity {
   noOfGracePeriodsTaken:BigInt
   nextDuePeriod:BigInt
   repayExtensionEndTime: BigInt
-  # lenders: [LendingDetails!] @derivedFrom(field: "pool")
+  lenders: [LendingDetailscopy!] @derivedFrom(field: "pool")
   liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
   poolLiquidated: poolLiquidation 
   published: BigInt
+  lentAmount:BigInt
 }
 
 type poolLiquidation @entity{
