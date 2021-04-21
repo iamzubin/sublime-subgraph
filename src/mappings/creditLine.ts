@@ -39,7 +39,7 @@ export function handleCreditLineRequestedToLender(
         creditLine.borrowRate = CreditLineVars.value6;
         creditLine.BorrowAsset=  CreditLineVars.value7;
         creditLine.collateralAsset=  CreditLineVars.value8;
-        creditLine.creditLineStatus = getCreditLineStatus(0);
+        creditLine.creditLineStatus = getCreditLineStatus(1);
         creditLine.autoLiquidation = CreditLineVars.value10;
         creditLine.requestByLender = CreditLineVars.value11;
         creditLine.principal = BIGINT_ZERO;

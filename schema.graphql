@@ -39,7 +39,19 @@ type LendingDetails @entity {
   exraLiquidityShares:BigInt
   Balance:BigInt
 }
-
+type LendingDetailscopy @entity {
+  id: ID!
+  pool: Pool
+  lender: User
+  # amountSupplied: BigInt
+  # amountWithdrawn: BigInt
+  # repaymentWithdrawn: BigInt
+  # collateralCalled: Boolean
+  # lastVoteTime:BigInt
+  # marginCallEndTime:BigInt
+  # exraLiquidityShares:BigInt
+  Balance:BigInt
+}
 
 type Pool @entity {
   id: ID!
@@ -74,9 +86,10 @@ type Pool @entity {
   noOfGracePeriodsTaken:BigInt
   nextDuePeriod:BigInt
   repayExtensionEndTime: BigInt
-  lenders: [LendingDetails!] @derivedFrom(field: "pool")
+  # lenders: [LendingDetails!] @derivedFrom(field: "pool")
   liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
   poolLiquidated: poolLiquidation 
+  published: BigInt
 }
 
 type poolLiquidation @entity{
@@ -92,7 +105,7 @@ type poolLiquidation @entity{
 type User @entity {
   id: ID!
   borrowingPools: [Pool!] @derivedFrom(field: "borrower")
-  lendingPools: [LendingDetails!] @derivedFrom(field: "lender")
+  lendingPools: [LendingDetailscopy!] @derivedFrom(field: "lender")
   status: Status!
   twitterDetails: TwitterDetail
 }
@@ -124,10 +137,12 @@ type SavingsDeposit @entity {
 
 enum CreditLineStatus {
 
- REQUESTED
- ACTIVE
- CLOSED
- CANCELLED
+  NOT_CREATED
+  REQUESTED
+  ACTIVE
+  CLOSED
+  CANCELLED
+  LIQUIDATED
 }
 
 type CreditLineCollateralInfo @entity {

@@ -15,6 +15,8 @@ export function getCreditLineStatus(
 ): string {
     switch (value) {
         case 0:
+            return "NOT_CREATED"
+        case 1:
             return "REQUESTED";
         case 1:
             return "ACTIVE";
@@ -22,6 +24,8 @@ export function getCreditLineStatus(
             return "CLOSED";
         case 3:
             return "CANCELLED";
+        case 4:
+            return "LIQUIDATED"
         default:
             return "CANCELLED";
     }

@@ -1,5 +1,5 @@
 import {
-    Pool, LendingDetails,
+    Pool, LendingDetails,LendingDetailscopy
 } from '../../generated/schema';
 import {
     LOAN_STATUS_CLOSED,
@@ -19,7 +19,6 @@ import {
     CollateralWithdrawn,
     LiquiditySupplied,
     LiquidityWithdrawn,
-    CollateralCalled,
     AmountBorrowed,
     MarginCallCollateralAdded,
     LoanDefaulted,
@@ -103,13 +102,13 @@ export function handleLiquiditySupplied(
     let poolAddress = event.transaction.to.toHexString();
     let lendingDetailId = poolAddress +
         event.params.lenderAddress.toHexString();
-
-    let lendingDetail = LendingDetails.load(
+    // let lendingDetailId = event.params.lenderAddress.toHexString();
+    let lendingDetail = LendingDetailscopy.load(
         lendingDetailId
     );
 
     if (lendingDetail == null) {
-        lendingDetail = new LendingDetails(lendingDetailId);
+        lendingDetail = new LendingDetailscopy(lendingDetailId);
         lendingDetail.pool = poolAddress;
         // lendingDetail.collateralCalled = false;
         lendingDetail.lender = event.params.lenderAddress.toHexString();
@@ -122,58 +121,62 @@ export function handleLiquiditySupplied(
 
     createUser(event.params.lenderAddress);
 
-    let pool = Pool.load(poolAddress);
+    // let pool = Pool.load(poolAddress);
     // pool.lentAmount = pool.lentAmount
     //     .plus(event.params.amountSupplied);
 
-    pool.save();
+    // pool.save();
 }
 
-export function handleLiquidityWithdrawn(
-    event: LiquidityWithdrawn
-): void {
-    let poolAddress = event.transaction.to.toHexString();
+// export function handleLiquidityWithdrawn(
+//     event: LiquidityWithdrawn
+// ): void {
+//     let poolAddress = event.transaction.to.toHexString();
 
-    let lendingDetailId = poolAddress +
-        event.params.lenderAddress.toHexString();
+//     let lendingDetailId = poolAddress +
+//         event.params.lenderAddress.toHexString();
 
-    let lendingDetail = LendingDetails.load(lendingDetailId);
+//     let lendingDetail = LendingDetails.load(lendingDetailId);
 
-    lendingDetail.amountWithdrawn = lendingDetail.amountWithdrawn
-        .plus(event.params.amount);
+//     if(lendingDetail == null){
+//         lendingDetail = new LendingDetails(lendingDetailId);
+//     }
 
-    lendingDetail.save();
-    // if (
-    //     lendingDetail.amountWithdrawn ==
-    //     lendingDetail.amountSupplied
-    // ) {
-    //     store.remove('LendingDetail', lendingDetailId);
-    // } else {
-    //     lendingDetail.save();
-    // }
+//     lendingDetail.amountWithdrawn = lendingDetail.amountWithdrawn
+//         .plus(event.params.amount);
 
-    let pool = Pool.load(poolAddress);
-    // pool.lentAmount = pool.lentAmount
-    //     .minus(event.params.amount);
+//     lendingDetail.save();
+//     // if (
+//     //     lendingDetail.amountWithdrawn ==
+//     //     lendingDetail.amountSupplied
+//     // ) {
+//     //     store.remove('LendingDetail', lendingDetailId);
+//     // } else {
+//     //     lendingDetail.save();
+//     // }
 
-    pool.save();
-}
+//     // let pool = Pool.load(poolAddress);
+//     // pool.lentAmount = pool.lentAmount
+//     //     .minus(event.params.amount);
 
-export function handleCollateralCalled(
-    event: CollateralCalled
-): void {
-    let poolAddress = event.transaction.to.toHexString();
+//     // pool.save();
+// }
 
-    let lendingDetailId = poolAddress +
-        event.params.lenderAddress.toHexString();
+// export function handleCollateralCalled(
+//     event: CollateralCalled
+// ): void {
+//     let poolAddress = event.transaction.to.toHexString();
 
-    let lendingDetail = LendingDetails.load(lendingDetailId);
-    lendingDetail.collateralCalled = true;
-    lendingDetail.save();
+//     let lendingDetailId = poolAddress +
+//         event.params.lenderAddress.toHexString();
 
-    let pool = Pool.load(poolAddress);
-    pool.save();
-}
+//     let lendingDetail = LendingDetails.load(lendingDetailId);
+//     lendingDetail.collateralCalled = true;
+//     lendingDetail.save();
+
+//     let pool = Pool.load(poolAddress);
+//     pool.save();
+// }
 
 export function handleAmountBorrowed(
     event: AmountBorrowed
@@ -187,20 +190,20 @@ export function handleAmountBorrowed(
     pool.save();
 }
 
-export function handleMarginCallCollateralAdded(
-    event: MarginCallCollateralAdded
-): void {
-    let poolAddress = event.transaction.to.toHexString();
+// export function handleMarginCallCollateralAdded(
+//     event: MarginCallCollateralAdded
+// ): void {
+//     let poolAddress = event.transaction.to.toHexString();
 
-    let pool = Pool.load(poolAddress);
-    // pool.borrowedAmount = pool.borrowedAmount
-    //     .plus(event.params.amount);
-    pool.extraLiquidityShares = pool.extraLiquidityShares.plus(event.params.sharesReceived)
-    let lendingDetailId = poolAddress +
-        event.params.lender.toHexString();
+//     let pool = Pool.load(poolAddress);
+//     // pool.borrowedAmount = pool.borrowedAmount
+//     //     .plus(event.params.amount);
+//     pool.extraLiquidityShares = pool.extraLiquidityShares.plus(event.params.sharesReceived)
+//     let lendingDetailId = poolAddress +
+//         event.params.lender.toHexString();
 
-    let lendingDetail = LendingDetails.load(lendingDetailId);
-    lendingDetail.exraLiquidityShares = lendingDetail.exraLiquidityShares.plus(event.params.sharesReceived)
-    lendingDetail.save()
-    pool.save();
-}
+//     let lendingDetail = LendingDetails.load(lendingDetailId);
+//     lendingDetail.exraLiquidityShares = lendingDetail.exraLiquidityShares.plus(event.params.sharesReceived)
+//     lendingDetail.save()
+//     pool.save();
+// }

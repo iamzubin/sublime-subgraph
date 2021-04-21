@@ -1,3 +1,6 @@
+import {
+  DataSourceContext,
+} from "@graphprotocol/graph-ts";
 import { Pool, User, GlobalPoolDetail } from '../generated/schema';
 import {
   PoolCreated, OwnershipTransferred, PoolFactory
@@ -16,6 +19,11 @@ import {
 import {
   getLoanStatus, createUser
 } from "./utils/helpers"
+// import { Pool as poolTemplate} from '../generated/templates/Pool/Pool'
+
+
+import { Pool as NewPool } from '../generated/templates';
+let context = new DataSourceContext();
 
 
 export function handlePoolCreated(
@@ -67,7 +75,14 @@ export function handlePoolCreated(
   pool.noOfGracePeriodsTaken = poolVars.value3;
   pool.nextDuePeriod = poolVars.value4;
 
+  pool.published = event.block.timestamp;
+
+  
   // createUser(event.params.borrower)
+
+  NewPool.createWithContext(
+    event.params.pool, context
+  );
   pool.save()
 
 

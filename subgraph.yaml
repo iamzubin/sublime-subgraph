@@ -134,32 +134,32 @@ templates:
         - Pool
         - User
         - poolLiquidation
-        - LendingDetails
+        - LendingDetailscopy
       abis:
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
         - event: OpenBorrowPoolClosed()
           handler: handleOpenBorrowPoolClosed
-        - event: OpenBorrowPoolTerminated()
-          handler: handleOpenBorrowPoolTerminated
-        - event: OpenBorrowPoolCancelled()
-          handler: handleOpenBorrowPoolCancelled
-        - event: OpenBorrowPoolDefaulted()
-          handler: handleOpenBorrowPoolDefaulted
-        - event: CollateralWithdrawn(address,uint256)
-          handler: handleCollateralWithdrawn
+        # - event: OpenBorrowPoolTerminated()
+        #   handler: handleOpenBorrowPoolTerminated
+        # - event: OpenBorrowPoolCancelled()
+        #   handler: handleOpenBorrowPoolCancelled
+        # - event: OpenBorrowPoolDefaulted()
+        #   handler: handleOpenBorrowPoolDefaulted
+        # - event: CollateralWithdrawn(address,uint256)
+        #   handler: handleCollateralWithdrawn
         - event: LiquiditySupplied(uint256,address)
           handler: handleLiquiditySupplied
-        - event: AmountBorrowed(address,uint256)
-          handler: handleAmountBorrowed
-        - event: LiquidityWithdrawn(uint256,address)
-          handler: handleLiquidityWithdrawn
-        - event: CollateralCalled(address)
-          handler: handleCollateralCalled
-        - event: MarginCallCollateralAdded(address,address,uint256,uint256)
-          handler: handleLenderVoted
-        - event: CollateralAdded(address,uint256,uint256)
-          handler: handleCollateralAdded
-        - event: LoanDefaulted()
-          handler: handleLoanDefaulted
+        # - event: AmountBorrowed(address,uint256)
+          # handler: handleAmountBorrowed
+        # - event: LiquidityWithdrawn(uint256,address)
+          # handler: handleLiquidityWithdrawn
+        # - event: CollateralCalled(address)
+          # handler: handleCollateralCalled
+        # - event: MarginCallCollateralAdded(address,address,uint256,uint256)
+          # handler: handleLenderVoted
+        # - event: CollateralAdded(address,uint256,uint256)
+          # handler: handleCollateralAdded
+        # - event: LoanDefaulted()
+          # handler: handleLoanDefaulted
