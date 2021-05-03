@@ -112,6 +112,7 @@ export function handleLiquiditySupplied(
         lendingDetail.pool = poolAddress;
         // lendingDetail.collateralCalled = false;
         lendingDetail.lender = event.params.lenderAddress.toHexString();
+        lendingDetail.AmountLend = event.params.amountSupplied
     }
 
     // lendingDetail.amountSupplied = lendingDetail

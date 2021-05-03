@@ -50,7 +50,7 @@ type LendingDetailscopy @entity {
   # lastVoteTime:BigInt
   # marginCallEndTime:BigInt
   # exraLiquidityShares:BigInt
-  Balance:BigInt
+  AmountLend:BigInt
 }
 
 type Pool @entity {
