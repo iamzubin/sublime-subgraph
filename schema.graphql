@@ -91,6 +91,7 @@ type Pool @entity {
   poolLiquidated: poolLiquidation 
   published: BigInt
   lentAmount:BigInt
+  tokenImpl: String
 }
 
 type poolLiquidation @entity{

@@ -163,3 +163,27 @@ templates:
           # handler: handleCollateralAdded
         # - event: LoanDefaulted()
           # handler: handleLoanDefaulted
+
+  - kind: ethereum/contract
+    name: PoolToken
+    network: kovan
+    source:
+      abi: PoolToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool.ts
+      entities:
+        - Pool
+        - User
+        - poolLiquidation
+        - LendingDetails
+      abis:
+        - name: PoolToken
+          file: ./abis/PoolToken.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer

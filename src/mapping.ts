@@ -22,7 +22,7 @@ import {
 // import { Pool as poolTemplate} from '../generated/templates/Pool/Pool'
 
 
-import { Pool as NewPool } from '../generated/templates';
+import { Pool as NewPool, PoolToken} from '../generated/templates';
 let context = new DataSourceContext();
 
 
@@ -77,12 +77,15 @@ export function handlePoolCreated(
 
   pool.published = event.block.timestamp;
   pool.lentAmount = new BigInt(0);
-
+  pool.tokenImpl = event.params.poolToken.toHexString()
   
   // createUser(event.params.borrower)
 
   NewPool.createWithContext(
     event.params.pool, context
+  );
+  PoolToken.createWithContext(
+    event.params.poolToken, context
   );
   pool.save()
 

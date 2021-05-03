@@ -1,4 +1,7 @@
 import {
+    Address,
+  } from "@graphprotocol/graph-ts";
+import {
     Pool, LendingDetails,LendingDetailscopy
 } from '../../generated/schema';
 import {
@@ -24,7 +27,41 @@ import {
     LoanDefaulted,
     Pool as PoolContract,
 } from '../../generated/templates/Pool/Pool';
+
+import {
+    Approval,
+    Transfer,
+    PoolToken
+} from '../../generated/templates/PoolToken/PoolToken';
+
 import { store } from "@graphprotocol/graph-ts";
+
+
+export function handleTransfer(
+    event: Transfer
+): void {
+    let poolAddress = event.transaction.to.toHexString()
+    let pool = Pool.load(poolAddress);
+    let poolTokenInstance = PoolToken.bind(
+        Address.fromString(pool.tokenImpl)
+    );
+    let transferFrom = poolAddress +
+        event.params.from.toHexString();
+    let lendingDetailFrom = LendingDetailscopy.load(transferFrom)
+    let transferTo = poolAddress +
+        event.params.to.toHexString();
+    let lendingDetailTo = LendingDetailscopy.load(transferTo)
+    if(lendingDetailTo == null){
+        lendingDetailTo = new LendingDetailscopy(transferTo)
+        lendingDetailTo.pool = poolAddress;
+        // lendingDetail.collateralCalled = false;
+        lendingDetailTo.lender = event.params.to.toHexString();
+    }
+    lendingDetailTo.AmountLend = poolTokenInstance.try_balanceOf(event.params.to).value
+    lendingDetailFrom.AmountLend = poolTokenInstance.try_balanceOf(event.params.from).value
+    lendingDetailFrom.save()
+    lendingDetailTo.save()
+}
 
 export function handleOpenBorrowPoolClosed(
     event: OpenBorrowPoolClosed
@@ -112,21 +149,24 @@ export function handleLiquiditySupplied(
         lendingDetail.pool = poolAddress;
         // lendingDetail.collateralCalled = false;
         lendingDetail.lender = event.params.lenderAddress.toHexString();
-        lendingDetail.AmountLend = event.params.amountSupplied
     }
 
     // lendingDetail.amountSupplied = lendingDetail
     //     .amountSupplied.plus(event.params.amountSupplied);
 
-    lendingDetail.save();
 
     createUser(event.params.lenderAddress);
 
     let pool = Pool.load(poolAddress);
     pool.lentAmount = pool.lentAmount
         .plus(event.params.amountSupplied);
-
+    let poolTokenInstance = PoolToken.bind(
+        Address.fromString(pool.tokenImpl)
+    );
+    lendingDetail.AmountLend = poolTokenInstance.try_balanceOf(event.params.lenderAddress).value
+    lendingDetail.save();
     pool.save();
+
 }
 
 // export function handleLiquidityWithdrawn(
