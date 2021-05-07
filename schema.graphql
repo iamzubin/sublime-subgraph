@@ -39,6 +39,10 @@ type LendingDetails @entity {
   exraLiquidityShares:BigInt
   Balance:BigInt
 }
+
+
+
+
 type LendingDetailscopy @entity {
   id: ID!
   pool: Pool
@@ -92,6 +96,7 @@ type Pool @entity {
   published: BigInt
   lentAmount:BigInt
   tokenImpl: String
+  nextDueTime: BigInt
 }
 
 type poolLiquidation @entity{
