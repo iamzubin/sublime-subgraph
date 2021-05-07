@@ -84,7 +84,7 @@ export function handlePoolCreated(
   pool.published = event.block.timestamp;
   pool.lentAmount = new BigInt(0);
   pool.tokenImpl = event.params.poolToken.toHexString()
-  // pool.nextDueTime = new BigInt(nextDueTime);
+  pool.nextDueTime = nextDueTime;
   // createUser(event.params.borrower)
 
   NewPool.createWithContext(
