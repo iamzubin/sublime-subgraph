@@ -38,10 +38,11 @@ export function handlePoolCreated(
   );
   let resultVars = poolContract.try_poolVars();
   let resultConstants = poolContract.try_poolConstants();
-  let nextDueTime = poolContract.try_getNextDueTime();
+  let resultNextDueTime = poolContract.try_getNextDueTime();
 
   let poolVars: Pool__poolVarsResult;
   let poolConstants: Pool__poolConstantsResult;
+  let nextDueTime: BigInt;
 
   if (!resultVars.reverted) {
     poolVars = resultVars.value;
@@ -49,9 +50,10 @@ export function handlePoolCreated(
   if (!resultConstants.reverted) {
     poolConstants = resultConstants.value;
   }
-  if (!nextDueTime.reverted) {
-    nextDueTime = nextDueTime.value;
+  if (!resultNextDueTime.reverted) {
+    nextDueTime = resultNextDueTime.value;
   }
+  nextDueTime = resultNextDueTime.value;
   poolVars = resultVars.value;
   poolConstants = resultConstants.value;
 
@@ -82,7 +84,7 @@ export function handlePoolCreated(
   pool.published = event.block.timestamp;
   pool.lentAmount = new BigInt(0);
   pool.tokenImpl = event.params.poolToken.toHexString()
-  pool.nextDueTime = nextDueTime;
+  // pool.nextDueTime = new BigInt(nextDueTime);
   // createUser(event.params.borrower)
 
   NewPool.createWithContext(

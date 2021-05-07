@@ -37,31 +37,31 @@ import {
 import { store } from "@graphprotocol/graph-ts";
 
 
-export function handleTransfer(
-    event: Transfer
-): void {
-    let poolAddress = event.transaction.to.toHexString()
-    let pool = Pool.load(poolAddress);
-    let poolTokenInstance = PoolToken.bind(
-        Address.fromString(pool.tokenImpl)
-    );
-    let transferFrom = poolAddress +
-        event.params.from.toHexString();
-    let lendingDetailFrom = LendingDetailscopy.load(transferFrom)
-    let transferTo = poolAddress +
-        event.params.to.toHexString();
-    let lendingDetailTo = LendingDetailscopy.load(transferTo)
-    if(lendingDetailTo == null){
-        lendingDetailTo = new LendingDetailscopy(transferTo)
-        lendingDetailTo.pool = poolAddress;
-        // lendingDetail.collateralCalled = false;
-        lendingDetailTo.lender = event.params.to.toHexString();
-    }
-    lendingDetailTo.AmountLend = poolTokenInstance.try_balanceOf(event.params.to).value
-    lendingDetailFrom.AmountLend = poolTokenInstance.try_balanceOf(event.params.from).value
-    lendingDetailFrom.save()
-    lendingDetailTo.save()
-}
+// export function handleTransfer(
+//     event: Transfer
+// ): void {
+//     let poolAddress = event.transaction.to.toHexString()
+//     let pool = Pool.load(poolAddress);
+//     let poolTokenInstance = PoolToken.bind(
+//         Address.fromString(pool.tokenImpl)
+//     );
+//     let transferFrom = poolAddress +
+//         event.params.from.toHexString();
+//     let lendingDetailFrom = LendingDetailscopy.load(transferFrom)
+//     let transferTo = poolAddress +
+//         event.params.to.toHexString();
+//     let lendingDetailTo = LendingDetailscopy.load(transferTo)
+//     if(lendingDetailTo == null){
+//         lendingDetailTo = new LendingDetailscopy(transferTo)
+//         lendingDetailTo.pool = poolAddress;
+//         // lendingDetail.collateralCalled = false;
+//         lendingDetailTo.lender = event.params.to.toHexString();
+//     }
+//     lendingDetailTo.AmountLend = poolTokenInstance.try_balanceOf(event.params.to).value
+//     lendingDetailFrom.AmountLend = poolTokenInstance.try_balanceOf(event.params.from).value
+//     lendingDetailFrom.save()
+//     lendingDetailTo.save()
+// }
 
 export function handleOpenBorrowPoolClosed(
     event: OpenBorrowPoolClosed
@@ -151,8 +151,7 @@ export function handleLiquiditySupplied(
         lendingDetail.lender = event.params.lenderAddress.toHexString();
     }
 
-    // lendingDetail.amountSupplied = lendingDetail
-    //     .amountSupplied.plus(event.params.amountSupplied);
+    lendingDetail.AmountLend = lendingDetail.AmountLend.plus(event.params.amountSupplied);
 
 
     createUser(event.params.lenderAddress);
@@ -160,10 +159,10 @@ export function handleLiquiditySupplied(
     let pool = Pool.load(poolAddress);
     pool.lentAmount = pool.lentAmount
         .plus(event.params.amountSupplied);
-    let poolTokenInstance = PoolToken.bind(
-        Address.fromString(pool.tokenImpl)
-    );
-    lendingDetail.AmountLend = poolTokenInstance.try_balanceOf(event.params.lenderAddress).value
+    // let poolTokenInstance = PoolToken.bind(
+    //     Address.fromString(pool.tokenImpl)
+    // );
+    // lendingDetail.AmountLend = poolTokenInstance.try_balanceOf(event.params.lenderAddress).value
     lendingDetail.save();
     pool.save();
 
