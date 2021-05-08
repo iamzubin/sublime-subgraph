@@ -2,7 +2,10 @@ import {
     Address,
   } from "@graphprotocol/graph-ts";
 import {
-    Pool, LendingDetails,LendingDetailscopy
+    REPAYMENTS_ACCOUNT_ADDRESS
+} from "../utils/constants"  
+import {
+    Pool, LendingDetails, LendingDetailscopy
 } from '../../generated/schema';
 import {
     LOAN_STATUS_CLOSED,
@@ -34,8 +37,40 @@ import {
     PoolToken
 } from '../../generated/templates/PoolToken/PoolToken';
 
+import {
+    Repayments,
+    InterestRepaid,
+    PartialExtensionRepaymentMade
+} from "../../generated/Repayments/Repayments"
+
 import { store } from "@graphprotocol/graph-ts";
 
+
+export function handleInterestRepaid(
+    event: InterestRepaid
+): void {
+    let poolAddress = event.params.poolID.toHexString()
+    let pool = Pool.load(poolAddress)
+    if(pool == null){
+        pool = new Pool(poolAddress)
+    }
+    let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS)
+    pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(event.params.poolID).value
+    pool.save()
+}
+
+export function handlePartialExtensionRepaymentMade(
+    event: PartialExtensionRepaymentMade
+): void {
+    let poolAddress = event.params.poolID.toHexString()
+    let pool = Pool.load(poolAddress)
+    if(pool == null){
+        pool = new Pool(poolAddress)
+    }
+    let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS)
+    pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(event.params.poolID).value
+    pool.save()
+}
 
 export function handleTransfer(
     event: Transfer

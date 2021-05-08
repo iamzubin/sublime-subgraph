@@ -85,6 +85,28 @@ dataSources:
           handler: handleUserUnregistered
 
 
+  - kind: ethereum/contract
+    name: Repayments
+    network: kovan
+    source:
+      address: "0xBdBA345aDaAd8B06F8A2b6CBA5be4766212EC150"
+      abi: Repayments
+      startBlock: 23949500   
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/pool.ts
+      entities:
+        - Pool
+      abis:
+        - name: Repayments
+          file: ./abis/Repayments.json
+      eventHandlers:
+        - event: InterestRepaid(address,uint256)
+          handler: handleInterestRepaid
+        - event: PartialExtensionRepaymentMade(address)
+          handler: handlePartialExtensionRepaymentMade
 
   - kind: ethereum/contract
     name: CreditLine
