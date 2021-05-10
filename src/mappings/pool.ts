@@ -45,6 +45,9 @@ import {
 
 import { store } from "@graphprotocol/graph-ts";
 
+import {
+    BigInt
+  } from "@graphprotocol/graph-ts";
 
 export function handleInterestRepaid(
     event: InterestRepaid
@@ -56,6 +59,13 @@ export function handleInterestRepaid(
     }
     let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS)
     pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(event.params.poolID).value
+    let poolInstance = PoolContract.bind(Address.fromString(poolAddress))
+    let resultNextDueTime = poolInstance.try_getNextDueTime()
+    let nextDueTime: BigInt;
+    if (!resultNextDueTime.reverted) {
+        nextDueTime = resultNextDueTime.value;
+    }
+    pool.nextDueTime = nextDueTime;
     pool.save()
 }
 
@@ -69,6 +79,13 @@ export function handlePartialExtensionRepaymentMade(
     }
     let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS)
     pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(event.params.poolID).value
+    let poolInstance = PoolContract.bind(Address.fromString(poolAddress))
+    let resultNextDueTime = poolInstance.try_getNextDueTime()
+    let nextDueTime: BigInt;
+    if (!resultNextDueTime.reverted) {
+        nextDueTime = resultNextDueTime.value;
+    }
+    pool.nextDueTime = nextDueTime;
     pool.save()
 }
 
@@ -262,6 +279,13 @@ export function handleAmountBorrowed(
     // pool.borrowedAmount = pool.borrowedAmount
     //     .plus(event.params.amount);
     pool.loanStatus = LOAN_STATUS_ACTIVE;
+    let poolInstance = PoolContract.bind(Address.fromString(poolAddress))
+    let resultNextDueTime = poolInstance.try_getNextDueTime()
+    let nextDueTime: BigInt;
+    if (!resultNextDueTime.reverted) {
+        nextDueTime = resultNextDueTime.value;
+    }
+    pool.nextDueTime = nextDueTime;
     pool.save();
 }
 
