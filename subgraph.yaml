@@ -8,9 +8,9 @@ dataSources:
     name: PoolFactory
     network: kovan
     source:
-      address: "0xCc740cDd0Ba263Ca55F26187149e20ACE040cb3c"
+      address: "0x02332F845F38087b0F2f2311B53dbb678C4C539B"
       abi: PoolFactory
-      startBlock: 23885000
+      startBlock: 25638000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -28,9 +28,9 @@ dataSources:
     name: SavingsAccount
     network: kovan
     source:
-      address: "0xdEc67778ff2373FE57383ee602e6247FC3aeC2bF"
+      address: "0xd74d1508C3723FdaB499f54039A08F4e56595277"
       abi: SavingsAccount
-      startBlock: 23885000
+      startBlock: 25638000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
