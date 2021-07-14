@@ -3,7 +3,7 @@ import {
 } from "@graphprotocol/graph-ts";
 import { Pool, User, GlobalPoolDetail } from '../generated/schema';
 import {
-  PoolCreated, OwnershipTransferred, PoolFactory
+  PoolCreated, OwnershipTransferred, PoolFactory, CollectionPeriodUpdated
 } from '../generated/PoolFactory/PoolFactory';
 import {
   Pool as PoolContract,
@@ -144,4 +144,12 @@ export function handleOwnershipTransferred(
   gPoolDetails.gracePeriodFraction = poolFactoryContract.try_gracePeriodFraction().value
 
   gPoolDetails.save()
+}
+
+export function handleCollectionPeriodUpdated(
+  event: CollectionPeriodUpdated
+): void {
+  let gPoolDetails = GlobalPoolDetail.load("0");
+  gPoolDetails.collectionPeriod = event.params.updatedCollectionPeriod;
+  gPoolDetails.save();
 }

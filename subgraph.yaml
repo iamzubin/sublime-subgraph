@@ -8,7 +8,7 @@ dataSources:
     name: PoolFactory
     network: kovan
     source:
-      address: "0x02332F845F38087b0F2f2311B53dbb678C4C539B"
+      address: "0x49a82c3349A2830bb436F9f85265834877bCA4eb"
       abi: PoolFactory
       startBlock: 25638000
     mapping:
@@ -30,13 +30,15 @@ dataSources:
           handler: handlePoolCreated
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
+        - event: CollectionPeriodUpdated(uint256)
+          handler: handleCollectionPeriodUpdated
 
 
   - kind: ethereum/contract
     name: SavingsAccount
     network: kovan
     source:
-      address: "0xd74d1508C3723FdaB499f54039A08F4e56595277"
+      address: "0xD1Ce6B73914dd8608Bca7e98Ad9DF8Fc92Ceb5b7"
       abi: SavingsAccount
       startBlock: 25638000   
     mapping:
@@ -63,7 +65,7 @@ dataSources:
     name: verification
     network: kovan
     source:
-      address: "0xD12000F9b9D29A88936a98F07F19de5D708aAdd2"
+      address: "0xBF09ecC3F7C439801779C9f2dcC684503e27F9c7"
       abi: Verification
       startBlock: 25638000   
     mapping:
@@ -89,7 +91,7 @@ dataSources:
     name: Repayments
     network: kovan
     source:
-      address: "0xbD1DCF89Bd1A69F7a877e5cBaAa07a41C227faf3"
+      address: "0xd157C83Cd1D83d591ba05f05983099d5E20AEee6"
       abi: Repayments
       startBlock: 25638000   
     mapping:
@@ -112,7 +114,7 @@ dataSources:
     name: CreditLine
     network: kovan
     source:
-      address: "0xF9F8da7BF54899973d1CF223ee237dcDA2eF9Acc"
+      address: "0xB642a5877Eb6511D75BdD0Bb9e4d31E251f99729"
       abi: CreditLine
       startBlock: 25638000   
     mapping:
