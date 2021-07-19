@@ -14,7 +14,7 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 import {
-  POOLFACTORY_ADDRESS, BIGINT_ZERO
+  BIGINT_ZERO
 } from "./utils/constants"
 import {
   getLoanStatus, createUser
@@ -29,35 +29,23 @@ let context = new DataSourceContext();
 export function handlePoolCreated(
   event: PoolCreated
 ): void {
-  let pool = Pool.load(event.params.pool.toHexString())
-  if (pool == null){
-    pool = new Pool(event.params.pool.toHexString());
-  }
+  NewPool.createWithContext(
+    event.params.pool, context
+  );
+  PoolToken.createWithContext(
+    event.params.poolToken, context
+  );
+
   let poolContract = PoolContract.bind(
     event.params.pool
   );
-  let resultVars = poolContract.try_poolVars();
-  let resultConstants = poolContract.try_poolConstants();
-  let resultNextDueTime = poolContract.try_getNextDueTime();
-
-  let poolVars: Pool__poolVarsResult;
-  let poolConstants: Pool__poolConstantsResult;
+  
+  let poolConstants: Pool__poolConstantsResult = poolContract.poolConstants();
   let nextDueTime: BigInt;
+  
+  nextDueTime = BIGINT_ZERO;
 
-  if (!resultVars.reverted) {
-    poolVars = resultVars.value;
-  }
-  if (!resultConstants.reverted) {
-    poolConstants = resultConstants.value;
-  }
-  if (!resultNextDueTime.reverted) {
-    nextDueTime = resultNextDueTime.value;
-  }
-  nextDueTime = resultNextDueTime.value;
-  poolVars = resultVars.value;
-  poolConstants = resultConstants.value;
-
-
+  let pool = new Pool(event.params.pool.toHexString());
   // Pool constants set
   pool.borrower = event.params.borrower.toHexString();
   pool.borrowAmountRequested = poolConstants.value1;
@@ -75,11 +63,11 @@ export function handlePoolCreated(
   
   
   // pool variables set
-  pool.baseLiquidityShares = poolVars.value0;
-  pool.extraLiquidityShares = poolVars.value1;
-  pool.loanStatus  = getLoanStatus(poolVars.value2)
-  pool.noOfGracePeriodsTaken = poolVars.value3;
-  pool.nextDuePeriod = poolVars.value4;
+  pool.baseLiquidityShares = BIGINT_ZERO;
+  pool.extraLiquidityShares = BIGINT_ZERO;
+  pool.loanStatus  = getLoanStatus(0)
+  pool.noOfGracePeriodsTaken = BIGINT_ZERO;
+  pool.nextDuePeriod = BIGINT_ZERO;
 
   pool.published = event.block.timestamp;
   pool.lentAmount = new BigInt(0);
@@ -87,12 +75,6 @@ export function handlePoolCreated(
   pool.nextDueTime = nextDueTime;
   // createUser(event.params.borrower)
 
-  NewPool.createWithContext(
-    event.params.pool, context
-  );
-  PoolToken.createWithContext(
-    event.params.poolToken, context
-  );
   pool.save()
 
 
@@ -130,18 +112,17 @@ export function handleOwnershipTransferred(
     gPoolDetails = new GlobalPoolDetail("0");
   } 
   let poolFactoryContract = PoolFactory.bind(
-    POOLFACTORY_ADDRESS
+    event.address
   );
 
   gPoolDetails.admin = event.params.newOwner.toHexString()
-  gPoolDetails.collectionPeriod = poolFactoryContract.try_collectionPeriod().value
-  gPoolDetails.matchCollateralRatioInterval = poolFactoryContract.try_matchCollateralRatioInterval().value
-  gPoolDetails.marginCallDuration = poolFactoryContract.try_marginCallDuration().value
-  gPoolDetails.collateralVolatilityThreshold = poolFactoryContract.try_collateralVolatilityThreshold().value
-  gPoolDetails.gracePeriodPenaltyFraction = poolFactoryContract.try_gracePeriodPenaltyFraction().value
-  gPoolDetails.liquidatorRewardFraction = poolFactoryContract.try_liquidatorRewardFraction().value
-  gPoolDetails.votingPassRatio = poolFactoryContract.try_votingPassRatio().value
-  gPoolDetails.gracePeriodFraction = poolFactoryContract.try_gracePeriodFraction().value
+  gPoolDetails.collectionPeriod = poolFactoryContract.collectionPeriod()
+  gPoolDetails.matchCollateralRatioInterval = poolFactoryContract.matchCollateralRatioInterval()
+  gPoolDetails.marginCallDuration = poolFactoryContract.marginCallDuration()
+  gPoolDetails.collateralVolatilityThreshold = poolFactoryContract.collateralVolatilityThreshold()
+  gPoolDetails.gracePeriodPenaltyFraction = poolFactoryContract.gracePeriodPenaltyFraction()
+  gPoolDetails.liquidatorRewardFraction = poolFactoryContract.liquidatorRewardFraction()
+  gPoolDetails.votingPassRatio = poolFactoryContract.votingPassRatio()
 
   gPoolDetails.save()
 }
