@@ -60,7 +60,7 @@ export function handlePoolCreated(
   pool.repaymentInterval = poolConstants.value9;  
   pool.collateralAsset = poolConstants.value10;
   pool.poolSavingsStrategy = poolConstants.value11;
-  
+  pool.loanDuration = poolConstants.value9.times(poolConstants.value8);
   
   // pool variables set
   pool.baseLiquidityShares = BIGINT_ZERO;
