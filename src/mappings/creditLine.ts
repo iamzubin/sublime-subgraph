@@ -45,7 +45,7 @@ export function handleCreditLineRequestedToLender(
         creditLine.principal = BIGINT_ZERO;
         creditLine.totalInterestRepaid = BIGINT_ZERO;
         creditLine.lastPrincipalUpdateTime = BIGINT_ZERO;
-        creditLine.interestAccruedTillPrincipalUpdate = BIGINT_ZERO;
+        //creditLine.interestAccruedTillPrincipalUpdate = BIGINT_ZERO;
         creditLine.collateralAmount = BIGINT_ZERO;
         creditLine.save();
     }
@@ -89,7 +89,7 @@ export function handleCreditLineRequestedToBorrower(
         creditLine.principal = BIGINT_ZERO;
         creditLine.totalInterestRepaid = BIGINT_ZERO;
         creditLine.lastPrincipalUpdateTime = BIGINT_ZERO;
-        creditLine.interestAccruedTillPrincipalUpdate = BIGINT_ZERO;
+        //creditLine.interestAccruedTillPrincipalUpdate = BIGINT_ZERO;
         creditLine.collateralAmount = BIGINT_ZERO;
         creditLine.save();
     }
@@ -107,7 +107,7 @@ export function handleCreditLineClosed(
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
-        creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
+        //creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
         creditLine.collateralAmount = CreditLineUsageVars.value4;
         creditLine.save();
     }  
@@ -125,7 +125,7 @@ export function handleBorrowedFromCreditLine(
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
-        creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
+        //creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
         creditLine.collateralAmount = CreditLineUsageVars.value4;
         creditLine.save();
     } 
@@ -142,7 +142,7 @@ export function handlePartialCreditLineRepaid(
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
-        creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
+        //creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
         creditLine.collateralAmount = CreditLineUsageVars.value4;
         creditLine.save();
     } 
@@ -159,7 +159,7 @@ export function handleCreditLineReset(
         creditLine.principal = CreditLineUsageVars.value0;
         creditLine.totalInterestRepaid = CreditLineUsageVars.value1;
         creditLine.lastPrincipalUpdateTime = CreditLineUsageVars.value2
-        creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
+        //creditLine.interestAccruedTillPrincipalUpdate = CreditLineUsageVars.value3
         creditLine.collateralAmount = CreditLineUsageVars.value4;
         creditLine.save();
     }
