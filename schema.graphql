@@ -263,15 +263,23 @@ type CreditLine @entity {
   lastPrincipalUpdateTime: BigInt!
   # array of all liquidations associated with given credit line 
   #(assumption: credit line stays active even after liquidation)
-  liquidationHistory: [LiquidationEvent!]! @derivedFrom(field: "creditLineHash")
-  borrowingHistory: [BorrowingEvent!]! @derivedFrom(field: "creditLineHash")
-  repaymentHistory: [RepaymentEvent!]! @derivedFrom(field: "creditLineHash")
+  liquidationHistory: [LiquidationEvent!]! @derivedFrom(field: "creditLine")
+  borrowingHistory: [BorrowingEvent!]! @derivedFrom(field: "creditLine")
+  repaymentHistory: [RepaymentEvent!]! @derivedFrom(field: "creditLine")
+}
+
+type LiquidationEvent @entity {
+  id: ID!
+  creditLineHash: Bytes!
+  liquidator: Bytes!
+  creditLine: CreditLine!
 }
 
 type BorrowingEvent @entity {
-  creditLine: CreditLine!
+  id: ID!
+  creditLineHash: Bytes!
   borrowAmount: BigInt!
-  
+  creditLine: CreditLine!
 }
 
 type RepaymentEvent @entity {
