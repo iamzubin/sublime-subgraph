@@ -1,18 +1,16 @@
-import {
-    CreditLine, CreditLineCollateralInfo, creditLineLiquidation
-} from '../../generated/schema';
-import {
-    BorrowedFromCreditLine,
-    CreditLineAccepted,
-    CreditLineClosed,
-    CreditLineRequestedToBorrower,
-    CreditLineRequestedToLender,
-    CreditLineReset,
-    PartialCreditLineRepaid ,
-    CreditLine as creditLineContract
-} from '../../generated/CreditLine/CreditLine';
-import { BIGINT_ZERO,CREDIT_LINE_ADDRESS } from "../utils/constants";
-import {getCreditLineStatus} from "../utils/helpers";
+import { CreditLine, 
+         CreditLineCollateralInfo, 
+         creditLineLiquidation } from '../../generated/schema';
+import { BorrowedFromCreditLine,
+         CreditLineAccepted,
+         CreditLineClosed,
+         CreditLineRequestedToBorrower,
+         CreditLineRequestedToLender,
+         CreditLineReset,
+         PartialCreditLineRepaid,
+         CreditLine as creditLineContract } from '../../generated/CreditLine/CreditLine';
+import { BIGINT_ZERO, CREDIT_LINE_ADDRESS } from "../utils/constants";
+import { getCreditLineStatus } from "../utils/helpers";
 
 let creditLinesContract = creditLineContract.bind(
     CREDIT_LINE_ADDRESS

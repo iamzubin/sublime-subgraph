@@ -1,33 +1,29 @@
-import {
-  DataSourceContext,
-} from "@graphprotocol/graph-ts";
-import { Pool, User, GlobalPoolDetail } from '../generated/schema';
-import {
-  PoolCreated, OwnershipTransferred, PoolFactory, CollectionPeriodUpdated
-} from '../generated/PoolFactory/PoolFactory';
-import {
-  Pool as PoolContract,
-  Pool__poolVarsResult,
-  Pool__poolConstantsResult,
-} from '../generated/templates/Pool/Pool';
-import {
-  BigInt
-} from "@graphprotocol/graph-ts";
-import {
-  BIGINT_ZERO
-} from "./utils/constants"
-import {
-  getLoanStatus, createUser
-} from "./utils/helpers"
+import { DataSourceContext } from "@graphprotocol/graph-ts";
+
+import {  Pool, 
+          User, 
+          GlobalPoolDetail } from '../../generated/schema';
+
+import {  PoolCreated, 
+          OwnershipTransferred, 
+          PoolFactory, 
+          CollectionPeriodUpdated } from '../../generated/PoolFactory/PoolFactory';
+
+import {  Pool as PoolContract, 
+          Pool__poolVarsResult, 
+          Pool__poolConstantsResult } from '../../generated/templates/Pool/Pool';
+
+import { BigInt } from "@graphprotocol/graph-ts";
+import { BIGINT_ZERO } from "../utils/constants"
+import { getLoanStatus, createUser } from "../utils/helpers"
 // import { Pool as poolTemplate} from '../generated/templates/Pool/Pool'
 
 
-import { Pool as NewPool, PoolToken} from '../generated/templates';
+import { Pool as NewPool, PoolToken } from '../../generated/templates';
 let context = new DataSourceContext();
 
 
-export function handlePoolCreated(
-  event: PoolCreated
+export function handlePoolCreated(event: PoolCreated
 ): void {
   NewPool.createWithContext(
     event.params.pool, context

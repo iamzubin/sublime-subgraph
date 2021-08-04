@@ -66,6 +66,24 @@ export function createUser(
     user.save();
 }
 
+export function createUnverifiedUserProfile(walletAddress: Bytes, displayName: String) {
+    let user = UserProfile(walletAddress)
+    user.verified = false;
+    
+    let walletAddress = WalletAddress(walletAddress)
+    walletAddress.owner = user
+
+    // updating list of wallet addresses
+    let walletAddressList = user.walletAddresses
+    walletAddressList.push(walletAddress)
+    user.walletAddresses = walletAddressList
+
+    user.displayName = displayName
+
+    user.save()
+    walletAddress.save()
+}
+
 
 export function setTwitterDetails(
     userAddress: Bytes, details: Bytes

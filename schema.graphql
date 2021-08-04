@@ -161,7 +161,7 @@ type CreditLineCollateralInfo @entity {
 # Used to keep track of a user's pofile (list of wallet addresses 
 # and identity integrations like Twitter, etc.) 
 type UserProfile @entity {
-  # this id ideally shouldn't be the wallet address
+  # id will be the user's primary wallet address
   id: ID!
   walletAddresses: [WalletAddress!]! @derivedFrom(field: "owner")
   identityIntegrations: [Identity!]! @derivedFrom(field: "owner")
@@ -187,7 +187,6 @@ type WalletAddress @entity {
   #wallet address
   id: ID!
   owner: UserProfile!
-  address: Bytes!
 }
 
 type UserCreditLines @entity {
@@ -196,31 +195,6 @@ type UserCreditLines @entity {
   creditLinesAsBorrower: [CreditLine!]! @derivedFrom(field: "borrower")
   creditLinesAsLender: [CreditLine!]! @derivedFrom(field: "lender")
 }
-
-# Maps a UserProfile's credit line data
-# creditLinesAcceptedAsLender accepted credit lines where UserProfile was a lender
-#type UserCreditLineProfile @entity {
-#  id: ID!
-#  user: UserProfile!
-#  creditLinesAcceptedAsLender: [AcceptedCreditLine!]! @derivedFrom(field: "lender")
-#  creditLinesAcceptedAsBorrower: [AcceptedCreditLine!]! @derivedFrom(field: "borrower")
-#  creditLinesPendingAsLender: [PendingCreditLine!]! @derivedFrom(field: "lender")
-#  creditLinesPendingAsBorrower: [PendingCreditLine!]! @derivedFrom(field: "borrower")
-#}
-
-#type AcceptedCreditLine @entity {
-#  id: ID!
-#  creditLineVars: CreditLine!
-#  borrower: UserCreditLineProfile!
-#  lender: UserCreditLineProfile!
-#}
-
-#type PendingCreditLine @entity {
-#  id: ID!
-#  creditLineVars: CreditLine!
-#  borrower: UserCreditLineProfile!
-#  lender: UserCreditLineProfile!
-#}
 
 type CreditLine @entity {
   #creditLine hash
@@ -251,9 +225,9 @@ type CreditLine @entity {
   collateralAsset: Bytes!
   # auto-liquidation
   autoLiquidate: Boolean!
-  # active principal
+  # active principal borrowed
   activePrincipal: BigInt!
-  # active collateral
+  # active collateral deposited
   activeCollateral: BigInt!
   # total interest repaid
   totalInterestRepaid: BigInt!
@@ -263,50 +237,28 @@ type CreditLine @entity {
   lastPrincipalUpdateTime: BigInt!
   # array of all liquidations associated with given credit line 
   #(assumption: credit line stays active even after liquidation)
-  liquidationHistory: [LiquidationEvent!]! @derivedFrom(field: "creditLine")
+  liquidationHistory: LiquidationEvent! @derivedFrom(field: "creditLine")
   borrowingHistory: [BorrowingEvent!]! @derivedFrom(field: "creditLine")
   repaymentHistory: [RepaymentEvent!]! @derivedFrom(field: "creditLine")
 }
 
 type LiquidationEvent @entity {
   id: ID!
-  creditLineHash: Bytes!
   liquidator: Bytes!
   creditLine: CreditLine!
+  amountLiquidatedInCollateralAsset: BigInt!
 }
 
 type BorrowingEvent @entity {
   id: ID!
-  creditLineHash: Bytes!
   borrowAmount: BigInt!
   creditLine: CreditLine!
 }
 
 type RepaymentEvent @entity {
-
-}
-
-type CreditLine @entity{
-  #id: ID!
-  #creditLineHash: Bytes
-  #lender: Bytes
-  #borrowLimit:BigInt
-  #liquidationThreshold:BigInt
-  #borrowRate:BigInt
-  #idealCollateralRatio: BigInt
-  #borrowAsset: Bytes
-  #borrower: Bytes
-  #collateralAsset:Bytes
-  #creditLineStatus:CreditLineStatus
-  #liquidatedCreditLine: creditLineLiquidation
-  #principal:BigInt
-  #totalInterestRepaid:BigInt
-  lastPrincipalUpdateTime:BigInt
-  #interestAccruedTillPrincipalUpdate:BigInt
-  collateralAmount:BigInt
-  #autoLiquidation:Boolean
-  requestByLender:Boolean
-  collateralShareInStrategy: [CreditLineCollateralInfo!] @derivedFrom(field: "creditLines")
+  id: ID!
+  creditLine: CreditLine!
+  repayAmount: BigInt!
 }
 
 type creditLineLiquidation @entity{
