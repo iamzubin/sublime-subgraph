@@ -1,6 +1,8 @@
 import { CreditLine, 
-         CreditLineCollateralInfo, 
-         creditLineLiquidation } from '../../generated/schema';
+         UserCreditLines,
+         CreditLineLiquidationEvent,
+         CreditLineBorrowingEvent,
+         CreditLineRepaymentEvent } from '../../generated/schema';
 import { BorrowedFromCreditLine,
          CreditLineAccepted,
          CreditLineClosed,

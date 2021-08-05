@@ -242,20 +242,20 @@ type CreditLine @entity {
   repaymentHistory: [RepaymentEvent!]! @derivedFrom(field: "creditLine")
 }
 
-type LiquidationEvent @entity {
+type CreditLineLiquidationEvent @entity {
   id: ID!
   liquidator: Bytes!
   creditLine: CreditLine!
   amountLiquidatedInCollateralAsset: BigInt!
 }
 
-type BorrowingEvent @entity {
+type CreditLineBorrowingEvent @entity {
   id: ID!
   borrowAmount: BigInt!
   creditLine: CreditLine!
 }
 
-type RepaymentEvent @entity {
+type CreditLineRepaymentEvent @entity {
   id: ID!
   creditLine: CreditLine!
   repayAmount: BigInt!
