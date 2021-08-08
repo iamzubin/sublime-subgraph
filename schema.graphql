@@ -189,13 +189,6 @@ type WalletAddress @entity {
   owner: UserProfile!
 }
 
-type UserCreditLines @entity {
-  id: ID!
-  owner: UserProfile!
-  creditLinesAsBorrower: [CreditLine!]! @derivedFrom(field: "borrower")
-  creditLinesAsLender: [CreditLine!]! @derivedFrom(field: "lender")
-}
-
 type CreditLine @entity {
   #creditLine hash
   id: ID!
@@ -237,9 +230,11 @@ type CreditLine @entity {
   lastPrincipalUpdateTime: BigInt!
   # array of all liquidations associated with given credit line 
   #(assumption: credit line stays active even after liquidation)
-  liquidationHistory: LiquidationEvent! @derivedFrom(field: "creditLine")
-  borrowingHistory: [BorrowingEvent!]! @derivedFrom(field: "creditLine")
-  repaymentHistory: [RepaymentEvent!]! @derivedFrom(field: "creditLine")
+  liquidationHistory: CreditLineLiquidationEvent @derivedFrom(field: "creditLine")
+  borrowingHistory: [CreditLineBorrowingEvent!]! @derivedFrom(field: "creditLine")
+  repaymentHistory: [CreditLineRepaymentEvent!]! @derivedFrom(field: "creditLine")
+  oracleAddress: Bytes!
+  protocolFee: BigInt!
 }
 
 type CreditLineLiquidationEvent @entity {
@@ -261,13 +256,15 @@ type CreditLineRepaymentEvent @entity {
   repayAmount: BigInt!
 }
 
-type creditLineLiquidation @entity{
-  id:ID!
-  creditLine: CreditLine
-  Borrower: Bytes
-  liquidator:Bytes
-  liquidatedAmount: BigInt
-  suppliedAmount: BigInt
-  timeStamp:BigInt
-}
+
+
+#type creditLineLiquidation @entity{
+#  id:ID!
+#  creditLine: CreditLine
+#  Borrower: Bytes
+#  liquidator:Bytes
+#  liquidatedAmount: BigInt
+#  suppliedAmount: BigInt
+#  timeStamp:BigInt
+#}
 

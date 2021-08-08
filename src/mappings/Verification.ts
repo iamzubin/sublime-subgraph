@@ -65,6 +65,26 @@ export function handleUserRegistered(event: UserRegistered): void {
     identity.save();
 }
 
+export function handleUserDetailsUpdated(event: UserDetailsUpdated): void {
+
+}
+
+export function handleUserUnregistered(event: UserUnregistered): void {
+
+}
+
+export function handleCollateralAdded(event: CollateralAdded): void {
+
+}
+
+export function handleAmountBorrowed(event: AmountBorrowed): void {
+
+}
+
+export function handleCollateralWithdrawn(event: CollateralWithdrawn): void {
+
+}
+
     //setTwitterDetails(event.params.user, event.params.offChainDetails)
 
     // let depositId = D + event.params.asset.toHexString() + event.params.strategy.toHexString();
