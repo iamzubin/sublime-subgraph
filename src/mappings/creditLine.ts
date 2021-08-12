@@ -126,12 +126,12 @@ export function handleCreditLineRequestedToBorrower(event: CreditLineRequestedTo
             borrower = UserProfile.load(borrowerAddress.toHexString())
         }
 
-        creditLine.lender = lender;
-        creditLine.borrower = borrower;
+        creditLine.lender = lender.id;
+        creditLine.borrower = borrower.id;
         creditLine.lenderAddress = lenderAddress;
         creditLine.borrowerAddress = borrowerAddress;
 
-        creditLine.requestedBy = lender; // since function is creditLineRequestedToBorrower()
+        creditLine.requestedBy = lender.id; // since function is creditLineRequestedToBorrower()
 
         creditLine.status = creditLineInfo.value9;
 

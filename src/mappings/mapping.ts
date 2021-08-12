@@ -115,7 +115,7 @@ export function handleOwnershipTransferred(
   gPoolDetails.collectionPeriod = poolFactoryContract.collectionPeriod()
   gPoolDetails.matchCollateralRatioInterval = poolFactoryContract.matchCollateralRatioInterval()
   gPoolDetails.marginCallDuration = poolFactoryContract.marginCallDuration()
-  gPoolDetails.collateralVolatilityThreshold = poolFactoryContract.collateralVolatilityThreshold()
+  //gPoolDetails.collateralVolatilityThreshold = poolFactoryContract.collateralVolatilityThreshold()
   gPoolDetails.gracePeriodPenaltyFraction = poolFactoryContract.gracePeriodPenaltyFraction()
   gPoolDetails.liquidatorRewardFraction = poolFactoryContract.liquidatorRewardFraction()
   gPoolDetails.votingPassRatio = poolFactoryContract.votingPassRatio()
