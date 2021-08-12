@@ -166,7 +166,7 @@ type UserProfile @entity {
   walletAddresses: [WalletAddress!]! @derivedFrom(field: "owner")
   identityIntegrations: [Identity!]! @derivedFrom(field: "owner")
   verified: Boolean!
-  displayName: String!
+  displayName: Bytes!
 }
 
 # Used to store a identity integration (Twitter, etc.)
@@ -176,8 +176,8 @@ type Identity @entity {
   verificationMethod: String!
   # identity can sometimes have a userName for frontend display and an 
   # underlying unique ID (like Twitter). Value can be string (username) or int (userID) converted to string
-  userName: String!
-  userID: String!
+  userName: Bytes!
+  userID: Bytes!
   owner: UserProfile!
 }
 

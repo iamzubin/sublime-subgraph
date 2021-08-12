@@ -66,10 +66,11 @@ export function createUser(
     user.save();
 }
 
-export function createUnverifiedUserProfile(walletAddress: Bytes, displayName: String) {
+export function createUnverifiedUserProfile(walletAddress: Bytes, displayName: String): void {
     let user = UserProfile(walletAddress)
     user.verified = false;
     
+    //assumes wallet address does not exist either
     let walletAddress = WalletAddress(walletAddress)
     walletAddress.owner = user
 

@@ -115,9 +115,7 @@ export function handleTransfer(
     // lendingDetailTo.save()
 }
 
-export function handleOpenBorrowPoolClosed(
-    event: OpenBorrowPoolClosed
-): void {
+export function handleOpenBorrowPoolClosed(event: OpenBorrowPoolClosed): void {
     let pool = Pool.load(
         event.transaction.to.toHexString()
     );

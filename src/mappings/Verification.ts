@@ -16,7 +16,7 @@ import { STATUS_UNVERIFIED, STATUS_VERIFIED } from '../utils/constants';
 // handleUserRegistered() only handles new users, there exists no pre-existing UserProfile for them
 export function handleUserRegistered(event: UserRegistered): void {
 
-    let userID = event.params._user.toHexString() //user's primary wallet address
+    let userID = event.params.user.toHexString() //user's primary wallet address
 
     let walletAddress = WalletAddress.load(userID)
 
@@ -35,27 +35,27 @@ export function handleUserRegistered(event: UserRegistered): void {
 
     // updating list of wallet addresses
     let walletAddressList = user.walletAddresses
-    walletAddressList.push(walletAddress)
+    walletAddressList.push(walletAddress.id)
     user.walletAddresses = walletAddressList
 
     // updating identity integration
     let verificationMethod = 'twitter' // currently hardcoded, later will be a variable
 
-    let identity = Identity(user.id.toString() + '_' + verificationMethod)
+    let identity = Identity.load(user.id.toString() + '_' + verificationMethod)
 
     if (identity == null) {
         identity = new Identity(user.id.toString() + '_' + verificationMethod)
         identity.verificationMethod = verificationMethod
-        identity.userName = event.params._offChainDetails
-        identity.userID = event.params._offChainDetails // currently the same as userName, to update once verification in smart contract is updated
+        identity.userName = event.params.offChainDetails
+        identity.userID = event.params.offChainDetails // currently the same as userName, to update once verification in smart contract is updated
         identity.owner = user.id
     }
 
     let identityList = user.identityIntegrations
-    identityList.push(identity)
+    identityList.push(identity.id)
     user.identityIntegrations = identityList
 
-    user.displayName = event.params._offChainDetails
+    user.displayName = event.params.offChainDetails
 
     user.verified = true
 
@@ -73,17 +73,6 @@ export function handleUserUnregistered(event: UserUnregistered): void {
 
 }
 
-export function handleCollateralAdded(event: CollateralAdded): void {
-
-}
-
-export function handleAmountBorrowed(event: AmountBorrowed): void {
-
-}
-
-export function handleCollateralWithdrawn(event: CollateralWithdrawn): void {
-
-}
 
     //setTwitterDetails(event.params.user, event.params.offChainDetails)
 
