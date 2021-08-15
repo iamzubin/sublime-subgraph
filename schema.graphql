@@ -66,6 +66,7 @@ type Pool @entity {
   repaymentEvents: [RepaymentEvent!]!
   repaymentVars: RepaymentVars!
   poolLenders: [PoolLender!]! @derivedFrom(field: "poolLentIn")
+  poolToken: PoolToken!
 }
 
 type PoolConstants @entity {
@@ -112,6 +113,7 @@ type RepaymentVars @entity {
   nextDuePeriod: BigInt!
   nInstalmentsFullyPaid: BigInt!
   loanExtensionPeriod: BigInt!
+  nextInstalmentDeadline: BigInt!
 }
 
 type RepaymentConstants @entity {
@@ -145,56 +147,21 @@ type PoolLender @entity {
   marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
 }
 
+type PoolToken @entity {
+  id: ID! # generated during PoolCreated() event in PoolFactory
+  totalSupply: BigInt! # updated during minting burning
+  pool: Pool! # which pool is the token associated with
+  borrowerAddress: Bytes!
+}
+
 type ExtensionRequest @entity {
-  
+
 }
 
 type MarginCallEvent @entity {
   id: ID!
   marginCallTime: BigInt! #is BigInt the appropriate type?
   marginCaller: PoolLender!
-}
-
-type Pool @entity {
-  #id: ID!
-  #borrower: User
-  #borrowAsset: Bytes
-  #borrowAmountRequested:BigInt
-  #minborrowAmount:BigInt
-  #matchCollateralRatioEndTime:BigInt
-  #noOfRepaymentIntervals:BigInt
-  #investedTo:Bytes
-  #collateralAsset: Bytes
-  #lendingRate: BigInt
-  #borrowRate: BigInt
-  #loanDuration: BigInt
-  #idealCollateralRatio: BigInt
-  #loanStatus: LoanStatus
-  #repaymentInterval:BigInt
-  #poolSavingsStrategy:Bytes
-  # collateralShare:BigInt
-  # lentAmount: BigInt
-  # borrowedAmount: BigInt
-  # collateralAmount: BigInt
-  #loanWithdrawalDeadline:BigInt
-  #amountRepaid: BigInt
-  #loanStartTime: BigInt
-  #nextRepayTime: BigInt
-  # collateralCalls: BigInt
-  # whitelistedAddress: [Bytes]
-  # voteWeight: BigInt
-  #baseLiquidityShares:BigInt
-  #extraLiquidityShares:BigInt
-  noOfGracePeriodsTaken:BigInt
-  #nextDuePeriod:BigInt
-  #repayExtensionEndTime: BigInt
-  lenders: [LendingDetailscopy!] @derivedFrom(field: "pool")
-  liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
-  poolLiquidated: poolLiquidation 
-  published: BigInt
-  lentAmount:BigInt
-  tokenImpl: String
-  nextDueTime: BigInt
 }
 
 type poolLiquidation @entity{
@@ -366,3 +333,44 @@ type CreditLineRepaymentEvent @entity {
 #  timeStamp:BigInt
 #}
 
+#type Pool @entity {
+  #id: ID!
+  #borrower: User
+  #borrowAsset: Bytes
+  #borrowAmountRequested:BigInt
+  #minborrowAmount:BigInt
+  #matchCollateralRatioEndTime:BigInt
+  #noOfRepaymentIntervals:BigInt
+  #investedTo:Bytes
+  #collateralAsset: Bytes
+  #lendingRate: BigInt
+  #borrowRate: BigInt
+  #loanDuration: BigInt
+  #idealCollateralRatio: BigInt
+  #loanStatus: LoanStatus
+  #repaymentInterval:BigInt
+  #poolSavingsStrategy:Bytes
+  # collateralShare:BigInt
+  # lentAmount: BigInt
+  # borrowedAmount: BigInt
+  # collateralAmount: BigInt
+  #loanWithdrawalDeadline:BigInt
+  #amountRepaid: BigInt
+  #loanStartTime: BigInt
+  #nextRepayTime: BigInt
+  # collateralCalls: BigInt
+  # whitelistedAddress: [Bytes]
+  # voteWeight: BigInt
+  #baseLiquidityShares:BigInt
+  #extraLiquidityShares:BigInt
+  #noOfGracePeriodsTaken:BigInt
+  #nextDuePeriod:BigInt
+  #repayExtensionEndTime: BigInt
+  #lenders: [LendingDetailscopy!] @derivedFrom(field: "pool")
+  #liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
+  #poolLiquidated: poolLiquidation 
+  #published: BigInt
+  #lentAmount:BigInt
+  #tokenImpl: String
+  #nextDueTime: BigInt
+#}
