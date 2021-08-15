@@ -145,6 +145,10 @@ type PoolLender @entity {
   marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
 }
 
+type ExtensionRequest @entity {
+  
+}
+
 type MarginCallEvent @entity {
   id: ID!
   marginCallTime: BigInt! #is BigInt the appropriate type?

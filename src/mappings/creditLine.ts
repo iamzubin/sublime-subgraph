@@ -91,15 +91,6 @@ export function handleCreditLineRequestedToLender(event: CreditLineRequestedToLe
     }
 }
 
-export function handleCreditLineAccepted(event: CreditLineAccepted): void {
-    let creditLineHash = event.params.creditLineHash.toHexString();
-    let creditLine = CreditLine.load(creditLineHash)
-    if (creditLine != null) {
-        creditLine.status = "ACTIVE";
-        creditLine.save();
-    } 
-}
-
 export function handleCreditLineRequestedToBorrower(event: CreditLineRequestedToBorrower): void {
     let creditLineHash = event.params.creditLineHash.toHexString(); // hash is same as the credit line ID
     let lenderAddress = event.params.lender;
@@ -157,6 +148,15 @@ export function handleCreditLineRequestedToBorrower(event: CreditLineRequestedTo
         
         creditLine.save();
     }
+}
+
+export function handleCreditLineAccepted(event: CreditLineAccepted): void {
+    let creditLineHash = event.params.creditLineHash.toHexString();
+    let creditLine = CreditLine.load(creditLineHash)
+    if (creditLine != null) {
+        creditLine.status = "ACTIVE";
+        creditLine.save();
+    } 
 }
 
 
@@ -221,3 +221,33 @@ export function handleCreditLineReset(event: CreditLineReset): void {
 export function handleCreditLineLiquidated(event: CreditLineLiquidated): void {
     let a = 5;
 }
+
+export function handleCompleteCreditLineRepaid(event: CompleteCreditLineRepaid): void {
+
+}
+
+export function handleDefaultStrategyUpdated(event: DefaultStrategyUpdated): void {
+
+}
+
+export function handlePriceOracleUpdated(event: PriceOracleUpdated): void {
+
+}
+
+export function handleSavingsAccountUpdated(event: SavingsAccountUpdated): void {
+
+}
+
+export function handleStrategyRegistryUpdated(event: StrategyRegistryUpdated): void {
+
+}
+
+export function handleProtocolFeeFractionUpdated(event: ProtocolFeeFractionUpdated): void {
+
+}
+
+export function handleProtocolFeeCollectorUpdated(event: ProtocolFeeCollectorUpdated): void {
+
+}
+
+
