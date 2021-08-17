@@ -128,6 +128,7 @@ type RepaymentConstants @entity {
   loanStartTime: BigInt!
   repayAsset: Bytes!
   savingsAccount: Bytes!
+  borrowAsset: Bytes!
 }
 
 enum PoolLenderStatus {
@@ -174,13 +175,6 @@ type poolLiquidation @entity{
   suppliedAmount: BigInt
 }
 
-type User @entity {
-  id: ID!
-  borrowingPools: [Pool!] @derivedFrom(field: "borrower")
-  lendingPools: [LendingDetailscopy!] @derivedFrom(field: "lender")
-  status: Status!
-  twitterDetails: TwitterDetail
-}
   
 type TwitterDetail @entity {
   id: ID!
@@ -190,11 +184,19 @@ type TwitterDetail @entity {
   linkedAddresses: [Bytes!]
 }
 
-type SavingAccount @entity {
+type SavingsAccount @entity {
   id: ID!
-  user: User
-  deposits: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
-  allowances: [SavingsDeposit!] @derivedFrom(field: "savingAccount")
+  user: UserProfile!
+  walletAddress: Bytes!
+  savingsDetails: [SavingsStrategyDetails!]! @derivedFrom(field: "savingsAccount")
+}
+
+type SavingsStrategyDetails @entity {
+  id: ID!
+  strategyAddress: Bytes!
+  savingsAccount: SavingsAccount!
+  balance: BigInt!
+  asset: Bytes!
 }
 
 type SavingsDeposit @entity {
