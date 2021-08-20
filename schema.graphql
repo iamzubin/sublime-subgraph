@@ -159,10 +159,19 @@ type ExtensionRequest @entity {
 
 }
 
+enum MarginCallStatus {
+  CANCELLED
+  EXECUTED
+  FULFILLED
+  ACTIVE
+}
+
 type MarginCallEvent @entity {
   id: ID!
+  status: MarginCallStatus!
   marginCallTime: BigInt! #is BigInt the appropriate type?
   marginCaller: PoolLender!
+  pool: Pool!
 }
 
 type poolLiquidation @entity{
