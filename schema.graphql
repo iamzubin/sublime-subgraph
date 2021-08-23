@@ -146,6 +146,8 @@ type PoolLender @entity {
   votedForExtension: Boolean! 
   amountLent: BigInt!
   marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
+  baseLiquidityShares: BigInt!
+  extraLiquidityShares: BigInt!
 }
 
 type PoolToken @entity {
