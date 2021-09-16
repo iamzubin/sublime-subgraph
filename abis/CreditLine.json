@@ -1,5 +1,5 @@
 [
-    {
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -759,4 +759,4 @@
     "stateMutability": "payable",
     "type": "function"
   }
-  ]
+]

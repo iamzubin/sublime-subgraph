@@ -12,18 +12,17 @@ enum LoanStatus {
   Terminated
 }
 
-type GlobalPoolDetail @entity{
-  id:ID!
+type GlobalPoolDetail @entity {
+  id: ID!
   admin: String!
-  collectionPeriod:BigInt
-  matchCollateralRatioInterval:BigInt
-  marginCallDuration:BigInt
-  collateralVolatilityThreshold:BigInt
-  gracePeriodPenaltyFraction:BigInt
-  liquidatorRewardFraction:BigInt
-  votingPassRatio:BigInt
-  gracePeriodFraction:BigInt
-
+  collectionPeriod: BigInt
+  matchCollateralRatioInterval: BigInt
+  marginCallDuration: BigInt
+  collateralVolatilityThreshold: BigInt
+  gracePeriodPenaltyFraction: BigInt
+  liquidatorRewardFraction: BigInt
+  votingPassRatio: BigInt
+  gracePeriodFraction: BigInt
 }
 
 type LendingDetails @entity {
@@ -34,14 +33,11 @@ type LendingDetails @entity {
   amountWithdrawn: BigInt
   repaymentWithdrawn: BigInt
   collateralCalled: Boolean
-  lastVoteTime:BigInt
-  marginCallEndTime:BigInt
-  exraLiquidityShares:BigInt
-  Balance:BigInt
+  lastVoteTime: BigInt
+  marginCallEndTime: BigInt
+  exraLiquidityShares: BigInt
+  Balance: BigInt
 }
-
-
-
 
 type LendingDetailscopy @entity {
   id: ID!
@@ -54,58 +50,60 @@ type LendingDetailscopy @entity {
   # lastVoteTime:BigInt
   # marginCallEndTime:BigInt
   # exraLiquidityShares:BigInt
-  AmountLend:BigInt
+  AmountLend: BigInt
 }
 
 type Pool @entity {
   id: ID!
   borrower: User
   borrowAsset: Bytes
-  borrowAmountRequested:BigInt
-  minborrowAmount:BigInt
-  matchCollateralRatioEndTime:BigInt
-  noOfRepaymentIntervals:BigInt
-  investedTo:Bytes
+  borrowAssetDecimal: BigInt
+  borrowAmountRequested: BigInt
+  minborrowAmount: BigInt
+  matchCollateralRatioEndTime: BigInt
+  noOfRepaymentIntervals: BigInt
+  investedTo: Bytes
   collateralAsset: Bytes
+  collateralAssetDecimal: BigInt
   lendingRate: BigInt
   borrowRate: BigInt
   loanDuration: BigInt
   idealCollateralRatio: BigInt
   loanStatus: LoanStatus
-  repaymentInterval:BigInt
-  poolSavingsStrategy:Bytes
+  repaymentInterval: BigInt
+  poolSavingsStrategy: Bytes
   # collateralShare:BigInt
   # lentAmount: BigInt
   # borrowedAmount: BigInt
   # collateralAmount: BigInt
-  loanWithdrawalDeadline:BigInt
+  loanWithdrawalDeadline: BigInt
   amountRepaid: BigInt
   loanStartTime: BigInt
   nextRepayTime: BigInt
   # collateralCalls: BigInt
   # whitelistedAddress: [Bytes]
   # voteWeight: BigInt
-  baseLiquidityShares:BigInt
-  extraLiquidityShares:BigInt
-  noOfGracePeriodsTaken:BigInt
-  nextDuePeriod:BigInt
+  baseLiquidityShares: BigInt
+  extraLiquidityShares: BigInt
+  noOfGracePeriodsTaken: BigInt
+  nextDuePeriod: BigInt
   repayExtensionEndTime: BigInt
   lenders: [LendingDetailscopy!] @derivedFrom(field: "pool")
   liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
-  poolLiquidated: poolLiquidation 
+  poolLiquidated: poolLiquidation
   published: BigInt
-  lentAmount:BigInt
+  lentAmount: BigInt
   tokenImpl: String
   nextDueTime: BigInt
 }
 
-type poolLiquidation @entity{
-  id:ID!
+type poolLiquidation @entity {
+  id: ID!
   pool: Pool
   lender: Bytes
-  liquidator:Bytes
+  liquidator: Bytes
   liquidatedAmount: BigInt
-  timeStamp:BigInt
+  timeStamp: BigInt
   suppliedAmount: BigInt
 }
 
@@ -116,12 +114,12 @@ type User @entity {
   status: Status!
   twitterDetails: TwitterDetail
 }
-  
+
 type TwitterDetail @entity {
   id: ID!
   twitterId: Bytes!
   twitterSignMessage: String
-  registrationTime: BigInt  
+  registrationTime: BigInt
   linkedAddresses: [Bytes!]
 }
 
@@ -141,9 +139,7 @@ type SavingsDeposit @entity {
   liquidityShare: BigInt
 }
 
-
 enum CreditLineStatus {
-
   NOT_CREATED
   REQUESTED
   ACTIVE
@@ -159,36 +155,38 @@ type CreditLineCollateralInfo @entity {
   creditLines: CreditLine
 }
 
-type CreditLine @entity{
+type CreditLine @entity {
   id: ID!
   CreditLineHash: Bytes
   lender: Bytes
-  BorrowLimit:BigInt
-  liquidationThreshold:BigInt
-  borrowRate:BigInt
+  BorrowLimit: BigInt
+  liquidationThreshold: BigInt
+  borrowRate: BigInt
   idealCollateralRatio: BigInt
   BorrowAsset: Bytes
+  borrowAssetDecimal: BigInt
   Borrower: Bytes
-  collateralAsset:Bytes
-  creditLineStatus:CreditLineStatus
+  collateralAsset: Bytes
+  collateralAssetDecimal: BigInt
+  creditLineStatus: CreditLineStatus
   liquidatedCreditLine: creditLineLiquidation
-  principal:BigInt
-  totalInterestRepaid:BigInt
-  lastPrincipalUpdateTime:BigInt
-  interestAccruedTillPrincipalUpdate:BigInt
-  collateralAmount:BigInt
-  autoLiquidation:Boolean
-  requestByLender:Boolean
-  collateralShareInStrategy: [CreditLineCollateralInfo!] @derivedFrom(field: "creditLines")
+  principal: BigInt
+  totalInterestRepaid: BigInt
+  lastPrincipalUpdateTime: BigInt
+  interestAccruedTillPrincipalUpdate: BigInt
+  collateralAmount: BigInt
+  autoLiquidation: Boolean
+  requestByLender: Boolean
+  collateralShareInStrategy: [CreditLineCollateralInfo!]
+    @derivedFrom(field: "creditLines")
 }
 
-type creditLineLiquidation @entity{
-  id:ID!
+type creditLineLiquidation @entity {
+  id: ID!
   creditLine: CreditLine
   Borrower: Bytes
-  liquidator:Bytes
+  liquidator: Bytes
   liquidatedAmount: BigInt
   suppliedAmount: BigInt
-  timeStamp:BigInt
+  timeStamp: BigInt
 }
-

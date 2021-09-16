@@ -1,223 +1,192 @@
+import { Address } from "@graphprotocol/graph-ts";
+import { REPAYMENTS_ACCOUNT_ADDRESS } from "../utils/constants";
 import {
-    Address,
-  } from "@graphprotocol/graph-ts";
+  Pool,
+  LendingDetails,
+  LendingDetailscopy,
+} from "../../generated/schema";
 import {
-    REPAYMENTS_ACCOUNT_ADDRESS
-} from "../utils/constants"  
-import {
-    Pool, LendingDetails, LendingDetailscopy
-} from '../../generated/schema';
-import {
-    LOAN_STATUS_CLOSED,
-    LOAN_STATUS_TERMINATED,
-    LOAN_STATUS_CANCELLED,
-    LOAN_STATUS_ACTIVE,
-    LOAN_STATUS_DEFAULTED
+  LOAN_STATUS_CLOSED,
+  LOAN_STATUS_TERMINATED,
+  LOAN_STATUS_CANCELLED,
+  LOAN_STATUS_ACTIVE,
+  LOAN_STATUS_DEFAULTED,
 } from "../utils/constants";
+import { createUser } from "../utils/helpers";
 import {
-    createUser,
-} from "../utils/helpers";
-import {
-    OpenBorrowPoolClosed,
-    OpenBorrowPoolTerminated,
-    OpenBorrowPoolCancelled,
-    CollateralAdded,
-    CollateralWithdrawn,
-    LiquiditySupplied,
-    LiquidityWithdrawn,
-    AmountBorrowed,
-    MarginCallCollateralAdded,
-    LoanDefaulted,
-    Pool as PoolContract,
-} from '../../generated/templates/Pool/Pool';
+  OpenBorrowPoolClosed,
+  OpenBorrowPoolTerminated,
+  OpenBorrowPoolCancelled,
+  CollateralAdded,
+  CollateralWithdrawn,
+  LiquiditySupplied,
+  LiquidityWithdrawn,
+  AmountBorrowed,
+  MarginCallCollateralAdded,
+  LoanDefaulted,
+  Pool as PoolContract,
+} from "../../generated/templates/Pool/Pool";
 
 import {
-    Approval,
-    Transfer,
-    PoolToken
-} from '../../generated/templates/PoolToken/PoolToken';
+  Approval,
+  Transfer,
+  PoolToken,
+} from "../../generated/templates/PoolToken/PoolToken";
 
 import {
-    Repayments,
-    InterestRepaid,
-    PartialExtensionRepaymentMade
-} from "../../generated/Repayments/Repayments"
+  Repayments,
+  InterestRepaid,
+  PartialExtensionRepaymentMade,
+} from "../../generated/Repayments/Repayments";
 
 import { store } from "@graphprotocol/graph-ts";
 
-import {
-    BigInt
-  } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 
-export function handleInterestRepaid(
-    event: InterestRepaid
-): void {
-    let poolAddress = event.params.poolID.toHexString()
-    let pool = Pool.load(poolAddress)
-    if(pool == null){
-        pool = new Pool(poolAddress)
-    }
-    let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS)
-    pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(event.params.poolID).value
-    let poolInstance = PoolContract.bind(Address.fromString(poolAddress))
-    let resultNextDueTime = poolInstance.try_getNextDueTime()
-    let nextDueTime: BigInt;
-    if (!resultNextDueTime.reverted) {
-        nextDueTime = resultNextDueTime.value;
-    }
-    pool.nextDueTime = nextDueTime;
-    pool.save()
+export function handleInterestRepaid(event: InterestRepaid): void {
+  let poolAddress = event.params.poolID.toHexString();
+  let pool = Pool.load(poolAddress);
+  if (pool == null) {
+    pool = new Pool(poolAddress);
+  }
+  let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS);
+  pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(
+    event.params.poolID
+  ).value;
+  let poolInstance = PoolContract.bind(Address.fromString(poolAddress));
+  let resultNextDueTime = poolInstance.try_getNextDueTime();
+  let nextDueTime: BigInt;
+  if (!resultNextDueTime.reverted) {
+    nextDueTime = resultNextDueTime.value;
+  }
+  pool.nextDueTime = nextDueTime;
+  pool.save();
 }
 
 export function handlePartialExtensionRepaymentMade(
-    event: PartialExtensionRepaymentMade
+  event: PartialExtensionRepaymentMade
 ): void {
-    let poolAddress = event.params.poolID.toHexString()
-    let pool = Pool.load(poolAddress)
-    if(pool == null){
-        pool = new Pool(poolAddress)
-    }
-    let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS)
-    pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(event.params.poolID).value
-    let poolInstance = PoolContract.bind(Address.fromString(poolAddress))
-    let resultNextDueTime = poolInstance.try_getNextDueTime()
-    let nextDueTime: BigInt;
-    if (!resultNextDueTime.reverted) {
-        nextDueTime = resultNextDueTime.value;
-    }
-    pool.nextDueTime = nextDueTime;
-    pool.save()
+  let poolAddress = event.params.poolID.toHexString();
+  let pool = Pool.load(poolAddress);
+  if (pool == null) {
+    pool = new Pool(poolAddress);
+  }
+  let repaymentsContract = Repayments.bind(REPAYMENTS_ACCOUNT_ADDRESS);
+  pool.amountRepaid = repaymentsContract.try_getTotalRepaidAmount(
+    event.params.poolID
+  ).value;
+  let poolInstance = PoolContract.bind(Address.fromString(poolAddress));
+  let resultNextDueTime = poolInstance.try_getNextDueTime();
+  let nextDueTime: BigInt;
+  if (!resultNextDueTime.reverted) {
+    nextDueTime = resultNextDueTime.value;
+  }
+  pool.nextDueTime = nextDueTime;
+  pool.save();
 }
 
-export function handleTransfer(
-    event: Transfer
-): void {
-    // let poolAddress = event.transaction.to.toHexString()
-    // let pool = Pool.load(poolAddress);
-    // let poolTokenInstance = PoolToken.bind(
-    //     Address.fromString(pool.tokenImpl)
-    // );
-    // let transferFrom = poolAddress +
-    //     event.params.from.toHexString();
-    // let lendingDetailFrom = LendingDetailscopy.load(transferFrom)
-    // let transferTo = poolAddress +
-    //     event.params.to.toHexString();
-    // let lendingDetailTo = LendingDetailscopy.load(transferTo)
-    // if(lendingDetailTo == null){
-    //     lendingDetailTo = new LendingDetailscopy(transferTo)
-    //     lendingDetailTo.pool = poolAddress;
-    //     // lendingDetail.collateralCalled = false;
-    //     lendingDetailTo.lender = event.params.to.toHexString();
-    // }
-    // // lendingDetailTo.AmountLend = poolTokenInstance.try_balanceOf(event.params.to).value
-    // // lendingDetailFrom.AmountLend = poolTokenInstance.try_balanceOf(event.params.from).value
-    // lendingDetailFrom.save()
-    // lendingDetailTo.save()
+export function handleTransfer(event: Transfer): void {
+  // let poolAddress = event.transaction.to.toHexString()
+  // let pool = Pool.load(poolAddress);
+  // let poolTokenInstance = PoolToken.bind(
+  //     Address.fromString(pool.tokenImpl)
+  // );
+  // let transferFrom = poolAddress +
+  //     event.params.from.toHexString();
+  // let lendingDetailFrom = LendingDetailscopy.load(transferFrom)
+  // let transferTo = poolAddress +
+  //     event.params.to.toHexString();
+  // let lendingDetailTo = LendingDetailscopy.load(transferTo)
+  // if(lendingDetailTo == null){
+  //     lendingDetailTo = new LendingDetailscopy(transferTo)
+  //     lendingDetailTo.pool = poolAddress;
+  //     // lendingDetail.collateralCalled = false;
+  //     lendingDetailTo.lender = event.params.to.toHexString();
+  // }
+  // // lendingDetailTo.AmountLend = poolTokenInstance.try_balanceOf(event.params.to).value
+  // // lendingDetailFrom.AmountLend = poolTokenInstance.try_balanceOf(event.params.from).value
+  // lendingDetailFrom.save()
+  // lendingDetailTo.save()
 }
 
-export function handleOpenBorrowPoolClosed(
-    event: OpenBorrowPoolClosed
-): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+export function handleOpenBorrowPoolClosed(event: OpenBorrowPoolClosed): void {
+  let pool = Pool.load(event.transaction.to.toHexString());
 
-    pool.loanStatus = LOAN_STATUS_CLOSED;
-    pool.save();
+  pool.loanStatus = LOAN_STATUS_CLOSED;
+  pool.save();
 }
 
 export function handleOpenBorrowPoolTerminated(
-    event: OpenBorrowPoolTerminated
+  event: OpenBorrowPoolTerminated
 ): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+  let pool = Pool.load(event.transaction.to.toHexString());
 
-    pool.loanStatus = LOAN_STATUS_TERMINATED;
-    pool.save();
+  pool.loanStatus = LOAN_STATUS_TERMINATED;
+  pool.save();
 }
 
 export function handleOpenBorrowPoolCanceled(
-    event: OpenBorrowPoolCancelled
+  event: OpenBorrowPoolCancelled
 ): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+  let pool = Pool.load(event.transaction.to.toHexString());
 
-    pool.loanStatus = LOAN_STATUS_CANCELLED;
-    pool.save();
+  pool.loanStatus = LOAN_STATUS_CANCELLED;
+  pool.save();
 }
 
-export function handleLoanDefaulted(
-    event: LoanDefaulted
-): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+export function handleLoanDefaulted(event: LoanDefaulted): void {
+  let pool = Pool.load(event.transaction.to.toHexString());
 
-    pool.loanStatus = LOAN_STATUS_DEFAULTED;
-    pool.save();
+  pool.loanStatus = LOAN_STATUS_DEFAULTED;
+  pool.save();
 }
 
-export function handleCollateralAdded(
-    event: CollateralAdded
-): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+export function handleCollateralAdded(event: CollateralAdded): void {
+  let pool = Pool.load(event.transaction.to.toHexString());
 
-    pool.baseLiquidityShares = pool.baseLiquidityShares
-        .plus(event.params.sharesReceived);
+  pool.baseLiquidityShares = pool.baseLiquidityShares.plus(
+    event.params.sharesReceived
+  );
 
-    pool.save();
+  pool.save();
 }
 
-export function handleCollateralWithdrawn(
-    event: CollateralWithdrawn
-): void {
-    let pool = Pool.load(
-        event.transaction.to.toHexString()
-    );
+export function handleCollateralWithdrawn(event: CollateralWithdrawn): void {
+  let pool = Pool.load(event.transaction.to.toHexString());
 
-    pool.baseLiquidityShares = pool.baseLiquidityShares
-        .minus(event.params.amount);
-    pool.save();
+  pool.baseLiquidityShares = pool.baseLiquidityShares.minus(
+    event.params.amount
+  );
+  pool.save();
 }
 
+export function handleLiquiditySupplied(event: LiquiditySupplied): void {
+  let poolAddress = event.transaction.to.toHexString();
+  let lendingDetailId = poolAddress + event.params.lenderAddress.toHexString();
+  // let lendingDetailId = event.params.lenderAddress.toHexString();
+  let lendingDetail = LendingDetailscopy.load(lendingDetailId);
 
-export function handleLiquiditySupplied(
-    event: LiquiditySupplied
-): void {
-    let poolAddress = event.transaction.to.toHexString();
-    let lendingDetailId = poolAddress +
-        event.params.lenderAddress.toHexString();
-    // let lendingDetailId = event.params.lenderAddress.toHexString();
-    let lendingDetail = LendingDetailscopy.load(
-        lendingDetailId
-    );
+  if (lendingDetail == null) {
+    lendingDetail = new LendingDetailscopy(lendingDetailId);
+    lendingDetail.pool = poolAddress;
+    // lendingDetail.collateralCalled = false;
+    lendingDetail.lender = event.params.lenderAddress.toHexString();
+  }
 
-    if (lendingDetail == null) {
-        lendingDetail = new LendingDetailscopy(lendingDetailId);
-        lendingDetail.pool = poolAddress;
-        // lendingDetail.collateralCalled = false;
-        lendingDetail.lender = event.params.lenderAddress.toHexString();
-    }
+  lendingDetail.AmountLend = lendingDetail.AmountLend.plus(
+    event.params.amountSupplied
+  );
 
-    lendingDetail.AmountLend = lendingDetail.AmountLend.plus(event.params.amountSupplied);
+  createUser(event.params.lenderAddress);
 
-
-    createUser(event.params.lenderAddress);
-
-    let pool = Pool.load(poolAddress);
-    pool.lentAmount = pool.lentAmount
-        .plus(event.params.amountSupplied);
-    // let poolTokenInstance = PoolToken.bind(
-    //     Address.fromString(pool.tokenImpl)
-    // );
-    // lendingDetail.AmountLend = poolTokenInstance.try_balanceOf(event.params.lenderAddress).value
-    lendingDetail.save();
-    pool.save();
-
+  let pool = Pool.load(poolAddress);
+  pool.lentAmount = pool.lentAmount.plus(event.params.amountSupplied);
+  // let poolTokenInstance = PoolToken.bind(
+  //     Address.fromString(pool.tokenImpl)
+  // );
+  // lendingDetail.AmountLend = poolTokenInstance.try_balanceOf(event.params.lenderAddress).value
+  lendingDetail.save();
+  pool.save();
 }
 
 // export function handleLiquidityWithdrawn(
@@ -270,23 +239,21 @@ export function handleLiquiditySupplied(
 //     pool.save();
 // }
 
-export function handleAmountBorrowed(
-    event: AmountBorrowed
-): void {
-    let poolAddress = event.transaction.to.toHexString();
+export function handleAmountBorrowed(event: AmountBorrowed): void {
+  let poolAddress = event.transaction.to.toHexString();
 
-    let pool = Pool.load(poolAddress);
-    // pool.borrowedAmount = pool.borrowedAmount
-    //     .plus(event.params.amount);
-    pool.loanStatus = LOAN_STATUS_ACTIVE;
-    let poolInstance = PoolContract.bind(Address.fromString(poolAddress))
-    let resultNextDueTime = poolInstance.try_getNextDueTime()
-    let nextDueTime: BigInt;
-    if (!resultNextDueTime.reverted) {
-        nextDueTime = resultNextDueTime.value;
-    }
-    pool.nextDueTime = nextDueTime;
-    pool.save();
+  let pool = Pool.load(poolAddress);
+  // pool.borrowedAmount = pool.borrowedAmount
+  //     .plus(event.params.amount);
+  pool.loanStatus = LOAN_STATUS_ACTIVE;
+  let poolInstance = PoolContract.bind(Address.fromString(poolAddress));
+  let resultNextDueTime = poolInstance.try_getNextDueTime();
+  let nextDueTime: BigInt;
+  if (!resultNextDueTime.reverted) {
+    nextDueTime = resultNextDueTime.value;
+  }
+  pool.nextDueTime = nextDueTime;
+  pool.save();
 }
 
 // export function handleMarginCallCollateralAdded(

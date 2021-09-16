@@ -33,14 +33,13 @@ dataSources:
         - event: CollectionPeriodUpdated(uint256)
           handler: handleCollectionPeriodUpdated
 
-
   - kind: ethereum/contract
     name: SavingsAccount
     network: kovan
     source:
       address: "0xD1Ce6B73914dd8608Bca7e98Ad9DF8Fc92Ceb5b7"
       abi: SavingsAccount
-      startBlock: 25638000   
+      startBlock: 25638000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -67,7 +66,7 @@ dataSources:
     source:
       address: "0xBF09ecC3F7C439801779C9f2dcC684503e27F9c7"
       abi: Verification
-      startBlock: 25638000   
+      startBlock: 25638000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -86,14 +85,13 @@ dataSources:
         - event: UserUnregistered(address)
           handler: handleUserUnregistered
 
-
   - kind: ethereum/contract
     name: Repayments
     network: kovan
     source:
       address: "0xd157C83Cd1D83d591ba05f05983099d5E20AEee6"
       abi: Repayments
-      startBlock: 25638000   
+      startBlock: 25638000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -116,7 +114,7 @@ dataSources:
     source:
       address: "0xB642a5877Eb6511D75BdD0Bb9e4d31E251f99729"
       abi: CreditLine
-      startBlock: 25638000   
+      startBlock: 25638000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -142,6 +140,27 @@ dataSources:
           handler: handleCreditLineReset
         - event: PartialCreditLineRepaid(bytes32,uint256)
           handler: handlePartialCreditLineRepaid
+
+  - kind: ethereum/contract
+    name: Token
+    network: kovan
+    source:
+      address: "0x1111111111111111111111111111111111111111"
+      abi: Token
+      startBlock: 25638000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/token.ts
+      entities:
+        - Token
+      abis:
+        - name: Token
+          file: ./abis/Token.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
 
 templates:
   - kind: ethereum/contract
@@ -176,17 +195,17 @@ templates:
         - event: LiquiditySupplied(uint256,address)
           handler: handleLiquiditySupplied
         # - event: AmountBorrowed(address,uint256)
-          # handler: handleAmountBorrowed
+        # handler: handleAmountBorrowed
         # - event: LiquidityWithdrawn(uint256,address)
-          # handler: handleLiquidityWithdrawn
+        # handler: handleLiquidityWithdrawn
         # - event: CollateralCalled(address)
-          # handler: handleCollateralCalled
+        # handler: handleCollateralCalled
         # - event: MarginCallCollateralAdded(address,address,uint256,uint256)
-          # handler: handleLenderVoted
+        # handler: handleLenderVoted
         # - event: CollateralAdded(address,uint256,uint256)
-          # handler: handleCollateralAdded
+        # handler: handleCollateralAdded
         # - event: LoanDefaulted()
-          # handler: handleLoanDefaulted
+        # handler: handleLoanDefaulted
 
   - kind: ethereum/contract
     name: PoolToken
