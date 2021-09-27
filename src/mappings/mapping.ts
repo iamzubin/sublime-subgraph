@@ -1,7 +1,7 @@
+/*
 import { DataSourceContext } from "@graphprotocol/graph-ts";
 
 import {  Pool, 
-          User, 
           GlobalPoolDetail } from '../../generated/schema';
 
 import {  PoolCreated, 
@@ -130,3 +130,4 @@ export function handleCollectionPeriodUpdated(
   gPoolDetails.collectionPeriod = event.params.updatedCollectionPeriod;
   gPoolDetails.save();
 }
+*/
