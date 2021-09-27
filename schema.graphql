@@ -22,7 +22,7 @@ type UserProfile @entity {
   verified: Boolean!
   displayName: Bytes!
   poolsCreated: [Pool!]! @derivedFrom(field: "borrower")
-  poolsLentIn: [PoolLender]! @derivedFrom(field: "lender")
+  #poolsLentIn: [PoolLender!]! @derivedFrom(field: "poolLentIn")
 }
 
 # Used to store a identity integration (Twitter, etc.)
@@ -43,17 +43,18 @@ type Identity @entity {
 type WalletAddress @entity {
   #wallet address
   id: ID!
-  owner: UserProfile!
+  owner: UserProfile
 }
 
 type Pool @entity {
-  id: ID!
+  id: ID! # address of the deployed Pool
   borrower: UserProfile!
   borrowerAddress: Bytes!
   poolConstants: PoolConstants!
-  poolVariables: PoolVariables!
+  poolVars: PoolVars!
   repaymentEvents: [RepaymentEvent!]!
   repaymentVars: RepaymentVars!
+  repaymentConstants: RepaymentConstants!
   poolLenders: [PoolLender!]! @derivedFrom(field: "poolLentIn")
   poolToken: PoolToken!
 }
@@ -63,21 +64,21 @@ type PoolConstants @entity {
   borrowAsset: Bytes!
   borrowAmountRequested: BigInt!
   minBorrowAmount: BigInt!
-  collateralAsset: BigInt!
+  collateralAsset: Bytes!
   idealCollateralRatio: BigInt!
   borrowRate: BigInt! # interest rate
   repaymentInterval: BigInt!
   noOfRepaymentIntervals: BigInt!
   poolSavingsStrategy: Bytes!
   collateralAmount: BigInt!
-  transferFromSavingsAccount: Boolean!
   loanStartTime: BigInt!
   loanWithdrawalDeadline: BigInt!
   borrowAssetDecimal: BigInt!
   collateralAssetDecimal: BigInt!
+  #transferFromSavingsAccount: Boolean!
 }
 
-type PoolVariables @entity {
+type PoolVars @entity {
   id: ID!
   baseLiquidityShares: BigInt!
   extraLiquidityShares: BigInt!
@@ -92,7 +93,7 @@ type RepaymentEvent @entity {
   repaymentTime: BigInt! #is BigInt the right var for this?
 }
 
-type RepaymentVariables @entity {
+type RepaymentVars @entity {
   id: ID!
   pool: Pool!
   totalRepaidAmount: BigInt!
@@ -130,24 +131,23 @@ enum PoolLenderStatus {
 type PoolLender @entity {
   id: ID!
   poolLentIn: Pool!
-  lender: UserProfile!
   lenderAddress: Bytes!
   status: PoolLenderStatus!
-  votedForExtension: Boolean! 
+  #votedForExtension: Boolean! 
   amountLent: BigInt!
   marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
-  baseLiquidityShares: BigInt!
-  extraLiquidityShares: BigInt!
+  #baseLiquidityShares: BigInt!
+  #extraLiquidityShares: BigInt!
 }
 
 type PoolToken @entity {
   id: ID! # generated during PoolCreated() event in PoolFactory
-  totalSupply: BigInt! # updated during minting burning
   pool: Pool! # which pool is the token associated with
   borrowerAddress: Bytes!
 }
 
 type ExtensionRequest @entity {
+  id: ID!
 
 }
 
@@ -205,7 +205,7 @@ type SavingsDeposit @entity {
   asset: Bytes
   amount: BigInt
   strategy: Bytes
-  savingAccount: SavingAccount
+  savingAccount: SavingsAccount
   liquidityShare: BigInt
 }
 
