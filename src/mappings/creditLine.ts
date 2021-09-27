@@ -1,3 +1,4 @@
+/*
 import { CreditLine,
          CreditLineLiquidationEvent,
          CreditLineBorrowingEvent,
@@ -249,5 +250,5 @@ export function handleProtocolFeeFractionUpdated(event: ProtocolFeeFractionUpdat
 export function handleProtocolFeeCollectorUpdated(event: ProtocolFeeCollectorUpdated): void {
 
 }
-
+*/
 

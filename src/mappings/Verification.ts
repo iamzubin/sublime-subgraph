@@ -1,3 +1,4 @@
+/*
 import { UserProfile, WalletAddress, Identity } from '../../generated/schema';
 
 import { UserRegistered, 
@@ -92,3 +93,4 @@ export function handleUserUnregistered(event: UserUnregistered): void {
     // savingDeposit.amount = savingDeposit.amount.plus(
     //     event.params.amount
     // );
+    */

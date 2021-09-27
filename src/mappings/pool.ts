@@ -1,8 +1,6 @@
 import { Address } from "@graphprotocol/graph-ts";
 import { REPAYMENTS_ACCOUNT_ADDRESS } from "../utils/constants"  
-import { Pool, 
-         LendingDetails, 
-         LendingDetailscopy, 
+import { Pool,   
          WalletAddress,
          PoolConstants, 
          PoolVars,

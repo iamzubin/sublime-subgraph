@@ -1,3 +1,4 @@
+/*
 import {
     SavingAccount, SavingsDeposit,
 } from '../../generated/schema';
@@ -94,3 +95,4 @@ export function handleWithdrawnAll(
     savingDeposit.amount = BIGINT_ZERO;
     savingDeposit.save();
 }
+*/
