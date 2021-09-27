@@ -82,7 +82,7 @@ type PoolVars @entity {
   id: ID!
   baseLiquidityShares: BigInt!
   extraLiquidityShares: BigInt!
-  loanStatus: LoanStatus!
+  loanStatus: LoanStatus
   penalityLiquidityAmount: BigInt!
 }
 

@@ -1,3 +1,4 @@
+/*
 import { Bytes } from "@graphprotocol/graph-ts";
 import { User, TwitterDetail } from "../../generated/schema";
 import {
@@ -100,4 +101,4 @@ export function setTwitterDetails(
     rUser.twitterDetails = user.id
     rUser.save()
 }
-
+*/

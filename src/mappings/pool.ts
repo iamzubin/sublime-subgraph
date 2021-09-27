@@ -7,14 +7,13 @@ import { Pool,
          RepaymentConstants, 
          RepaymentVars, 
          PoolToken,
-         PoolLender, 
-         PoolLenderStatus } from '../../generated/schema';
+         PoolLender } from '../../generated/schema';
 import { LOAN_STATUS_CLOSED,
          LOAN_STATUS_TERMINATED,
          LOAN_STATUS_CANCELLED,
          LOAN_STATUS_ACTIVE,
          LOAN_STATUS_DEFAULTED } from "../utils/constants";
-import { createUser } from "../utils/helpers";
+//import { createUser } from "../utils/helpers";
 import { OpenBorrowPoolClosed,
          OpenBorrowPoolTerminated,
          OpenBorrowPoolCancelled,
@@ -24,7 +23,6 @@ import { OpenBorrowPoolClosed,
          LiquidityWithdrawn,
          AmountBorrowed,
          MarginCallCollateralAdded,
-         LoanDefaulted,
          Pool as PoolContract } from '../../generated/templates/Pool/Pool';
 
 import { PoolFactory as PoolFactoryContract } from '../../generated/PoolFactory/PoolFactory';
@@ -51,6 +49,12 @@ import { ethereum } from '@graphprotocol/graph-ts'
 
 // since pools can only be created by verified addresses, this means that a 
 // WalletAddress and corresponding UserProfile already exists
+
+enum PoolLenderStatus {
+    ACTIVE,
+    MARGIN_CALLED,
+    LIQUIDATED
+  }
 
 export function handlePoolCreated(event: PoolCreated): void {
     let poolAddress = event.params.pool
@@ -97,7 +101,7 @@ export function handlePoolCreated(event: PoolCreated): void {
     let poolVarsValues = poolContract.try_poolVars().value
     poolVars.baseLiquidityShares = poolVarsValues.value0
     poolVars.extraLiquidityShares = poolVarsValues.value1
-    poolVars.loanStatus = poolVarsValues.value2
+    //poolVars.loanStatus = poolVarsValues.value2
     poolVars.penalityLiquidityAmount = poolVarsValues.value3
 
     poolVars.save()
@@ -153,6 +157,42 @@ export function handlePoolCreated(event: PoolCreated): void {
     pool.save()
 }
 
+export function handleLiquiditySupplied( event: LiquiditySupplied ): void {
+    let poolAddress = event.address;
+
+    let pool = Pool.load(poolAddress.toHexString())
+
+    let lenderID = poolAddress.toHexString() + "-" + event.params.lenderAddress.toHexString()
+    let poolLender = PoolLender.load(lenderID)
+
+    if (poolLender == null) {
+        poolLender = new PoolLender(lenderID)
+
+        let poolLenders = pool.poolLenders
+        poolLenders.push(poolLender.id)
+        pool.poolLenders = poolLenders
+
+        poolLender.poolLentIn = poolAddress.toHexString()
+        poolLender.lenderAddress = event.params.lenderAddress
+        //poolLender.status = PoolLenderStatus.ACTIVE
+        poolLender.amountLent = event.params.amountSupplied
+        poolLender.marginCallsMade = []
+        poolLender.save()
+
+        pool.save()
+    }
+
+    else {
+        let amountLent = poolLender.amountLent
+        amountLent = amountLent.plus(event.params.amountSupplied)
+        poolLender.amountLent = amountLent
+
+        poolLender.save()
+    }
+
+}
+
+/*
 export function updatePoolConstants(event: ethereum.Event): PoolConstants {
     let poolContract = PoolContract.bind(event.address)
     let poolConstants = new PoolConstants(event.params.pool.toHexString())
@@ -258,6 +298,7 @@ export function handleOpenBorrowPoolCanceled(
     pool.save();
 }
 
+
 export function handleLoanDefaulted(
     event: LoanDefaulted
 ): void {
@@ -295,40 +336,7 @@ export function handleCollateralWithdrawn(
 }
 
 
-export function handleLiquiditySupplied( event: LiquiditySupplied ): void {
-    let poolAddress = event.address;
 
-    let pool = Pool.load(poolAddress.toHexString())
-
-    let lenderID = poolAddress.toHexString() + "-" + event.params.lenderAddress
-    let poolLender = PoolLender.load(lenderID)
-
-    if (poolLender == null) {
-        poolLender = new PoolLender(lenderID)
-
-        let poolLenders = pool.poolLenders
-        poolLenders.push(poolLender.id)
-        pool.poolLenders = poolLenders
-
-        poolLender.poolLentIn = poolAddress.toHexString()
-        poolLender.lenderAddress = event.params.lenderAddress
-        poolLender.status = PoolLenderStatus.ACTIVE
-        poolLender.amountLent = event.params.amountSupplied
-        poolLender.marginCallsMade = []
-        poolLender.save()
-
-        pool.save()
-    }
-
-    else {
-        let amountLent = poolLender.amountLent
-        amountLent = amountLent.plus(event.params.amountSupplied)
-        poolLender.amountLent = amountLent
-
-        poolLender.save()
-    }
-
-}
 
 // export function handleLiquidityWithdrawn(
 //     event: LiquidityWithdrawn
@@ -416,3 +424,5 @@ export function handleAmountBorrowed(
 //     lendingDetail.save()
 //     pool.save();
 // }
+
+*/
