@@ -5,7 +5,7 @@ import { Pool,
          PoolConstants, 
          PoolVars,
          RepaymentConstants, 
-         RepaymentVars, 
+         RepaymentVariables, 
          PoolToken,
          PoolLender } from '../../generated/schema';
 import { LOAN_STATUS_CLOSED,
@@ -78,40 +78,41 @@ export function handlePoolCreated(event: PoolCreated): void {
     // Setting pool constants
     let poolConstants = new PoolConstants(poolAddress.toHexString())
     let poolConstantsValues = poolContract.try_poolConstants().value
+    poolConstants.borrower = poolConstantsValues.value0
     poolConstants.borrowAmountRequested = poolConstantsValues.value1
-    poolConstants.minBorrowAmount = poolConstantsValues.value2
-    poolConstants.loanStartTime = poolConstantsValues.value3
-    poolConstants.loanWithdrawalDeadline = poolConstantsValues.value4
-    poolConstants.borrowAsset = poolConstantsValues.value5
-    poolConstants.idealCollateralRatio = poolConstantsValues.value6
+    poolConstants.loanStartTime = poolConstantsValues.value2
+    poolConstants.loanWithdrawalDeadline = poolConstantsValues.value3
+    poolConstants.borrowAsset = poolConstantsValues.value4
+    poolConstants.idealCollateralRatio = poolConstantsValues.value5
+    poolConstants.volatilityThreshold = poolConstantsValues.value6
     poolConstants.borrowRate = poolConstantsValues.value7
     poolConstants.noOfRepaymentIntervals = poolConstantsValues.value8
     poolConstants.repaymentInterval = poolConstantsValues.value9
     poolConstants.collateralAsset = poolConstantsValues.value10
     poolConstants.poolSavingsStrategy = poolConstantsValues.value11
-
+    poolConstants.lenderVerifier = poolConstantsValues.value12
     poolConstants.save()
 
+    //poolConstants.minBorrowAmount = poolConstantsValues.value2
     //poolConstants.borrowAssetDecimal
     //poolConstants.collateralAssetDecimal
     //poolConstants.collateralAmount 
     //poolConstants.transferFromSavingsAccount
 
     let poolVars = new PoolVars(poolAddress.toHexString())
-    let poolVarsValues = poolContract.try_poolVars().value
+    let poolVarsValues = poolContract.try_poolVariables().value
     poolVars.baseLiquidityShares = poolVarsValues.value0
     poolVars.extraLiquidityShares = poolVarsValues.value1
-    //poolVars.loanStatus = poolVarsValues.value2
-    poolVars.penalityLiquidityAmount = poolVarsValues.value3
+    poolVars.loanStatus = poolVarsValues.value2
+    poolVars.penaltyLiquidityAmount = poolVarsValues.value3
 
     poolVars.save()
 
 
     pool.repaymentEvents = []
     let poolRepaymentConstants = new RepaymentConstants(poolAddress.toHexString())
-    let repaymentConstantsValues = repaymentsContract.try_repaymentConstants(poolAddress).value
+    let repaymentConstantsValues = repaymentsContract.try_repayConstants(poolAddress).value
 
-    poolRepaymentConstants.pool = pool.id
     poolRepaymentConstants.numberOfTotalRepayments = repaymentConstantsValues.value0
     poolRepaymentConstants.gracePenaltyRate = repaymentConstantsValues.value1
     poolRepaymentConstants.gracePeriodFraction = repaymentConstantsValues.value2
@@ -120,26 +121,18 @@ export function handlePoolCreated(event: PoolCreated): void {
     poolRepaymentConstants.borrowRate = repaymentConstantsValues.value5
     poolRepaymentConstants.loanStartTime = repaymentConstantsValues.value6
     poolRepaymentConstants.repayAsset = repaymentConstantsValues.value7
-    poolRepaymentConstants.savingsAccount = repaymentConstantsValues.value8
-    poolRepaymentConstants.borrowAsset = poolConstantsValues.value5
 
     poolRepaymentConstants.save()
 
-    let poolRepaymentVars = new RepaymentVars(poolAddress.toHexString())
-    let repaymentVarsValues = repaymentsContract.try_repaymentVars(poolAddress).value
+    let poolRepaymentVariables = new RepaymentVariables(poolAddress.toHexString())
+    let repaymentVarsValues = repaymentsContract.try_repayVariables(poolAddress).value
 
-    poolRepaymentVars.pool = pool.id
-    poolRepaymentVars.totalRepaidAmount = repaymentVarsValues.value0
-    poolRepaymentVars.repaymentPeriodCovered = repaymentVarsValues.value1
-    poolRepaymentVars.repaidAmount = repaymentVarsValues.value2
-    poolRepaymentVars.isLoanExtensionActive = repaymentVarsValues.value3
-    poolRepaymentVars.loanDurationCovered = repaymentVarsValues.value4
-    poolRepaymentVars.nextDuePeriod = repaymentVarsValues.value5
-    poolRepaymentVars.nInstalmentsFullyPaid = repaymentVarsValues.value6
-    poolRepaymentVars.loanExtensionPeriod = repaymentVarsValues.value7
-    poolRepaymentVars.nextInstalmentDeadline = repaymentsContract.try_getNextInstalmentDeadline(poolAddress).value
+    poolRepaymentVariables.repaidAmount = repaymentVarsValues.value0
+    poolRepaymentVariables.isLoanExtensionActive = repaymentVarsValues.value1
+    poolRepaymentVariables.loanDurationCovered = repaymentVarsValues.value2
+    poolRepaymentVariables.loanExtensionPeriod = repaymentVarsValues.value3
 
-    poolRepaymentVars.save()
+    poolRepaymentVariables.save()
 
     let poolToken = new PoolToken(poolTokenAddress.toHexString())
     poolToken.borrowerAddress = borrowerAddress
@@ -151,7 +144,7 @@ export function handlePoolCreated(event: PoolCreated): void {
     pool.poolConstants = poolConstants.id
     pool.poolVars = poolVars.id
     pool.repaymentConstants = poolRepaymentConstants.id
-    pool.repaymentVars = poolRepaymentVars.id
+    pool.repaymentVariables = poolRepaymentVariables.id
     pool.poolToken = poolToken.id
 
     pool.save()
@@ -168,16 +161,16 @@ export function handleLiquiditySupplied( event: LiquiditySupplied ): void {
     if (poolLender == null) {
         poolLender = new PoolLender(lenderID)
 
-        let poolLenders = pool.poolLenders
-        poolLenders.push(poolLender.id)
-        pool.poolLenders = poolLenders
-
         poolLender.poolLentIn = poolAddress.toHexString()
         poolLender.lenderAddress = event.params.lenderAddress
         //poolLender.status = PoolLenderStatus.ACTIVE
         poolLender.amountLent = event.params.amountSupplied
         poolLender.marginCallsMade = []
         poolLender.save()
+
+        let poolLenders = pool.poolLenders
+        poolLenders.push(poolLender.id)
+        pool.poolLenders = poolLenders
 
         pool.save()
     }

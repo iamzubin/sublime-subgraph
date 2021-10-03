@@ -53,29 +53,28 @@ type Pool @entity {
   poolConstants: PoolConstants!
   poolVars: PoolVars!
   repaymentEvents: [RepaymentEvent!]!
-  repaymentVars: RepaymentVars!
   repaymentConstants: RepaymentConstants!
+  repaymentVariables: RepaymentVariables!
   poolLenders: [PoolLender!]! @derivedFrom(field: "poolLentIn")
   poolToken: PoolToken!
 }
 
 type PoolConstants @entity {
   id: ID!
-  borrowAsset: Bytes!
+  borrower: Bytes!
   borrowAmountRequested: BigInt!
-  minBorrowAmount: BigInt!
-  collateralAsset: Bytes!
-  idealCollateralRatio: BigInt!
-  borrowRate: BigInt! # interest rate
-  repaymentInterval: BigInt!
-  noOfRepaymentIntervals: BigInt!
-  poolSavingsStrategy: Bytes!
-  collateralAmount: BigInt!
   loanStartTime: BigInt!
   loanWithdrawalDeadline: BigInt!
-  borrowAssetDecimal: BigInt!
-  collateralAssetDecimal: BigInt!
-  #transferFromSavingsAccount: Boolean!
+  borrowAsset: Bytes!
+  idealCollateralRatio: BigInt!
+  volatilityThreshold: BigInt!
+  borrowRate: BigInt!
+  noOfRepaymentIntervals: BigInt!
+  repaymentInterval: BigInt!
+  collateralAsset: Bytes!
+  poolSavingsStrategy: Bytes!
+  lenderVerifier: Bytes!
+  minBorrowAmount: BigInt!
 }
 
 type PoolVars @entity {
@@ -83,7 +82,7 @@ type PoolVars @entity {
   baseLiquidityShares: BigInt!
   extraLiquidityShares: BigInt!
   loanStatus: LoanStatus
-  penalityLiquidityAmount: BigInt!
+  penaltyLiquidityAmount: BigInt!
 }
 
 type RepaymentEvent @entity {
@@ -93,23 +92,30 @@ type RepaymentEvent @entity {
   repaymentTime: BigInt! #is BigInt the right var for this?
 }
 
-type RepaymentVars @entity {
+#type RepaymentVars @entity {
+#  id: ID!
+#  pool: Pool!
+#  totalRepaidAmount: BigInt!
+#  repaymentPeriodCovered: BigInt!
+#  repaidAmount: BigInt!
+#  isLoanExtensionActive: Boolean!
+#  loanDurationCovered: BigInt!
+#  nextDuePeriod: BigInt!
+#  nInstalmentsFullyPaid: BigInt!
+#  loanExtensionPeriod: BigInt!
+#  nextInstalmentDeadline: BigInt!
+#}
+
+type RepaymentVariables @entity {
   id: ID!
-  pool: Pool!
-  totalRepaidAmount: BigInt!
-  repaymentPeriodCovered: BigInt!
   repaidAmount: BigInt!
   isLoanExtensionActive: Boolean!
   loanDurationCovered: BigInt!
-  nextDuePeriod: BigInt!
-  nInstalmentsFullyPaid: BigInt!
   loanExtensionPeriod: BigInt!
-  nextInstalmentDeadline: BigInt!
 }
 
 type RepaymentConstants @entity {
   id: ID!
-  pool: Pool!
   numberOfTotalRepayments: BigInt!
   gracePenaltyRate: BigInt!
   gracePeriodFraction: BigInt!
@@ -118,9 +124,22 @@ type RepaymentConstants @entity {
   borrowRate: BigInt!
   loanStartTime: BigInt!
   repayAsset: Bytes!
-  savingsAccount: Bytes!
-  borrowAsset: Bytes!
 }
+
+#type RepaymentConstants @entity {
+#  id: ID!
+#  pool: Pool!
+#  numberOfTotalRepayments: BigInt!
+#  gracePenaltyRate: BigInt!
+#  gracePeriodFraction: BigInt!
+#  loanDuration: BigInt!
+#  repaymentInterval: BigInt!
+#  borrowRate: BigInt!
+#  loanStartTime: BigInt!
+#  repayAsset: Bytes!
+#  #savingsAccount: Bytes!
+#  borrowAsset: Bytes!
+#}
 
 enum PoolLenderStatus {
   ACTIVE

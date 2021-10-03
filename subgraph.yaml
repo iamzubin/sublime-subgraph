@@ -13,13 +13,17 @@ dataSources:
       startBlock: 25638000
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/mappings/mapping.ts
       entities:
         - Pool
-        - User
-        - GlobalPoolDetails
+        - PoolConstants
+        - PoolVars
+        - RepaymentEvent
+        - RepaymentConstants
+        - RepaymentVariables
+        - PoolToken
       abis:
         - name: PoolFactory
           file: ./abis/PoolFactory.json
@@ -28,61 +32,61 @@ dataSources:
       eventHandlers:
         - event: PoolCreated(address,address,address)
           handler: handlePoolCreated
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: CollectionPeriodUpdated(uint256)
-          handler: handleCollectionPeriodUpdated
+        #- event: OwnershipTransferred(indexed address,indexed address)
+        #  handler: handleOwnershipTransferred
+        #- event: CollectionPeriodUpdated(uint256)
+        #  handler: handleCollectionPeriodUpdated
 
 
-  - kind: ethereum/contract
-    name: SavingsAccount
-    network: kovan
-    source:
-      address: "0xD1Ce6B73914dd8608Bca7e98Ad9DF8Fc92Ceb5b7"
-      abi: SavingsAccount
-      startBlock: 25638000   
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mappings/savingsAccount.ts
-      entities:
-        - SavingAccount
-      abis:
-        - name: SavingsAccount
-          file: ./abis/SavingsAccount.json
-      eventHandlers:
-        - event: Deposited(address,uint256,address,address)
-          handler: handleDeposited
-        - event: StrategySwitched(address,address,address,address)
-          handler: handleStrategySwitched
-        - event: Withdrawn(address,address,uint256,address,address)
-          handler: handleWithdrawn
-        - event: WithdrawnAll(address,uint256,address)
-          handler: handleWithdrawnAll
+  #- kind: ethereum/contract
+  #  name: SavingsAccount
+  #  network: kovan
+  #  source:
+  #    address: "0xD1Ce6B73914dd8608Bca7e98Ad9DF8Fc92Ceb5b7"
+  #    abi: SavingsAccount
+  #    startBlock: 25638000   
+  #  mapping:
+  #    kind: ethereum/events
+  #    apiVersion: 0.0.4
+  #    language: wasm/assemblyscript
+  #    file: ./src/mappings/savingsAccount.ts
+  #    entities:
+  #      - SavingAccount
+  #    abis:
+  #      - name: SavingsAccount
+  #        file: ./abis/SavingsAccount.json
+  #    eventHandlers:
+        #- event: Deposited(address,uint256,address,address)
+        #  handler: handleDeposited
+        #- event: StrategySwitched(address,address,address,address)
+        #  handler: handleStrategySwitched
+        #- event: Withdrawn(address,address,uint256,address,address)
+        #  handler: handleWithdrawn
+        #- event: WithdrawnAll(address,uint256,address)
+        #  handler: handleWithdrawnAll
 
-  - kind: ethereum/contract
-    name: verification
-    network: kovan
-    source:
-      address: "0xBF09ecC3F7C439801779C9f2dcC684503e27F9c7"
-      abi: Verification
-      startBlock: 25638000   
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mappings/Verification.ts
-      entities:
-        - Verification
-      abis:
-        - name: Verification
-          file: ./abis/Verification.json
-      eventHandlers:
-        - event: UserRegistered(address,address,bool)
-          handler: handleUserRegistered
-        - event: UserUnregistered(address,address,address)
-          handler: handleUserUnregistered
+  #- kind: ethereum/contract
+  #  name: verification
+  #  network: kovan
+  #  source:
+  #    address: "0xBF09ecC3F7C439801779C9f2dcC684503e27F9c7"
+  #    abi: Verification
+  #    startBlock: 25638000   
+  #  mapping:
+  #    kind: ethereum/events
+  #    apiVersion: 0.0.4
+  #    language: wasm/assemblyscript
+  #    file: ./src/mappings/Verification.ts
+  #    entities:
+  #      - Verification
+  #    abis:
+  #      - name: Verification
+  #        file: ./abis/Verification.json
+  #    eventHandlers:
+        #- event: UserRegistered(address,address,bool)
+        #  handler: handleUserRegistered
+        #- event: UserUnregistered(address,address,address)
+        #  handler: handleUserUnregistered
 
 
   - kind: ethereum/contract
@@ -94,7 +98,7 @@ dataSources:
       startBlock: 25638000   
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/mappings/pool.ts
       entities:
@@ -105,41 +109,41 @@ dataSources:
       eventHandlers:
         - event: InterestRepaid(address,uint256)
           handler: handleInterestRepaid
-        - event: PartialExtensionRepaymentMade(address)
-          handler: handlePartialExtensionRepaymentMade
+        #- event: PartialExtensionRepaymentMade(address)
+        #  handler: handlePartialExtensionRepaymentMade
 
-  - kind: ethereum/contract
-    name: CreditLine
-    network: kovan
-    source:
-      address: "0xB642a5877Eb6511D75BdD0Bb9e4d31E251f99729"
-      abi: CreditLine
-      startBlock: 25638000   
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mappings/creditLine.ts
-      entities:
-        - CreditLine
-      abis:
-        - name: CreditLine
-          file: ./abis/CreditLine.json
-      eventHandlers:
-        - event: BorrowedFromCreditLine(uint256,bytes32)
-          handler: handleBorrowedFromCreditLine
-        - event: CreditLineAccepted(bytes32)
-          handler: handleCreditLineAccepted
-        - event: CreditLineClosed(bytes32)
-          handler: handleCreditLineClosed
-        - event: CreditLineRequestedToBorrower(bytes32,address,address)
-          handler: handleCreditLineRequestedToBorrower
-        - event: CreditLineRequestedToLender(bytes32,address,address)
-          handler: handleCreditLineRequestedToLender
-        - event: CreditLineReset(bytes32)
-          handler: handleCreditLineReset
-        - event: PartialCreditLineRepaid(bytes32,uint256)
-          handler: handlePartialCreditLineRepaid
+  ##- kind: ethereum/contract
+  ##  name: CreditLine
+  ##  network: kovan
+  ##  source:
+  ##    address: "0xB642a5877Eb6511D75BdD0Bb9e4d31E251f99729"
+  ##    abi: CreditLine
+  ##    startBlock: 25638000   
+  ##  mapping:
+  ##    kind: ethereum/events
+  ##    apiVersion: 0.0.4
+  ##    language: wasm/assemblyscript
+  ##    file: ./src/mappings/creditLine.ts
+  ##    entities:
+  ##      - CreditLine
+  ##    abis:
+  ##      - name: CreditLine
+  ##        file: ./abis/CreditLine.json
+  ##    eventHandlers:
+        #- event: BorrowedFromCreditLine(uint256,bytes32)
+        #  handler: handleBorrowedFromCreditLine
+        #- event: CreditLineAccepted(bytes32)
+        #  handler: handleCreditLineAccepted
+        #- event: CreditLineClosed(bytes32)
+        #  handler: handleCreditLineClosed
+        #- event: CreditLineRequestedToBorrower(bytes32,address,address)
+        #  handler: handleCreditLineRequestedToBorrower
+        #- event: CreditLineRequestedToLender(bytes32,address,address)
+        #  handler: handleCreditLineRequestedToLender
+        #- event: CreditLineReset(bytes32)
+        #  handler: handleCreditLineReset
+        #- event: PartialCreditLineRepaid(bytes32,uint256)
+        #  handler: handlePartialCreditLineRepaid
 
 templates:
   - kind: ethereum/contract
@@ -149,20 +153,23 @@ templates:
       abi: Pool
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/mappings/pool.ts
       entities:
         - Pool
-        - User
-        - poolLiquidation
-        - LendingDetailscopy
+        - PoolConstants
+        - PoolVars
+        - RepaymentEvent
+        - RepaymentConstants
+        - RepaymentVariables
+        - PoolToken
       abis:
         - name: Pool
           file: ./abis/Pool.json
       eventHandlers:
-        - event: OpenBorrowPoolClosed()
-          handler: handleOpenBorrowPoolClosed
+        #- event: OpenBorrowPoolClosed()
+        #  handler: handleOpenBorrowPoolClosed
         # - event: OpenBorrowPoolTerminated()
         #   handler: handleOpenBorrowPoolTerminated
         # - event: OpenBorrowPoolCancelled()
@@ -186,26 +193,26 @@ templates:
         # - event: LoanDefaulted()
           # handler: handleLoanDefaulted
 
-  - kind: ethereum/contract
-    name: PoolToken
-    network: kovan
-    source:
-      abi: PoolToken
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mappings/pool.ts
-      entities:
-        - Pool
-        - User
-        - poolLiquidation
-        - LendingDetails
-      abis:
-        - name: PoolToken
-          file: ./abis/PoolToken.json
-      eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
+  #- kind: ethereum/contract
+  #  name: PoolToken
+  #  network: kovan
+  #  source:
+  #    abi: PoolToken
+  #  mapping:
+  #    kind: ethereum/events
+  #    apiVersion: 0.0.4
+  #    language: wasm/assemblyscript
+  #    file: ./src/mappings/pool.ts
+  #    entities:
+  #      - Pool
+  #      - User
+  #      - poolLiquidation
+  #      - LendingDetails
+  #    abis:
+  #      - name: PoolToken
+  #        file: ./abis/PoolToken.json
+  #    eventHandlers:
+        #- event: Approval(indexed address,indexed address,uint256)
+        #  handler: handleApproval
+        #- event: Transfer(indexed address,indexed address,uint256)
+        #  handler: handleTransfer

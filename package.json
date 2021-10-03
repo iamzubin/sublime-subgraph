@@ -11,8 +11,8 @@
     "deploy-local": "graph deploy sublime-finance/sublime --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0",
-    "@graphprotocol/graph-ts": "^0.20.0"
+    "@graphprotocol/graph-cli": "^0.22.0-alpha.3",
+    "@graphprotocol/graph-ts": "^0.22.0-alpha.3"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
