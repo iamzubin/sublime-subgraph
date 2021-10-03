@@ -170,10 +170,10 @@ templates:
       eventHandlers:
         #- event: OpenBorrowPoolClosed()
         #  handler: handleOpenBorrowPoolClosed
-        # - event: OpenBorrowPoolTerminated()
-        #   handler: handleOpenBorrowPoolTerminated
-        # - event: OpenBorrowPoolCancelled()
-        #   handler: handleOpenBorrowPoolCancelled
+        - event: PoolTerminated()
+          handler: PoolTerminated
+        - event: PoolCancelled()
+          handler: handlePoolCancelled
         # - event: OpenBorrowPoolDefaulted()
         #   handler: handleOpenBorrowPoolDefaulted
         # - event: CollateralWithdrawn(address,uint256)

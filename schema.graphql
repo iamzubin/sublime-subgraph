@@ -57,6 +57,7 @@ type Pool @entity {
   repaymentVariables: RepaymentVariables!
   poolLenders: [PoolLender!]! @derivedFrom(field: "poolLentIn")
   poolToken: PoolToken!
+  nextInstalmentDeadline: BigInt!
 }
 
 type PoolConstants @entity {
@@ -156,7 +157,7 @@ type PoolLender @entity {
   amountLent: BigInt!
   marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
   #baseLiquidityShares: BigInt!
-  #extraLiquidityShares: BigInt!
+  extraLiquidityShares: BigInt!
 }
 
 type PoolToken @entity {
