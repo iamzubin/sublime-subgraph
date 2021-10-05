@@ -1,6 +1,5 @@
-/*
+
 import { Bytes } from "@graphprotocol/graph-ts";
-import { User, TwitterDetail } from "../../generated/schema";
 import {
     LOAN_STATUS_ACTIVE,
     LOAN_STATUS_CLOSED,
@@ -10,6 +9,8 @@ import {
     LOAN_STATUS_COLLECTION,
     STATUS_UNVERIFIED,
 } from './constants';
+
+
 
 export function getCreditLineStatus(
     value: i32
@@ -86,7 +87,7 @@ export function createUnverifiedUserProfile(walletAddress: Bytes, displayName: S
     walletAddress.save()
 }
 
-
+/*
 export function setTwitterDetails(
     userAddress: Bytes, details: Bytes
 ): void {

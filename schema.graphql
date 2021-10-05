@@ -48,15 +48,15 @@ type WalletAddress @entity {
 
 type Pool @entity {
   id: ID! # address of the deployed Pool
-  borrower: UserProfile!
+  borrower: UserProfile
   borrowerAddress: Bytes!
   poolConstants: PoolConstants!
   poolVars: PoolVars!
   repaymentEvents: [RepaymentEvent!]!
-  repaymentConstants: RepaymentConstants!
-  repaymentVariables: RepaymentVariables!
+  repaymentConstants: RepaymentConstants
+  repaymentVariables: RepaymentVariables
   poolLenders: [PoolLender!]! @derivedFrom(field: "poolLentIn")
-  poolToken: PoolToken!
+  poolToken: PoolToken
   nextInstalmentDeadline: BigInt!
 }
 
@@ -82,7 +82,7 @@ type PoolVars @entity {
   id: ID!
   baseLiquidityShares: BigInt!
   extraLiquidityShares: BigInt!
-  loanStatus: LoanStatus
+  loanStatus: LoanStatus!
   penaltyLiquidityAmount: BigInt!
 }
 
@@ -152,7 +152,7 @@ type PoolLender @entity {
   id: ID!
   poolLentIn: Pool!
   lenderAddress: Bytes!
-  status: PoolLenderStatus!
+  status: PoolLenderStatus
   #votedForExtension: Boolean! 
   amountLent: BigInt!
   marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
@@ -180,9 +180,9 @@ enum MarginCallStatus {
 
 type MarginCallEvent @entity {
   id: ID!
-  status: MarginCallStatus!
+  status: MarginCallStatus
   marginCallTime: BigInt! #is BigInt the appropriate type?
-  marginCaller: PoolLender!
+  marginCaller: PoolLender
   pool: Pool!
 }
 
@@ -202,12 +202,12 @@ type TwitterDetail @entity {
   twitterId: Bytes!
   twitterSignMessage: String
   registrationTime: BigInt  
-  linkedAddresses: [Bytes!]
+  linkedAddresses: [Bytes!]!
 }
 
 type SavingsAccount @entity {
   id: ID!
-  user: UserProfile!
+  user: UserProfile
   walletAddress: Bytes!
   savingsDetails: [SavingsStrategyDetails!]! @derivedFrom(field: "savingsAccount")
 }
@@ -215,7 +215,7 @@ type SavingsAccount @entity {
 type SavingsStrategyDetails @entity {
   id: ID!
   strategyAddress: Bytes!
-  savingsAccount: SavingsAccount!
+  savingsAccount: SavingsAccount
   balance: BigInt!
   asset: Bytes!
 }
@@ -244,15 +244,15 @@ type CreditLine @entity {
   #creditLine hash
   id: ID!
   # stores who requested the credit line
-  requestedBy: UserProfile!
+  requestedBy: UserProfile
   # status
-  status: CreditLineStatus!
+  status: CreditLineStatus
   # borrower user profile
-  borrower: UserProfile!
+  borrower: UserProfile
   # borrower address
   borrowerAddress: Bytes!
   # lender user profile
-  lender: UserProfile!
+  lender: UserProfile
   # lender address
   lenderAddress: Bytes!
   # credit limit

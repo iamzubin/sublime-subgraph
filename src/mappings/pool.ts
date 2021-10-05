@@ -7,7 +7,8 @@ import { Pool,
          RepaymentConstants, 
          RepaymentVariables, 
          PoolToken,
-         PoolLender } from '../../generated/schema';
+         PoolLender,
+         UserProfile } from '../../generated/schema';
 import { LOAN_STATUS_CLOSED,
          LOAN_STATUS_TERMINATED,
          LOAN_STATUS_CANCELLED,
@@ -17,7 +18,7 @@ import { LOAN_STATUS_CLOSED,
          LENDER_STATUS_WITHDRAWN,
          LENDER_STATUS_MARGIN_CALLED,
          LENDER_STATUS_LIQUIDATED } from "../utils/constants";
-//import { createUser } from "../utils/helpers";
+import { createUser, getLoanStatus } from "../utils/helpers";
 import { PoolClosed,
          PoolTerminated,
          CollateralAdded,
@@ -38,6 +39,7 @@ import { Repayments as RepaymentsContract } from '../../generated/Repayments/Rep
 
 import { PoolCreated } from "../../generated/PoolFactory/PoolFactory";
 
+/*
 import { Approval,
          Transfer,
          PoolToken as PoolTokenContract } from '../../generated/templates/PoolToken/PoolToken';
@@ -45,7 +47,7 @@ import { Approval,
 import { Repayments,
          InterestRepaid,
          PartialExtensionRepaymentMade } from "../../generated/Repayments/Repayments"
-
+*/
 import { store } from "@graphprotocol/graph-ts";
 
 import { BigInt } from "@graphprotocol/graph-ts";
@@ -75,10 +77,12 @@ export function handlePoolCreated(event: PoolCreated): void {
     let pool = new Pool(poolAddress.toHexString())
     pool.borrowerAddress = borrowerAddress
 
-    let borrowerWalletAddress = WalletAddress.load(borrowerAddress.toHexString())
-    let borrowerUserProfile = borrowerWalletAddress.owner
+    let borrowerWalletAddress = WalletAddress.load(borrowerAddress.toHexString()) as WalletAddress
 
-    pool.borrower = borrowerUserProfile
+    if(borrowerWalletAddress.owner) {
+        let borrowerUserProfile = borrowerWalletAddress.owner as string
+        pool.borrower = borrowerUserProfile
+    }    
 
 
     // Setting pool constants
@@ -109,7 +113,8 @@ export function handlePoolCreated(event: PoolCreated): void {
     let poolVarsValues = poolContract.try_poolVariables().value
     poolVars.baseLiquidityShares = poolVarsValues.value0
     poolVars.extraLiquidityShares = poolVarsValues.value1
-    poolVars.loanStatus = poolVarsValues.value2
+    //poolVars.loanStatus = BigInt.fromI32(poolVarsValues.value2)
+    poolVars.loanStatus = getLoanStatus(poolVarsValues.value2) //as string
     poolVars.penaltyLiquidityAmount = poolVarsValues.value3
 
     poolVars.save()
@@ -159,9 +164,12 @@ export function handlePoolCreated(event: PoolCreated): void {
 export function handleLiquiditySupplied( event: LiquiditySupplied ): void {
     let poolAddress = event.address;
 
-    let pool = Pool.load(poolAddress.toHexString())
+    let pool = Pool.load(poolAddress.toHexString()) as Pool
 
-    let lenderID = poolAddress.toHexString() + "-" + event.params.lenderAddress.toHexString()
+    //let poolAddress = event.transaction.to as Address
+    let lenderAddress = event.params.lenderAddress as Address
+    let lenderID = poolAddress.toHexString() + "-" + lenderAddress.toHexString()
+    //let lenderID = poolAddress.toHexString() + "-" + event.params.lenderAddress.toHexString()
     let poolLender = PoolLender.load(lenderID)
 
     if (poolLender == null) {
@@ -193,8 +201,9 @@ export function handleLiquiditySupplied( event: LiquiditySupplied ): void {
 }
 
 export function handlePoolCancelled( event: PoolCancelled ): void {
-    let pool = Pool.load(event.transaction.to.toHexString());
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
 
     poolVars.loanStatus = LOAN_STATUS_CANCELLED
     poolVars.save()
@@ -202,8 +211,9 @@ export function handlePoolCancelled( event: PoolCancelled ): void {
 }
 
 export function handlePoolTerminated( event: PoolTerminated ): void {
-    let pool = Pool.load(event.transaction.to.toHexString())
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
 
     poolVars.loanStatus = LOAN_STATUS_TERMINATED;
     poolVars.save()
@@ -211,8 +221,9 @@ export function handlePoolTerminated( event: PoolTerminated ): void {
 }
 
 export function handlePoolClosed( event: PoolClosed ): void {
-    let pool = Pool.load(event.transaction.to.toHexString())
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
 
     poolVars.loanStatus = LOAN_STATUS_CLOSED;
     poolVars.save()
@@ -220,8 +231,9 @@ export function handlePoolClosed( event: PoolClosed ): void {
 }
 
 export function handleCollateralAdded( event: CollateralAdded ): void {
-    let pool = Pool.load(event.transaction.to.toHexString())
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
 
     poolVars.baseLiquidityShares = poolVars.baseLiquidityShares.plus(event.params.sharesReceived);
 
@@ -230,25 +242,31 @@ export function handleCollateralAdded( event: CollateralAdded ): void {
 }
 
 export function handleMarginCallCollateralAdded( event: MarginCallCollateralAdded ): void {
-    let pool = Pool.load(event.transaction.to.toHexString())
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    //let pool = Pool.load(event.transaction.to.toHexString())
 
     // pool.borrowedAmount = pool.borrowedAmount
     //     .plus(event.params.amount);
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
     poolVars.extraLiquidityShares = poolVars.extraLiquidityShares.plus(event.params.sharesReceived)
     poolVars.save()
 
-
-    let lenderID = event.transaction.to.toHexString() + "-" + event.params.lender.toHexString()
-    let poolLender = PoolLender.load(lenderID)
+    //let poolAddress = event.transaction.to as Address 
+    let lenderAddress = event.params.lender as Address
+    let lenderID = poolAddress.toHexString() + "-" + lenderAddress.toHexString()
+    //let lenderID = poolAddress.toHexString() + "-" + event.params.lender.toHexString()
+    let poolLender = PoolLender.load(lenderID) as PoolLender
     poolLender.extraLiquidityShares = poolLender.extraLiquidityShares.plus(event.params.sharesReceived)
     poolLender.save()
     pool.save();
 }
 
 export function handleCollateralWithdrawn( event: CollateralWithdrawn ): void {
-    let pool = Pool.load(event.transaction.to.toHexString())
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    //let pool = Pool.load(event.transaction.to.toHexString())
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
 
     poolVars.baseLiquidityShares = poolVars.baseLiquidityShares.minus(event.params.amount)
 
@@ -257,31 +275,37 @@ export function handleCollateralWithdrawn( event: CollateralWithdrawn ): void {
 }
 
 export function handleAmountBorrowed( event: AmountBorrowed ): void {
-    let pool = Pool.load(event.transaction.to.toHexString())
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    //let pool = Pool.load(event.transaction.to.toHexString())
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
     // pool.borrowedAmount = pool.borrowedAmount.plus(event.params.amount);
     poolVars.loanStatus = LOAN_STATUS_ACTIVE;
 
-    let poolContract = PoolContract.bind(event.transaction.to)
+    let poolContract = PoolContract.bind(poolAddress)
     let poolFactoryAddress = poolContract.try_PoolFactory().value
     let poolFactoryContract = PoolFactoryContract.bind(poolFactoryAddress)
 
     let repaymentImplAddress = poolFactoryContract.try_repaymentImpl().value
     let repaymentsContract = RepaymentsContract.bind(repaymentImplAddress)
 
-    let nextInstalmentDeadline = repaymentsContract.try_getNextInstalmentDeadline(event.transaction.to).value
+    let nextInstalmentDeadline = repaymentsContract.try_getNextInstalmentDeadline(poolAddress).value
     pool.nextInstalmentDeadline = nextInstalmentDeadline
 
     pool.save()
 }
 
 export function handleLiquidityWithdrawn( event: LiquidityWithdrawn ): void {
-    let poolAddress = event.transaction.to.toHexString()
-    let pool = Pool.load(poolAddress)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    //let poolAddress = event.transaction.to.toHexString()
+    //let pool = Pool.load(poolAddress)
 
     //let lenderAddress = poolAddress + event.params.lenderAddress.toHexString();
-    let lenderID = event.transaction.to.toHexString() + "-" + event.params.lenderAddress.toHexString()
-    let poolLender = PoolLender.load(lenderID)
+    //let poolAddress = event.transaction.to as Address
+    let lenderAddress = event.params.lenderAddress as Address
+    let lenderID = poolAddress.toHexString() + "-" + lenderAddress.toHexString()
+    let poolLender = PoolLender.load(lenderID) as PoolLender
     poolLender.status = LENDER_STATUS_WITHDRAWN
     poolLender.amountLent = poolLender.amountLent.minus(event.params.amount)
 
@@ -290,18 +314,23 @@ export function handleLiquidityWithdrawn( event: LiquidityWithdrawn ): void {
 }
 
 export function handleMarginCalled( event: MarginCalled ): void {
-    let lenderID = event.transaction.to.toHexString() + "-" + event.params.lenderAddress.toHexString()
-    let poolLender = PoolLender.load(lenderID)
+    let poolAddress = event.transaction.to as Address
+    let lenderAddress = event.params.lenderAddress as Address
+    let lenderID = poolAddress.toHexString() + "-" + lenderAddress.toHexString()
+    //let lenderID = event.transaction.to.toHexString() + "-" + event.params.lenderAddress.toHexString()
+    let poolLender = PoolLender.load(lenderID) as PoolLender
     poolLender.status = LENDER_STATUS_MARGIN_CALLED
 
     poolLender.save()
 }
 
 export function handlePoolLiquidated( event: PoolLiquidated ): void {
-    let poolAddress = event.transaction.to.toHexString()
-    let pool = Pool.load(poolAddress)
+    let poolAddress = event.transaction.to as Address
+    let pool:Pool = Pool.load(poolAddress.toHexString()) as Pool
+    //let poolAddress = event.transaction.to.toHexString()
+    //let pool = Pool.load(poolAddress)
 
-    let poolVars = PoolVars.load(pool.poolVars)
+    let poolVars = PoolVars.load(pool.poolVars) as PoolVars
     poolVars.loanStatus = LOAN_STATUS_DEFAULTED
 
     poolVars.save()
