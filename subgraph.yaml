@@ -8,9 +8,9 @@ dataSources:
     name: PoolFactory
     network: kovan
     source:
-      address: "0x49a82c3349A2830bb436F9f85265834877bCA4eb"
+      address: "0x119cA47EB9116bF902eD945eCFB7c90306017C47"
       abi: PoolFactory
-      startBlock: 25638000
+      startBlock: 27000000 #25638000 27511741
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -93,9 +93,9 @@ dataSources:
     name: Repayments
     network: kovan
     source:
-      address: "0xd157C83Cd1D83d591ba05f05983099d5E20AEee6"
+      address: "0xe178b21C1b7f62281A1aF5e6019698c8Ab93047a"
       abi: Repayments
-      startBlock: 25638000   
+      startBlock: 27000000 #25638000 27511741   
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
