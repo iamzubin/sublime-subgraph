@@ -55,3 +55,23 @@ dataSources:
           handler: handleSavingsAccountUpdated
         - event: StrategyRegistryUpdated(indexed address)
           handler: handleStrategyRegistryUpdated
+  - kind: ethereum/contract
+    name: SavingsAccount
+    network: kovan
+    source:
+      address: ""
+      abi: SavingsAccount
+      startBlock: 28282173
+    mapping:
+      kind: ethereum/eventHandlers
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/SavingsAccount.ts
+      entities:
+        - 
+      abis:
+        - name: SavingsAccount
+          file: ./abis/SavingsAccount.json
+      eventHandlers:
+        - event: 
+          handler: 
