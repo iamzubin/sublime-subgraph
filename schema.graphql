@@ -1,234 +1,53 @@
-enum Status {
-  VERIFIED
-  UNVERIFIED
-}
-
-enum LoanStatus {
-  Collecting
-  Active
-  Closed
-  Cancelled
-  Defaulted
-  Terminated
-}
-
-# Used to keep track of a user's pofile (list of wallet addresses 
-# and identity integrations like Twitter, etc.) 
-type UserProfile @entity {
-  # id will be the user's primary wallet address
+type CreditLine @entity {
+  #creditLine number
   id: ID!
-  walletAddresses: [WalletAddress!]! @derivedFrom(field: "owner")
-  identityIntegrations: [Identity!]! @derivedFrom(field: "owner")
-  verified: Boolean!
-  displayName: Bytes!
-  poolsCreated: [Pool!]! @derivedFrom(field: "borrower")
-  #poolsLentIn: [PoolLender!]! @derivedFrom(field: "poolLentIn")
+  # credit line line variables
+  creditLineVar: CreditLineVariable
+  # credit line constants
+  creditLineConstant: CreditLineConstant
 }
 
-# Used to store a identity integration (Twitter, etc.)
-type Identity @entity {
+type CreditLineGlobalParam @entity {
+  # use always 1, to store the global params
   id: ID!
-  # which verification method was used for the mapping
-  verificationMethod: String!
-  # identity can sometimes have a userName for frontend display and an 
-  # underlying unique ID (like Twitter). Value can be string (username) or int (userID) converted to string
-  userName: Bytes!
-  userID: Bytes!
-  owner: UserProfile!
-  verifier: String!
+  # strategy registry
+  strategyRegistry: String
+  # savings account
+  savingsAccount: String
+  # protocol fee fraction
+  protocolFeeFraction: BigInt
+  # protocol fee collector
+  protocolFeeCollector: String
+  # price oracle
+  priceOracle: String
+  # liquidation reward fraction
+  liquidationRewardFraction: BigInt
+  # default strategy
+  defaultStrategy: String
 }
 
-# Maps wallet address to UserProfile (owner of the wallet address)
-# Assumption: wallets have a single owner
-type WalletAddress @entity {
-  #wallet address
+type CreditLineConstant @entity {
   id: ID!
-  owner: UserProfile
+  lender: String
+  borrower: String
+  borrowLimit: BigInt
+  idealCollateralRatio: BigInt
+  borrowRate: BigInt
+  borrowAsset: String
+  collateralAsset: String
+  autoLiquidation: Boolean
+  requestByLender: Boolean
 }
 
-type Pool @entity {
-  id: ID! # address of the deployed Pool
-  borrower: UserProfile
-  borrowerAddress: Bytes!
-  poolConstants: PoolConstants!
-  poolVars: PoolVars!
-  repaymentEvents: [RepaymentEvent!]!
-  repaymentConstants: RepaymentConstants
-  repaymentVariables: RepaymentVariables
-  poolLenders: [PoolLender!]! @derivedFrom(field: "poolLentIn")
-  poolToken: PoolToken
-  nextInstalmentDeadline: BigInt!
-}
-
-type PoolConstants @entity {
+type CreditLineVariable @entity {
   id: ID!
-  borrower: Bytes!
-  borrowAmountRequested: BigInt!
-  loanStartTime: BigInt!
-  loanWithdrawalDeadline: BigInt!
-  borrowAsset: Bytes!
-  idealCollateralRatio: BigInt!
-  volatilityThreshold: BigInt!
-  borrowRate: BigInt!
-  noOfRepaymentIntervals: BigInt!
-  repaymentInterval: BigInt!
-  collateralAsset: Bytes!
-  poolSavingsStrategy: Bytes!
-  lenderVerifier: Bytes!
-  minBorrowAmount: BigInt!
+  status: CreditLineStatus
+  principal: BigInt
+  totalInterestRepaid: BigInt
+  lastPrincipalUpdateTime: BigInt
+  interestAccruedTillLastPrincipalUpdate: BigInt
+  collateralAmount: BigInt
 }
-
-type PoolVars @entity {
-  id: ID!
-  baseLiquidityShares: BigInt!
-  extraLiquidityShares: BigInt!
-  loanStatus: LoanStatus!
-  penaltyLiquidityAmount: BigInt!
-}
-
-type RepaymentEvent @entity {
-  id: ID!
-  pool: Pool!
-  amountRepaid: BigInt!
-  repaymentTime: BigInt! #is BigInt the right var for this?
-}
-
-#type RepaymentVars @entity {
-#  id: ID!
-#  pool: Pool!
-#  totalRepaidAmount: BigInt!
-#  repaymentPeriodCovered: BigInt!
-#  repaidAmount: BigInt!
-#  isLoanExtensionActive: Boolean!
-#  loanDurationCovered: BigInt!
-#  nextDuePeriod: BigInt!
-#  nInstalmentsFullyPaid: BigInt!
-#  loanExtensionPeriod: BigInt!
-#  nextInstalmentDeadline: BigInt!
-#}
-
-type RepaymentVariables @entity {
-  id: ID!
-  repaidAmount: BigInt!
-  isLoanExtensionActive: Boolean!
-  loanDurationCovered: BigInt!
-  loanExtensionPeriod: BigInt!
-}
-
-type RepaymentConstants @entity {
-  id: ID!
-  numberOfTotalRepayments: BigInt!
-  gracePenaltyRate: BigInt!
-  gracePeriodFraction: BigInt!
-  loanDuration: BigInt!
-  repaymentInterval: BigInt!
-  borrowRate: BigInt!
-  loanStartTime: BigInt!
-  repayAsset: Bytes!
-}
-
-#type RepaymentConstants @entity {
-#  id: ID!
-#  pool: Pool!
-#  numberOfTotalRepayments: BigInt!
-#  gracePenaltyRate: BigInt!
-#  gracePeriodFraction: BigInt!
-#  loanDuration: BigInt!
-#  repaymentInterval: BigInt!
-#  borrowRate: BigInt!
-#  loanStartTime: BigInt!
-#  repayAsset: Bytes!
-#  #savingsAccount: Bytes!
-#  borrowAsset: Bytes!
-#}
-
-enum PoolLenderStatus {
-  ACTIVE
-  MARGIN_CALLED
-  LIQUIDATED
-}
-
-type PoolLender @entity {
-  id: ID!
-  poolLentIn: Pool!
-  lenderAddress: Bytes!
-  status: PoolLenderStatus
-  #votedForExtension: Boolean! 
-  amountLent: BigInt!
-  marginCallsMade: [MarginCallEvent!]! @derivedFrom(field: "marginCaller")
-  #baseLiquidityShares: BigInt!
-  extraLiquidityShares: BigInt!
-}
-
-type PoolToken @entity {
-  id: ID! # generated during PoolCreated() event in PoolFactory
-  pool: Pool! # which pool is the token associated with
-  borrowerAddress: Bytes!
-}
-
-type ExtensionRequest @entity {
-  id: ID!
-
-}
-
-enum MarginCallStatus {
-  CANCELLED
-  EXECUTED
-  FULFILLED
-  ACTIVE
-}
-
-type MarginCallEvent @entity {
-  id: ID!
-  status: MarginCallStatus
-  marginCallTime: BigInt! #is BigInt the appropriate type?
-  marginCaller: PoolLender
-  pool: Pool!
-}
-
-type poolLiquidation @entity{
-  id:ID!
-  pool: Pool
-  lender: Bytes
-  liquidator:Bytes
-  liquidatedAmount: BigInt
-  timeStamp:BigInt
-  suppliedAmount: BigInt
-}
-
-  
-type TwitterDetail @entity {
-  id: ID!
-  twitterId: Bytes!
-  twitterSignMessage: String
-  registrationTime: BigInt  
-  linkedAddresses: [Bytes!]!
-}
-
-type SavingsAccount @entity {
-  id: ID!
-  user: UserProfile
-  walletAddress: Bytes!
-  savingsDetails: [SavingsStrategyDetails!]! @derivedFrom(field: "savingsAccount")
-}
-
-type SavingsStrategyDetails @entity {
-  id: ID!
-  strategyAddress: Bytes!
-  savingsAccount: SavingsAccount
-  balance: BigInt!
-  asset: Bytes!
-}
-
-type SavingsDeposit @entity {
-  id: ID!
-  asset: Bytes
-  amount: BigInt
-  strategy: Bytes
-  savingAccount: SavingsAccount
-  liquidityShare: BigInt
-}
-
 
 enum CreditLineStatus {
   NOT_CREATED
@@ -238,174 +57,3 @@ enum CreditLineStatus {
   CANCELLED
   LIQUIDATED
 }
-
-
-type CreditLine @entity {
-  #creditLine hash
-  id: ID!
-  # stores who requested the credit line
-  requestedBy: UserProfile
-  # status
-  status: CreditLineStatus
-  # borrower user profile
-  borrower: UserProfile
-  # borrower address
-  borrowerAddress: Bytes!
-  # lender user profile
-  lender: UserProfile
-  # lender address
-  lenderAddress: Bytes!
-  # credit limit
-  borrowLimit: BigInt!
-  # liquidation threshold
-  liquidationThreshold: BigInt!
-  # interest Rate
-  borrowRate: BigInt!
-  # ideal collateral ratio
-  idealCollateralRatio: BigInt!
-  # borrow Asset
-  borrowAsset: Bytes!
-  # collateral asset
-  collateralAsset: Bytes!
-  # auto-liquidation
-  autoLiquidate: Boolean!
-  # active principal borrowed
-  activePrincipal: BigInt!
-  # active collateral deposited
-  activeCollateral: BigInt!
-  # total interest repaid
-  totalInterestRepaid: BigInt!
-  # interest accrued since the last time principal was updated
-  interestAccruedTillPrincipalUpdate: BigInt!
-  # time when the principal was last updated (either through repayment or borrowing)
-  lastPrincipalUpdateTime: BigInt!
-  # array of all liquidations associated with given credit line 
-  #(assumption: credit line stays active even after liquidation)
-  liquidationHistory: CreditLineLiquidationEvent @derivedFrom(field: "creditLine")
-  borrowingHistory: [CreditLineBorrowingEvent!]! @derivedFrom(field: "creditLine")
-  repaymentHistory: [CreditLineRepaymentEvent!]! @derivedFrom(field: "creditLine")
-  oracleAddress: Bytes!
-  protocolFee: BigInt!
-}
-
-type CreditLineLiquidationEvent @entity {
-  id: ID!
-  liquidator: Bytes!
-  creditLine: CreditLine!
-  amountLiquidatedInCollateralAsset: BigInt!
-}
-
-type CreditLineBorrowingEvent @entity {
-  id: ID!
-  borrowAmount: BigInt!
-  creditLine: CreditLine!
-}
-
-type CreditLineRepaymentEvent @entity {
-  id: ID!
-  creditLine: CreditLine!
-  repayAmount: BigInt!
-}
-
-
-
-#type creditLineLiquidation @entity{
-#  id:ID!
-#  creditLine: CreditLine
-#  Borrower: Bytes
-#  liquidator:Bytes
-#  liquidatedAmount: BigInt
-#  suppliedAmount: BigInt
-#  timeStamp:BigInt
-#}
-
-#type Pool @entity {
-  #id: ID!
-  #borrower: User
-  #borrowAsset: Bytes
-  #borrowAmountRequested:BigInt
-  #minborrowAmount:BigInt
-  #matchCollateralRatioEndTime:BigInt
-  #noOfRepaymentIntervals:BigInt
-  #investedTo:Bytes
-  #collateralAsset: Bytes
-  #lendingRate: BigInt
-  #borrowRate: BigInt
-  #loanDuration: BigInt
-  #idealCollateralRatio: BigInt
-  #loanStatus: LoanStatus
-  #repaymentInterval:BigInt
-  #poolSavingsStrategy:Bytes
-  # collateralShare:BigInt
-  # lentAmount: BigInt
-  # borrowedAmount: BigInt
-  # collateralAmount: BigInt
-  #loanWithdrawalDeadline:BigInt
-  #amountRepaid: BigInt
-  #loanStartTime: BigInt
-  #nextRepayTime: BigInt
-  # collateralCalls: BigInt
-  # whitelistedAddress: [Bytes]
-  # voteWeight: BigInt
-  #baseLiquidityShares:BigInt
-  #extraLiquidityShares:BigInt
-  #noOfGracePeriodsTaken:BigInt
-  #nextDuePeriod:BigInt
-  #repayExtensionEndTime: BigInt
-  #lenders: [LendingDetailscopy!] @derivedFrom(field: "pool")
-  #liquidatedLenders: [poolLiquidation!] @derivedFrom(field: "pool")
-  #poolLiquidated: poolLiquidation 
-  #published: BigInt
-  #lentAmount:BigInt
-  #tokenImpl: String
-  #nextDueTime: BigInt
-#}
-
-#type GlobalPoolDetail @entity{
-#  id:ID!
-#  admin: String!
-#  collectionPeriod:BigInt
-#  matchCollateralRatioInterval:BigInt
-#  marginCallDuration:BigInt
-#  collateralVolatilityThreshold:BigInt
-#  gracePeriodPenaltyFraction:BigInt
-#  liquidatorRewardFraction:BigInt
-#  votingPassRatio:BigInt
-#  gracePeriodFraction:BigInt
-
-#}
-
-#type LendingDetailscopy @entity {
-#  id: ID!
-#  pool: Pool
-#  lender: User
-  # amountSupplied: BigInt
-  # amountWithdrawn: BigInt
-  # repaymentWithdrawn: BigInt
-  # collateralCalled: Boolean
-  # lastVoteTime:BigInt
-  # marginCallEndTime:BigInt
-  # exraLiquidityShares:BigInt
-#  AmountLend:BigInt
-#}
-
-#type LendingDetails @entity {
-#  id: ID!
-#  pool: Pool
-#  lender: User
-  # amountSupplied: BigInt
-#  amountWithdrawn: BigInt
-#  repaymentWithdrawn: BigInt
-#  collateralCalled: Boolean
-#  lastVoteTime:BigInt
-#  marginCallEndTime:BigInt
-#  exraLiquidityShares:BigInt
-#  Balance:BigInt
-#}
-
-#type CreditLineCollateralInfo @entity {
-#  id: ID!
-#  amount: BigInt
-#  strategy: Bytes
-#  creditLines: CreditLine
-#}

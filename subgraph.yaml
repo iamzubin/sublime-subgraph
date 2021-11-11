@@ -5,214 +5,53 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: PoolFactory
+    name: CreditLine
     network: kovan
     source:
-      address: "0x119cA47EB9116bF902eD945eCFB7c90306017C47"
-      abi: PoolFactory
-      startBlock: 27000000 #25638000 27511741
+      address: "0xD077B6d3ed11d0aDD036D7d9b1Ac9d4FdE561fF4"
+      abi: CreditLine
+      startBlock: 28282173
     mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
+      kind: ethereum/eventHandlers
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/mapping.ts
+      file: ./src/CreditLine.ts
       entities:
-        - Pool
-        - PoolConstants
-        - PoolVars
-        - RepaymentEvent
-        - RepaymentConstants
-        - RepaymentVariables
-        - PoolToken
+        - CreditLine
+        - CreditLineGlobalParam
       abis:
-        - name: PoolFactory
-          file: ./abis/PoolFactory.json
-        - name: Pool
-          file: ./abis/Pool.json
+        - name: CreditLine
+          file: ./abis/CreditLine.json
       eventHandlers:
-        - event: PoolCreated(address,address,address)
-          handler: handlePoolCreated
-        #- event: OwnershipTransferred(indexed address,indexed address)
-        #  handler: handleOwnershipTransferred
-        #- event: CollectionPeriodUpdated(uint256)
-        #  handler: handleCollectionPeriodUpdated
-
-
-  #- kind: ethereum/contract
-  #  name: SavingsAccount
-  #  network: kovan
-  #  source:
-  #    address: "0xD1Ce6B73914dd8608Bca7e98Ad9DF8Fc92Ceb5b7"
-  #    abi: SavingsAccount
-  #    startBlock: 25638000   
-  #  mapping:
-  #    kind: ethereum/events
-  #    apiVersion: 0.0.4
-  #    language: wasm/assemblyscript
-  #    file: ./src/mappings/savingsAccount.ts
-  #    entities:
-  #      - SavingAccount
-  #    abis:
-  #      - name: SavingsAccount
-  #        file: ./abis/SavingsAccount.json
-  #    eventHandlers:
-        #- event: Deposited(address,uint256,address,address)
-        #  handler: handleDeposited
-        #- event: StrategySwitched(address,address,address,address)
-        #  handler: handleStrategySwitched
-        #- event: Withdrawn(address,address,uint256,address,address)
-        #  handler: handleWithdrawn
-        #- event: WithdrawnAll(address,uint256,address)
-        #  handler: handleWithdrawnAll
-
-  #- kind: ethereum/contract
-  #  name: verification
-  #  network: kovan
-  #  source:
-  #    address: "0xBF09ecC3F7C439801779C9f2dcC684503e27F9c7"
-  #    abi: Verification
-  #    startBlock: 25638000   
-  #  mapping:
-  #    kind: ethereum/events
-  #    apiVersion: 0.0.4
-  #    language: wasm/assemblyscript
-  #    file: ./src/mappings/Verification.ts
-  #    entities:
-  #      - Verification
-  #    abis:
-  #      - name: Verification
-  #        file: ./abis/Verification.json
-  #    eventHandlers:
-        #- event: UserRegistered(address,address,bool)
-        #  handler: handleUserRegistered
-        #- event: UserUnregistered(address,address,address)
-        #  handler: handleUserUnregistered
-
-
-  - kind: ethereum/contract
-    name: Repayments
-    network: kovan
-    source:
-      address: "0xe178b21C1b7f62281A1aF5e6019698c8Ab93047a"
-      abi: Repayments
-      startBlock: 27000000 #25638000 27511741   
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/mappings/pool.ts
-      entities:
-        - Pool
-      abis:
-        - name: Repayments
-          file: ./abis/Repayments.json
-      eventHandlers:
-        - event: InterestRepaid(address,uint256)
-          handler: handleInterestRepaid
-        #- event: PartialExtensionRepaymentMade(address)
-        #  handler: handlePartialExtensionRepaymentMade
-
-  ##- kind: ethereum/contract
-  ##  name: CreditLine
-  ##  network: kovan
-  ##  source:
-  ##    address: "0xB642a5877Eb6511D75BdD0Bb9e4d31E251f99729"
-  ##    abi: CreditLine
-  ##    startBlock: 25638000   
-  ##  mapping:
-  ##    kind: ethereum/events
-  ##    apiVersion: 0.0.4
-  ##    language: wasm/assemblyscript
-  ##    file: ./src/mappings/creditLine.ts
-  ##    entities:
-  ##      - CreditLine
-  ##    abis:
-  ##      - name: CreditLine
-  ##        file: ./abis/CreditLine.json
-  ##    eventHandlers:
-        #- event: BorrowedFromCreditLine(uint256,bytes32)
-        #  handler: handleBorrowedFromCreditLine
-        #- event: CreditLineAccepted(bytes32)
-        #  handler: handleCreditLineAccepted
-        #- event: CreditLineClosed(bytes32)
-        #  handler: handleCreditLineClosed
-        #- event: CreditLineRequestedToBorrower(bytes32,address,address)
-        #  handler: handleCreditLineRequestedToBorrower
-        #- event: CreditLineRequestedToLender(bytes32,address,address)
-        #  handler: handleCreditLineRequestedToLender
-        #- event: CreditLineReset(bytes32)
-        #  handler: handleCreditLineReset
-        #- event: PartialCreditLineRepaid(bytes32,uint256)
-        #  handler: handlePartialCreditLineRepaid
-
-templates:
-  - kind: ethereum/contract
-    name: Pool
-    network: kovan
-    source:
-      abi: Pool
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/mappings/pool.ts
-      entities:
-        - Pool
-        - PoolConstants
-        - PoolVars
-        - RepaymentEvent
-        - RepaymentConstants
-        - RepaymentVariables
-        - PoolToken
-      abis:
-        - name: Pool
-          file: ./abis/Pool.json
-      eventHandlers:
-        #- event: OpenBorrowPoolClosed()
-        #  handler: handleOpenBorrowPoolClosed
-        - event: PoolTerminated()
-          handler: PoolTerminated
-        - event: PoolCancelled()
-          handler: handlePoolCancelled
-        # - event: OpenBorrowPoolDefaulted()
-        #   handler: handleOpenBorrowPoolDefaulted
-        # - event: CollateralWithdrawn(address,uint256)
-        #   handler: handleCollateralWithdrawn
-        - event: LiquiditySupplied(uint256,address)
-          handler: handleLiquiditySupplied
-        # - event: AmountBorrowed(address,uint256)
-          # handler: handleAmountBorrowed
-        # - event: LiquidityWithdrawn(uint256,address)
-          # handler: handleLiquidityWithdrawn
-        # - event: CollateralCalled(address)
-          # handler: handleCollateralCalled
-        # - event: MarginCallCollateralAdded(address,address,uint256,uint256)
-          # handler: handleLenderVoted
-        # - event: CollateralAdded(address,uint256,uint256)
-          # handler: handleCollateralAdded
-        # - event: LoanDefaulted()
-          # handler: handleLoanDefaulted
-
-  #- kind: ethereum/contract
-  #  name: PoolToken
-  #  network: kovan
-  #  source:
-  #    abi: PoolToken
-  #  mapping:
-  #    kind: ethereum/events
-  #    apiVersion: 0.0.4
-  #    language: wasm/assemblyscript
-  #    file: ./src/mappings/pool.ts
-  #    entities:
-  #      - Pool
-  #      - User
-  #      - poolLiquidation
-  #      - LendingDetails
-  #    abis:
-  #      - name: PoolToken
-  #        file: ./abis/PoolToken.json
-  #    eventHandlers:
-        #- event: Approval(indexed address,indexed address,uint256)
-        #  handler: handleApproval
-        #- event: Transfer(indexed address,indexed address,uint256)
-        #  handler: handleTransfer
+        - event: BorrowedFromCreditLine(indexed uint256,uint256)
+          handler: handleBorrowedFromCreditLine
+        - event: CompleteCreditLineRepaid(indexed uint256,uint256)
+          handler: handleCompleteCreditLineRepaid
+        - event: CreditLineAccepted(indexed uint256)
+          handler: handleCreditLineAccepted
+        - event: CreditLineClosed(indexed uint256)
+          handler: handleCreditLineClosed
+        - event: CreditLineLiquidated(indexed uint256,indexed address)
+          handler: handleCreditLineLiquidated
+        - event: CreditLineRequested(indexed uint256,indexed address,indexed address)
+          handler: handleCreditLineRequested
+        - event: CreditLineReset(indexed uint256)
+          handler: handleCreditLineReset
+        - event: DefaultStrategyUpdated(indexed address)
+          handler: handleDefaultStrategyUpdated
+        - event: LiquidationRewardFractionUpdated(uint256)
+          handler: handleLiquidationRewardFractionUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PartialCreditLineRepaid(indexed uint256,uint256)
+          handler: handlePartialCreditLineRepaid
+        - event: PriceOracleUpdated(indexed address)
+          handler: handlePriceOracleUpdated
+        - event: ProtocolFeeCollectorUpdated(indexed address)
+          handler: handleProtocolFeeCollectorUpdated
+        - event: ProtocolFeeFractionUpdated(uint256)
+          handler: handleProtocolFeeFractionUpdated
+        - event: SavingsAccountUpdated(indexed address)
+          handler: handleSavingsAccountUpdated
+        - event: StrategyRegistryUpdated(indexed address)
+          handler: handleStrategyRegistryUpdated
