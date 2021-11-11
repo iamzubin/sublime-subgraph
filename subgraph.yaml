@@ -56,22 +56,27 @@ dataSources:
         - event: StrategyRegistryUpdated(indexed address)
           handler: handleStrategyRegistryUpdated
   - kind: ethereum/contract
-    name: SavingsAccount
+    name: StrategyRegistry
     network: kovan
     source:
-      address: ""
-      abi: SavingsAccount
-      startBlock: 28282173
+      address: "0x9Af5CaF81b9985cB691f7763b7bE0412bb05b3dC"
+      abi: StrategyRegistry
+      startBlock: 
     mapping:
       kind: ethereum/eventHandlers
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/SavingsAccount.ts
+      file: ./src/strategyRegistry/strategyRegistry.ts
       entities:
-        - 
+        - StrategyRegistry
+        - Strategy
       abis:
-        - name: SavingsAccount
-          file: ./abis/SavingsAccount.json
+        - name: StrategyRegistry
+          file: ./abis/StrategyRegistry.json
       eventHandlers:
-        - event: 
-          handler: 
+        - event: StrategyAdded(indexed address)
+          handler: handleStrategyAdded
+        - event: StrategyRemoved(indexed address)
+          handler: handleStrategyRemoved
+        - event: MaxStrategiesUpdated(uint256)
+          handler: handleMaxStrategiesUpdated
