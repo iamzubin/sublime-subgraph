@@ -33,7 +33,7 @@ export function handleBorrowedFromCreditLine(event: BorrowedFromCreditLine): voi
 export function handleCompleteCreditLineRepaid(event: CompleteCreditLineRepaid): void {}
 
 export function handleCreditLineAccepted(event: CreditLineAccepted): void {
-  let creditLineId = event.params.id.toString();
+  let creditLineId = event.params.id;
   updateCreditLineVariable(creditLineId, 2);
 }
 
@@ -42,15 +42,15 @@ export function handleCreditLineClosed(event: CreditLineClosed): void {}
 export function handleCreditLineLiquidated(event: CreditLineLiquidated): void {}
 
 export function handleCreditLineRequested(event: CreditLineRequested): void {
-  let creditLineId = event.params.id.toString();
-  let creditLine = CreditLineSchema.load(creditLineId);
+  let creditLineId = event.params.id;
+  let creditLine = CreditLineSchema.load(creditLineId.toString());
   if (creditLine) {
   } else {
-    creditLine = new CreditLineSchema(creditLineId);
+    creditLine = new CreditLineSchema(creditLineId.toString());
     updateCreditLineConstant(creditLineId);
     updateCreditLineVariable(creditLineId, 1);
-    creditLine.creditLineConstant = creditLineId;
-    creditLine.creditLineVar = creditLineId;
+    creditLine.creditLineConstant = creditLineId.toString();
+    creditLine.creditLineVar = creditLineId.toString();
     creditLine.save();
   }
 }
@@ -131,13 +131,12 @@ export function handleStrategyRegistryUpdated(event: StrategyRegistryUpdated): v
   creditLineGlobalParam.save();
 }
 
-function updateCreditLineConstant(creditLineId: string): void {
-  let creditLine = CreditLineConstant.load(creditLineId);
-  let creditLineNum = BigInt.fromString(creditLineId);
+function updateCreditLineConstant(creditLineId: BigInt): void {
+  let creditLine = CreditLineConstant.load(creditLineId.toString());
   if (!creditLine) {
-    creditLine = new CreditLineConstant(creditLineId);
+    creditLine = new CreditLineConstant(creditLineId.toString());
   }
-  let _tempConstants = creditLineInstance.creditLineConstants(creditLineNum);
+  let _tempConstants = creditLineInstance.creditLineConstants(creditLineId);
   creditLine.lender = _tempConstants.value0.toHexString();
   creditLine.borrower = _tempConstants.value1.toHexString();
   creditLine.borrowLimit = _tempConstants.value2;
@@ -150,13 +149,12 @@ function updateCreditLineConstant(creditLineId: string): void {
   creditLine.save();
 }
 
-function updateCreditLineVariable(creditLineId: string, creditLineStatusCode: i32): void {
-  let creditLine = CreditLineVariable.load(creditLineId);
-  let creditLineNum = BigInt.fromString(creditLineId);
+function updateCreditLineVariable(creditLineId: BigInt, creditLineStatusCode: i32): void {
+  let creditLine = CreditLineVariable.load(creditLineId.toString());
   if (!creditLine) {
-    creditLine = new CreditLineVariable(creditLineId);
+    creditLine = new CreditLineVariable(creditLineId.toString());
   }
-  let _tempVariables = creditLineInstance.creditLineVariables(creditLineNum);
+  let _tempVariables = creditLineInstance.creditLineVariables(creditLineId);
   creditLine.status = getCreditLineStatus(creditLineStatusCode);
   creditLine.principal = _tempVariables.value1;
   creditLine.totalInterestRepaid = _tempVariables.value2;

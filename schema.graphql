@@ -58,13 +58,13 @@ enum CreditLineStatus {
   LIQUIDATED
 }
 
-type StrategyRegistry {
+type StrategyRegistry @entity {
   id: ID!
   max: BigInt!
-  strategyOrder: Strategy[]!
+  strategyOrder: [Strategy!]
 }
 
-type Strategy {
+type Strategy @entity {
   id: ID!
   address: String!
   enabled: Boolean!
