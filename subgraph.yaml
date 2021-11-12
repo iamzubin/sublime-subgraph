@@ -94,8 +94,8 @@ dataSources:
       file: ./src/savingsAccount/savingsAccount.ts
       entities:
         - SavingsAccount
-        - Deposit
-        - DepositPerStrategy
+        - Balance
+        - BalancePerStrategy
         - Allowance
         - AllowancePerAddress
       abis:
@@ -109,10 +109,10 @@ dataSources:
         - event: CreditLineAllowanceRefreshed(indexed address,indexed address,uint256)
           handler: handleCreditLineAllowanceRefreshed
         - event: CreditLineUpdated(indexed address)
-          handler: handleCreditLineUpdated
+          handler: handleCreditLineUpdate
         - event: StrategyRegistryUpdated(indexed address)
           handler: handleStrategyRegistryUpdate
-        - event: StrategySwitched(indexed address,indexed address,address,indexed address)
+        - event: StrategySwitched(indexed address,indexed address,uint256,uint256,address,indexed address)
           handler: handleStrategySwitched
         - event: Transfer(indexed address,address,indexed address,indexed address,uint256)
           handler: handleTransfer
