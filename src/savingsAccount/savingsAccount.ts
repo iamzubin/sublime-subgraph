@@ -10,26 +10,18 @@ import {
     Withdrawn,
     WithdrawnAll,
 } from "../../generated/SavingsAccount/SavingsAccount";
-import { addBalanceToUser, decreaseBalance, getBalance, getUserBalance, increaseBalance } from "./helpers";
+import { decreaseBalance, getBalance, getUserBalance, increaseBalance, updateAllowance } from "./helpers";
 
 export function handleDeposit(event: Deposited): void {
     increaseBalance(event.params.user, event.params.token, event.params.strategy, event.params.sharesReceived);
 }
 
 export function handleApproval(event: Approved): void {
-    
+    updateAllowance(event.params.from, event.params.to, event.params.token, event.address);
 }
 
 export function handleCreditLineAllowanceRefreshed(event: CreditLineAllowanceRefreshed): void {
-
-}
-
-export function handleCreditLineUpdate(event: CreditLineUpdated): void {
-
-}
-
-export function handleStrategyRegistryUpdate(event: StrategyRegistryUpdated): void {
-
+    updateAllowance(event.params.from, event.params.to, event.params.token, event.address);
 }
 
 export function handleStrategySwitched(event: StrategySwitched): void {
@@ -40,10 +32,12 @@ export function handleStrategySwitched(event: StrategySwitched): void {
 export function handleTransfer(event: Transfer): void {
     increaseBalance(event.params.from, event.params.token, event.params.strategy, event.params.amount);
     decreaseBalance(event.params.to, event.params.token, event.params.strategy, event.params.amount);
+    updateAllowance(event.params.from, event.params.to, event.params.token, event.address);
 }
 
 export function handleWithdraw(event: Withdrawn): void {
     decreaseBalance(event.params.from, event.params.token, event.params.strategy, event.params.sharesWithdrawn);
+    updateAllowance(event.params.from, event.params.to, event.params.token, event.address);
 }
 
 export function handleWithdrawAll(event: WithdrawnAll): void {

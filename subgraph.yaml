@@ -106,7 +106,7 @@ dataSources:
           handler: handleDeposit
         - event: Approved(indexed address,indexed address,indexed address,uint256)
           handler: handleApproval
-        - event: CreditLineAllowanceRefreshed(indexed address,indexed address,uint256)
+        - event: CreditLineAllowanceRefreshed(indexed address,indexed address,indexed address,uint256)
           handler: handleCreditLineAllowanceRefreshed
         - event: CreditLineUpdated(indexed address)
           handler: handleCreditLineUpdate

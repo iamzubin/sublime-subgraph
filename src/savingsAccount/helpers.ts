@@ -1,6 +1,7 @@
 import { Address, store } from "@graphprotocol/graph-ts";
 import { BigInt } from "@graphprotocol/graph-ts";
-import { Balance, Strategy, UserBalance } from "../../generated/schema";
+import { SavingsAccount } from "../../generated/SavingsAccount/SavingsAccount";
+import { Allowance, Balance, Strategy, UserBalance } from "../../generated/schema";
 import { BIGINT_ZERO } from "../constants/constants";
 
 
@@ -101,4 +102,32 @@ export function removeBalanceFromUser(user: Address, token: Address, strategy: A
     if(userBalance.strategyBalance.length == 0) {
         store.remove("UserBalance", userBalance.id);
     }
+}
+
+export function getAllowanceId(from: Address, to: Address, token: Address): string {
+    let allowanceId = from.toHexString() + to.toHexString() + token.toHexString();
+    return allowanceId;
+}
+
+export function getAllowance(from: Address, to: Address, token: Address): Allowance {
+    let allowanceId = getAllowanceId(from, to, token);
+    let allowance = Allowance.load(allowanceId);
+    if(allowance == null) {
+        allowance = new Allowance(allowanceId);
+        allowance.from = from.toHexString();
+        allowance.to = to.toHexString();
+        allowance.token = token.toHexString();
+        allowance.amount = BIGINT_ZERO;
+        allowance.save();
+    }
+    return allowance as Allowance;
+}
+
+export function updateAllowance(from: Address, to: Address, token: Address, savingsAccount: Address): void {
+    let savingsAccountContract = SavingsAccount.bind(savingsAccount);
+    let latestAllowance = savingsAccountContract.allowance(from, token, to);
+
+    let allowanceEntity = getAllowance(from, to, token);
+    allowanceEntity.amount = latestAllowance;
+    allowanceEntity.save();
 }
