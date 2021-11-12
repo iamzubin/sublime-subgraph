@@ -110,8 +110,6 @@ dataSources:
           handler: handleCreditLineAllowanceRefreshed
         - event: CreditLineUpdated(indexed address)
           handler: handleCreditLineUpdated
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransfer
         - event: StrategyRegistryUpdated(indexed address)
           handler: handleStrategyRegistryUpdate
         - event: StrategySwitched(indexed address,indexed address,address,indexed address)
