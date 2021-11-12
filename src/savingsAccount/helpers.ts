@@ -33,7 +33,7 @@ export function getUserBalance(user: Address, token: Address): UserBalance {
         // TODO: this can be removed ?
         userBalance.save();
     }
-    return userBalance;
+    return userBalance as UserBalance;
 }
 
 function getBalanceId(user: Address, token: Address, strategy: Address): string {
@@ -54,7 +54,7 @@ export function getBalance(user: Address, token: Address, strategy: Address): Ba
         balance.save();
         addBalanceToUser(user, token, strategy);
     }
-    return balance;
+    return balance as Balance;
 }
 
 export function increaseBalance(user: Address, token: Address, strategy: Address, amount: BigInt): void {

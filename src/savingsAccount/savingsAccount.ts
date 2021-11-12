@@ -51,7 +51,7 @@ export function handleWithdrawAll(event: WithdrawnAll): void {
     let strategyBalances = userBalance.strategyBalance;
 
     for(let i=0; i < strategyBalances.length; i++) {
-        let strategy = Address.fromHexString(strategyBalances[i]);
+        let strategy = Address.fromHexString(strategyBalances[i]) as Address;
         let balance = getBalance(event.params.user, event.params.token, strategy);
         decreaseBalance(event.params.user, event.params.token, strategy, balance.shares);
     }
