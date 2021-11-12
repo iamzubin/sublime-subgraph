@@ -93,7 +93,11 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/savingsAccount/savingsAccount.ts
       entities:
-        - 
+        - SavingsAccount
+        - Deposit
+        - DepositPerStrategy
+        - Allowance
+        - AllowancePerAddress
       abis:
         - name: SavingsAccount
           file: ./abis/SavingsAccount.json
@@ -117,4 +121,4 @@ dataSources:
         - event: Withdrawn(indexed address,indexed address,uint256,indexed address,address)
           handler: handleWithdraw
         - event: WithdrawnAll(indexed address,uint256,indexed address)
-          hanlder: handleWithdrawAll
+          handler: handleWithdrawAll

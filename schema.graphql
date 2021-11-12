@@ -69,3 +69,36 @@ type Strategy @entity {
   address: String!
   enabled: Boolean!
 }
+
+type SavingsAccount @entity {
+  id: ID!
+  address: String!
+  deposits: [Deposit]!
+  allowances: [Allowance]!
+}
+
+type Deposit @entity {
+  id: ID!
+  token: String!
+  strategyDeposits: [DepositPerStrategy]!
+}
+
+type DepositPerStrategy @entity {
+  id: ID!
+  strategy: String!
+  token: String!
+  shares: BigInt!
+}
+
+type Allowance @entity {
+  id: ID!
+  token: String!
+  to: [AllowancePerAddress]!
+}
+
+type AllowancePerAddress @entity {
+  id: ID!
+  to: String!
+  token: String!
+  amount: BigInt!
+}
