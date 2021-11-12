@@ -93,10 +93,28 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/savingsAccount/savingsAccount.ts
       entities:
-        - Strategy
+        - 
       abis:
         - name: SavingsAccount
           file: ./abis/SavingsAccount.json
       eventHandlers:
         - event: Deposited(indexed address,uint256,indexed address,indexed address)
           handler: handleDeposit
+        - event: Approved(indexed address,indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: CreditLineAllowanceRefreshed(indexed address,indexed address,uint256)
+          handler: handleCreditLineAllowanceRefreshed
+        - event: CreditLineUpdated(indexed address)
+          handler: handleCreditLineUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransfer
+        - event: StrategyRegistryUpdated(indexed address)
+          handler: handleStrategyRegistryUpdate
+        - event: StrategySwitched(indexed address,indexed address,address,indexed address)
+          handler: handleStrategySwitched
+        - event: Transfer(indexed address,address,indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Withdrawn(indexed address,indexed address,uint256,indexed address,address)
+          handler: handleWithdraw
+        - event: WithdrawnAll(indexed address,uint256,indexed address)
+          hanlder: handleWithdrawAll
