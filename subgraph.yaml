@@ -8,7 +8,7 @@ dataSources:
     name: CreditLine
     network: kovan
     source:
-      address: "0xD077B6d3ed11d0aDD036D7d9b1Ac9d4FdE561fF4"
+      address: "0x370707EFEfC8375d45460A0DCFAFb88C0d3A9669"
       abi: CreditLine
       startBlock: 28282173
     mapping:
@@ -55,3 +55,7 @@ dataSources:
           handler: handleSavingsAccountUpdated
         - event: StrategyRegistryUpdated(indexed address)
           handler: handleStrategyRegistryUpdated
+        - event: CollateralDeposited(indexed uint256,uint256,indexed address)
+          handler: handleCollateralDeposited
+        - event: CollateralWithdrawn(indexed uint256,uint256)
+          handler: handleCollateralWithdrawn

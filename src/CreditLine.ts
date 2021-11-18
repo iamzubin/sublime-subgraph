@@ -1,6 +1,10 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 
-import { CreditLine as CreditLineSchema, CreditLineConstant, CreditLineVariable, CreditLineGlobalParam } from "../generated/schema";
+import {
+  CreditLine as CreditLineSchema,
+  CreditLineGlobalParam,
+  CreditLineTimeline,
+} from "../generated/schema";
 
 import {
   BorrowedFromCreditLine,
@@ -19,43 +23,99 @@ import {
   ProtocolFeeFractionUpdated,
   SavingsAccountUpdated,
   StrategyRegistryUpdated,
+  CollateralDeposited,
+  CollateralWithdrawn,
   CreditLine as CreditLineContract,
 } from "../generated/CreditLine/CreditLine";
 
-import { getCreditLineStatus } from "./helper";
+import { getCreditLineOperation, getCreditLineStatus } from "./helper";
 
 import { CREDIT_LINE_ADDRESS } from "./contractAddresses";
 
 let creditLineInstance = CreditLineContract.bind(CREDIT_LINE_ADDRESS);
 
-export function handleBorrowedFromCreditLine(event: BorrowedFromCreditLine): void {}
+export function handleBorrowedFromCreditLine(event: BorrowedFromCreditLine): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 2);
+  updateCreditLineTimeline(
+    creditLineId,
+    event.transaction.hash.toHexString(),
+    event.block.timestamp,
+    4,
+    event.params.borrowAmount,
+    null,
+    null
+  );
+}
 
-export function handleCompleteCreditLineRepaid(event: CompleteCreditLineRepaid): void {}
+export function handleCompleteCreditLineRepaid(event: CompleteCreditLineRepaid): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 2);
+  updateCreditLineTimeline(
+    creditLineId,
+    event.transaction.hash.toHexString(),
+    event.block.timestamp,
+    5,
+    event.params.repayAmount,
+    null,
+    null
+  );
+}
 
 export function handleCreditLineAccepted(event: CreditLineAccepted): void {
   let creditLineId = event.params.id.toString();
   updateCreditLineVariable(creditLineId, 2);
+  updateCreditLineTimeline(creditLineId, event.transaction.hash.toHexString(), event.block.timestamp, 2, null, null, null);
 }
 
-export function handleCreditLineClosed(event: CreditLineClosed): void {}
+export function handleCreditLineClosed(event: CreditLineClosed): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 3);
+  updateCreditLineTimeline(creditLineId, event.transaction.hash.toHexString(), event.block.timestamp, 7, null, null, null);
+}
 
-export function handleCreditLineLiquidated(event: CreditLineLiquidated): void {}
+export function handleCreditLineLiquidated(event: CreditLineLiquidated): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 5);
+  updateCreditLineTimeline(creditLineId, event.transaction.hash.toHexString(), event.block.timestamp, 10, null, null, null);
+}
+
+export function handleCollateralDeposited(event: CollateralDeposited): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 2);
+  updateCreditLineTimeline(
+    creditLineId,
+    event.transaction.hash.toHexString(),
+    event.block.timestamp,
+    3,
+    event.params.amount,
+    event.params.strategy.toHexString(),
+    null
+  );
+}
+
+export function handleCollateralWithdrawn(event: CollateralWithdrawn): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 3);
+  updateCreditLineTimeline(creditLineId, event.transaction.hash.toHexString(), event.block.timestamp, 6, event.params.amount, null, null);
+}
 
 export function handleCreditLineRequested(event: CreditLineRequested): void {
   let creditLineId = event.params.id.toString();
   let creditLine = CreditLineSchema.load(creditLineId);
   if (creditLine) {
   } else {
-    creditLine = new CreditLineSchema(creditLineId);
     updateCreditLineConstant(creditLineId);
     updateCreditLineVariable(creditLineId, 1);
-    creditLine.creditLineConstant = creditLineId;
-    creditLine.creditLineVar = creditLineId;
-    creditLine.save();
+    updateCreditLineTimeline(creditLineId, event.transaction.hash.toHexString(), event.block.timestamp, 1, null, null, null);
   }
 }
 
-export function handleCreditLineReset(event: CreditLineReset): void {}
+export function handleCreditLineReset(event: CreditLineReset): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 2);
+  updateCreditLineTimeline(creditLineId, event.transaction.hash.toHexString(), event.block.timestamp, 9, null, null, null);
+}
 
 export function handleDefaultStrategyUpdated(event: DefaultStrategyUpdated): void {
   let creditLineGlobalParam = CreditLineGlobalParam.load("1");
@@ -69,7 +129,19 @@ export function handleDefaultStrategyUpdated(event: DefaultStrategyUpdated): voi
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
-export function handlePartialCreditLineRepaid(event: PartialCreditLineRepaid): void {}
+export function handlePartialCreditLineRepaid(event: PartialCreditLineRepaid): void {
+  let creditLineId = event.params.id.toString();
+  updateCreditLineVariable(creditLineId, 2);
+  updateCreditLineTimeline(
+    creditLineId,
+    event.transaction.hash.toHexString(),
+    event.block.timestamp,
+    5,
+    event.params.repayAmount,
+    null,
+    null
+  );
+}
 
 export function handleLiquidationRewardFractionUpdated(event: LiquidationRewardFractionUpdated): void {
   let creditLineGlobalParam = CreditLineGlobalParam.load("1");
@@ -132,10 +204,11 @@ export function handleStrategyRegistryUpdated(event: StrategyRegistryUpdated): v
 }
 
 function updateCreditLineConstant(creditLineId: string): void {
-  let creditLine = CreditLineConstant.load(creditLineId);
   let creditLineNum = BigInt.fromString(creditLineId);
+
+  let creditLine = CreditLineSchema.load(creditLineId);
   if (!creditLine) {
-    creditLine = new CreditLineConstant(creditLineId);
+    creditLine = new CreditLineSchema(creditLineId);
   }
   let _tempConstants = creditLineInstance.creditLineConstants(creditLineNum);
   creditLine.lender = _tempConstants.value0.toHexString();
@@ -151,10 +224,11 @@ function updateCreditLineConstant(creditLineId: string): void {
 }
 
 function updateCreditLineVariable(creditLineId: string, creditLineStatusCode: i32): void {
-  let creditLine = CreditLineVariable.load(creditLineId);
   let creditLineNum = BigInt.fromString(creditLineId);
+
+  let creditLine = CreditLineSchema.load(creditLineId);
   if (!creditLine) {
-    creditLine = new CreditLineVariable(creditLineId);
+    creditLine = new CreditLineSchema(creditLineId);
   }
   let _tempVariables = creditLineInstance.creditLineVariables(creditLineNum);
   creditLine.status = getCreditLineStatus(creditLineStatusCode);
@@ -162,10 +236,31 @@ function updateCreditLineVariable(creditLineId: string, creditLineStatusCode: i3
   creditLine.totalInterestRepaid = _tempVariables.value2;
   creditLine.lastPrincipalUpdateTime = _tempVariables.value3;
   creditLine.interestAccruedTillLastPrincipalUpdate = _tempVariables.value4;
-  creditLine.collateralAmount = _tempVariables.value5;
   creditLine.save();
 }
 
+function updateCreditLineTimeline(
+  creditLineId: string,
+  transactionHash: string,
+  timestamp: BigInt,
+  creditLineOperation: i32,
+  amount: BigInt,
+  strategy: string,
+  liquidator: string
+): void {
+  let creditLineTimeline = CreditLineTimeline.load(transactionHash);
+  if (creditLineTimeline) {
+  } else {
+    creditLineTimeline = new CreditLineTimeline(transactionHash);
+    creditLineTimeline.creditLine = creditLineId;
+    creditLineTimeline.timestamp = timestamp;
+    creditLineTimeline.creditLineOperation = getCreditLineOperation(creditLineOperation);
+    creditLineTimeline.amount = amount;
+    creditLineTimeline.strategy = strategy;
+    creditLineTimeline.liquidator = liquidator;
+    creditLineTimeline.save();
+  }
+}
 /* ------------------ constants -------------------*/
 
 // address lender;

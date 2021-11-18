@@ -1,10 +1,26 @@
 type CreditLine @entity {
   #creditLine number
   id: ID!
-  # credit line line variables
-  creditLineVar: CreditLineVariable
-  # credit line constants
-  creditLineConstant: CreditLineConstant
+  # credit line time line
+  creditLineTimeline: [CreditLineTimeline!]! @derivedFrom(field: "creditLine")
+  
+  # Credit Line Constants
+  lender: String  
+  borrower: String
+  borrowLimit: BigInt
+  idealCollateralRatio: BigInt
+  borrowRate: BigInt
+  borrowAsset: String
+  collateralAsset: String
+  autoLiquidation: Boolean
+  requestByLender: Boolean
+
+  # credit line variables
+  status: CreditLineStatus
+  principal: BigInt
+  totalInterestRepaid: BigInt
+  lastPrincipalUpdateTime: BigInt
+  interestAccruedTillLastPrincipalUpdate: BigInt
 }
 
 type CreditLineGlobalParam @entity {
@@ -26,27 +42,14 @@ type CreditLineGlobalParam @entity {
   defaultStrategy: String
 }
 
-type CreditLineConstant @entity {
+type CreditLineTimeline @entity {
   id: ID!
-  lender: String
-  borrower: String
-  borrowLimit: BigInt
-  idealCollateralRatio: BigInt
-  borrowRate: BigInt
-  borrowAsset: String
-  collateralAsset: String
-  autoLiquidation: Boolean
-  requestByLender: Boolean
-}
-
-type CreditLineVariable @entity {
-  id: ID!
-  status: CreditLineStatus
-  principal: BigInt
-  totalInterestRepaid: BigInt
-  lastPrincipalUpdateTime: BigInt
-  interestAccruedTillLastPrincipalUpdate: BigInt
-  collateralAmount: BigInt
+  creditLine: CreditLine!
+  timestamp: BigInt
+  creditLineOperation: CreditLineOperations
+  amount: BigInt
+  strategy: String
+  liquidator: String
 }
 
 enum CreditLineStatus {
@@ -55,5 +58,19 @@ enum CreditLineStatus {
   ACTIVE
   CLOSED
   CANCELLED
+  LIQUIDATED
+}
+
+enum CreditLineOperations {
+  NOT_CREATED
+  REQUESTED
+  ACTIVE
+  DEPOSIT_COLLATERAL
+  BORROW
+  REPAY
+  WITHDRAW_COLLATERAL
+  CLOSED
+  CANCELLED
+  RESET
   LIQUIDATED
 }
