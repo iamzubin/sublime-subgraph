@@ -3,9 +3,9 @@ type CreditLine @entity {
   id: ID!
   # credit line time line
   creditLineTimeline: [CreditLineTimeline!]! @derivedFrom(field: "creditLine")
-  
+
   # Credit Line Constants
-  lender: String  
+  lender: String
   borrower: String
   borrowLimit: BigInt
   idealCollateralRatio: BigInt
@@ -73,4 +73,39 @@ enum CreditLineOperations {
   CANCELLED
   RESET
   LIQUIDATED
+}
+
+type StrategyRegistry @entity {
+  id: ID!
+  max: BigInt!
+  strategyOrder: [Strategy!]
+}
+
+type Strategy @entity {
+  id: ID!
+  address: String!
+  enabled: Boolean!
+}
+
+type UserBalance @entity {
+  id: ID!
+  strategyBalance: [Balance!]!
+  user: String!
+  token: String!
+}
+
+type Balance @entity {
+  id: ID!
+  user: String!
+  strategy: Strategy!
+  token: String!
+  shares: BigInt!
+}
+
+type Allowance @entity {
+  id: ID!
+  from: String!
+  to: String!
+  token: String!
+  amount: BigInt!
 }

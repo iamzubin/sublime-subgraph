@@ -610,11 +610,6 @@
         "internalType": "uint256",
         "name": "interestAccruedTillLastPrincipalUpdate",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "collateralAmount",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
