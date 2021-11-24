@@ -61,7 +61,7 @@ dataSources:
     source:
       address: "0xA4366F7376A5425F9Bc0226ced35ad8f4536FD56"
       abi: StrategyRegistry
-      startBlock:
+      startBlock: 28449188
     mapping:
       kind: ethereum/eventHandlers
       apiVersion: 0.0.4
