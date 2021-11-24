@@ -1,6 +1,10 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 
-import { CreditLine as CreditLineSchema, CreditLineGlobalParam, CreditLineTimeline } from "../generated/schema";
+import {
+  CreditLine as CreditLineSchema,
+  CreditLineGlobalParam,
+  CreditLineTimeline,
+} from "../generated/schema";
 
 import {
   BorrowedFromCreditLine,

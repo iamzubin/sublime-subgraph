@@ -79,7 +79,7 @@ dataSources:
         - event: StrategyRemoved(indexed address)
           handler: handleStrategyRemoved
         - event: MaxStrategiesUpdated(uint256)
-          handler: handleMaxStrategiesUpdate
+          handler: handleMaxStrategiesUpdated
   - kind: ethereum/contract
     name: SavingsAccount
     network: kovan

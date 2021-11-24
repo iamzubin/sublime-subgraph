@@ -12,6 +12,14 @@ import {
 } from "../../generated/SavingsAccount/SavingsAccount";
 import { decreaseBalance, getBalance, getUserBalance, increaseBalance, updateAllowance } from "./helpers";
 
+export function handleStrategyRegistryUpdate(event: StrategyRegistryUpdated): void {
+
+}
+
+export function handleCreditLineUpdate(event: CreditLineUpdated) : void {
+
+}
+
 export function handleDeposit(event: Deposited): void {
   increaseBalance(event.params.user, event.params.token, event.params.strategy, event.params.sharesReceived);
 }
