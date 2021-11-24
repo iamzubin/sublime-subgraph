@@ -4,7 +4,7 @@ import { Strategy, StrategyRegistry } from "../../generated/schema";
 import { updateStrategyOrder } from "./helpers";
 
 export function handleStrategyAdded(event: StrategyAdded): void {
-  let strategy = event.params.strategy.toString();
+  let strategy = event.params.strategy.toHexString();
   let strategyInstance = Strategy.load(strategy);
 
   if (strategyInstance == null) {
@@ -20,7 +20,7 @@ export function handleStrategyAdded(event: StrategyAdded): void {
 }
 
 export function handleStrategyRemoved(event: StrategyRemoved): void {
-  let strategy = event.params.strategy.toString();
+  let strategy = event.params.strategy.toHexString();
   let strategyInstance = Strategy.load(strategy);
 
   strategyInstance.enabled = false;
