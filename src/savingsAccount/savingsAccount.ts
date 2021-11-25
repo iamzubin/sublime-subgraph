@@ -10,6 +10,7 @@ import {
   Withdrawn,
   WithdrawnAll,
 } from "../../generated/SavingsAccount/SavingsAccount";
+import { Balance } from "../../generated/schema";
 import { decreaseBalance, getBalance, getUserBalance, increaseBalance, updateAllowance } from "./helpers";
 
 export function handleStrategyRegistryUpdate(event: StrategyRegistryUpdated): void {
@@ -38,8 +39,8 @@ export function handleStrategySwitched(event: StrategySwitched): void {
 }
 
 export function handleTransfer(event: Transfer): void {
-  increaseBalance(event.params.from, event.params.token, event.params.strategy, event.params.amount);
   decreaseBalance(event.params.to, event.params.token, event.params.strategy, event.params.amount);
+  increaseBalance(event.params.from, event.params.token, event.params.strategy, event.params.amount);
   updateAllowance(event.params.from, event.params.to, event.params.token, event.address);
 }
 
@@ -53,8 +54,8 @@ export function handleWithdrawAll(event: WithdrawnAll): void {
   let strategyBalances = userBalance.strategyBalance;
 
   for (let i = 0; i < strategyBalances.length; i++) {
-    let strategy = Address.fromHexString(strategyBalances[i]) as Address;
-    let balance = getBalance(event.params.user, event.params.token, strategy);
+    let balance = Balance.load(strategyBalances[i]);
+    let strategy = Address.fromHexString(balance.strategy) as Address;
     decreaseBalance(event.params.user, event.params.token, strategy, balance.shares);
   }
 }
