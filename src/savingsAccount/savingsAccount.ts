@@ -11,7 +11,7 @@ import {
   WithdrawnAll,
 } from "../../generated/SavingsAccount/SavingsAccount";
 import { Balance } from "../../generated/schema";
-import { decreaseBalance, getBalance, getUserBalance, increaseBalance, updateAllowance } from "./helpers";
+import { decreaseBalance, getUserBalance, increaseBalance, updateAllowance } from "./helpers";
 
 export function handleStrategyRegistryUpdate(event: StrategyRegistryUpdated): void {
 
