@@ -33,8 +33,8 @@ export function handleCreditLineAllowanceRefreshed(event: CreditLineAllowanceRef
 }
 
 export function handleStrategySwitched(event: StrategySwitched): void {
-  increaseBalance(event.params.user, event.params.token, event.params.currentStrategy, event.params.sharesDecreasedInCurrentStrategy);
-  decreaseBalance(event.params.user, event.params.token, event.params.newStrategy, event.params.sharesIncreasedInNewStrategy);
+  decreaseBalance(event.params.user, event.params.token, event.params.currentStrategy, event.params.sharesDecreasedInCurrentStrategy);
+  increaseBalance(event.params.user, event.params.token, event.params.newStrategy, event.params.sharesIncreasedInNewStrategy);
 }
 
 export function handleTransfer(event: Transfer): void {
