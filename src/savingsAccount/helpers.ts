@@ -51,14 +51,14 @@ export function increaseBalance(user: Address, token: Address, strategy: Address
 }
 
 export function decreaseBalance(user: Address, token: Address, strategy: Address, amount: BigInt): void {
-  let balance = getBalance(user, token, strategy);
-  balance.shares = balance.shares.minus(amount);
-  balance.save();
+  // let balance : Balance = getBalance(user, token, strategy);
+  // balance.shares = balance.shares.minus(amount);
+  // balance.save();
 
-  if (balance.shares == BIGINT_ZERO) {
-    store.remove("Balance", balance.id);
-    removeBalanceFromUser(user, token, strategy);
-  }
+  // if (balance.shares.equals(BIGINT_ZERO)) {
+  //   store.remove("Balance", balance.id);
+  //   removeBalanceFromUser(user, token, strategy);
+  // }
 }
 
 export function addBalanceToUser(user: Address, token: Address, strategy: Address): void {
