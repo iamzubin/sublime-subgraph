@@ -4,28 +4,15 @@ import { SavingsAccount } from "../../generated/SavingsAccount/SavingsAccount";
 import { Allowance, Balance, Strategy, UserBalance } from "../../generated/schema";
 import { BIGINT_ZERO } from "../constants/constants";
 
-// export function getSavingsAccount(user: Address): SavingsAccount {
-//     let savingsAccount = SavingsAccount.load(user.toHexString());
-//     if(savingsAccount == null) {
-//         savingsAccount = new SavingsAccount(user.toHexString());
-//         savingsAccount.address = user.toHexString();
-//         savingsAccount.balances = [];
-//         savingsAccount.allowances = [];
-//         // TODO: this can be removed ?
-//         savingsAccount.save();
-//     }
-//     return savingsAccount;
-// }
-
 function getUserBalanceId(user: Address, token: Address): string {
   let userBalanceId = user.toHexString() + token.toHexString();
   return userBalanceId;
 }
 
-export function getUserBalance(user: Address, token: Address): UserBalance {
+export function getUserBalance(user: Address, token: Address, createIfNew: boolean = false): UserBalance {
   let userBalanceId = getUserBalanceId(user, token);
   let userBalance = UserBalance.load(userBalanceId);
-  if (userBalance == null) {
+  if (userBalance == null && createIfNew) {
     userBalance = new UserBalance(userBalanceId);
     userBalance.token = token.toHexString();
     userBalance.user = user.toHexString();
@@ -41,10 +28,10 @@ function getBalanceId(user: Address, token: Address, strategy: Address): string 
   return balanceId;
 }
 
-export function getBalance(user: Address, token: Address, strategy: Address): Balance {
+export function getBalance(user: Address, token: Address, strategy: Address, createIfNew: boolean = false): Balance {
   let balanceId = getBalanceId(user, token, strategy);
   let balance = Balance.load(balanceId);
-  if (balance == null) {
+  if (balance == null && createIfNew) {
     balance = new Balance(balanceId);
     balance.token = token.toHexString();
     balance.user = user.toHexString();
@@ -58,7 +45,7 @@ export function getBalance(user: Address, token: Address, strategy: Address): Ba
 }
 
 export function increaseBalance(user: Address, token: Address, strategy: Address, amount: BigInt): void {
-  let balance = getBalance(user, token, strategy);
+  let balance = getBalance(user, token, strategy, true);
   balance.shares = balance.shares.plus(amount);
   balance.save();
 }
@@ -75,7 +62,7 @@ export function decreaseBalance(user: Address, token: Address, strategy: Address
 }
 
 export function addBalanceToUser(user: Address, token: Address, strategy: Address): void {
-  let userBalance = getUserBalance(user, token);
+  let userBalance = getUserBalance(user, token, true);
   let strategyBalances = userBalance.strategyBalance;
   let balanceId = getBalanceId(user, token, strategy);
   if (strategyBalances.includes(balanceId)) {
@@ -108,10 +95,10 @@ export function getAllowanceId(from: Address, to: Address, token: Address): stri
   return allowanceId;
 }
 
-export function getAllowance(from: Address, to: Address, token: Address): Allowance {
+export function getAllowance(from: Address, to: Address, token: Address, createIfNew: boolean = false): Allowance {
   let allowanceId = getAllowanceId(from, to, token);
   let allowance = Allowance.load(allowanceId);
-  if (allowance == null) {
+  if (allowance == null && createIfNew) {
     allowance = new Allowance(allowanceId);
     allowance.from = from.toHexString();
     allowance.to = to.toHexString();
@@ -126,7 +113,7 @@ export function updateAllowance(from: Address, to: Address, token: Address, savi
   let savingsAccountContract = SavingsAccount.bind(savingsAccount);
   let latestAllowance = savingsAccountContract.allowance(from, token, to);
 
-  let allowanceEntity = getAllowance(from, to, token);
+  let allowanceEntity = getAllowance(from, to, token, true);
   allowanceEntity.amount = latestAllowance;
   allowanceEntity.save();
 }
