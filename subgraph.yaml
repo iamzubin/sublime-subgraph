@@ -139,4 +139,17 @@ dataSources:
         - name: Verification
           file: ./abis/Verification.json
       eventHandlers:
-
+        - event: AddressLinked(indexed address,indexed address)
+          handler: handleAddressLinked
+        - event: AddressUnlinked(indexed address,indexed address)
+          handler: handleAddressUnlinked
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: UserRegistered(indexed address,indexed address,indexed bool)
+          handler: handleUserRegistered
+        - event: UserUnregistered(indexed address,indexed address,indexed address)
+          handler: handleUserUnregistered
+        - event: VerifierAdded(indexed address)
+          handler: handleVerifierAdded
+        - event: VerifierAdded(indexed address)
+          handler: handleVerifierRemoved
