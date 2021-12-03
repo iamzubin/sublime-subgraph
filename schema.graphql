@@ -1,3 +1,117 @@
+# Pool status
+enum LoanStatus {
+  COLLECTION
+  ACTIVE
+  CLOSED
+  CANCELLED
+  DEFAULTED
+  TERMINATED
+}
+
+# Pool operations
+enum PoolOperations {
+  NOT_CREATED
+  COLLECTION
+  ACTIVE
+  REPAY
+  DEPOSIT_COLLATERAL
+  BORROW
+  WITHDRAW_COLLATERAL
+  EXTENSION_REQUESTED
+  MARGIN_CALLED
+  CLOSED
+  CANCELLED
+  DEFAULTED
+  TERMINATED
+}
+
+# storing User details
+type UserProfile @entity {
+  id: ID!
+  twitterUsername: String!
+  verified: Boolean! 
+  walletAddress: [walletAddress!]!  @derivedFrom(field: "user")
+  displayName: String!
+  # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
+}
+
+# mapping one user to one or more wallet addresses
+type walletAddress @entity {
+  id: ID!
+  user: UserProfile!
+}
+
+# # pool details along with events to fill the timeline
+# type Pools @entity {
+#   id: ID!
+#   borrower: UserProfile!
+#   nextPayment: BigInt! # next repayment deadline
+
+#   # Pool timeline events
+#   poolTimeLine: [PoolTimeLine!]! @derivedFrom(field: "pool")
+
+#   # Pool Constants
+#   borrowAmountRequested: BigInt!
+#   loanStartTime: BigInt!
+#   loanWithdrawalDeadline: BigInt!
+#   borrowAsset: String!
+#   idealCollateralRatio: BigInt!
+#   borrowRate: BigInt!
+#   noOfRepaymentIntervals: BigInt!
+#   repaymentInterval: BigInt!
+#   collateralAsset: String!
+#   poolSavingsStrategy: String!
+#   lenderVerifier: String!
+
+#   # Pool Variables
+#   baseLiquidityShares: BigInt!
+#   extraLiquidityShares: BigInt!
+#   loanStatus: LoanStatus!
+#   penaltyLiquidityAmount: BigInt!
+
+#   # Repayment Variables to keep track of repayment status
+#   repaidAmount: BigInt!
+#   isLoanExtensionActive: Boolean!
+#   loanDurationCovered: BigInt!
+#   loanExtensionPeriod: BigInt!
+
+#   # Repayment Constants
+#   numberOfTotalRepayments: BigInt!
+#   gracePenaltyRate: BigInt!
+#   gracePeriodFraction: BigInt!
+#   loanDuration: BigInt!
+#   repaymentInterval: BigInt!
+#   borrowRate: BigInt!
+#   loanStartTime: BigInt!
+#   repayAsset: String!
+
+#   # Extension Variables to keep track of extension requests
+#   hasExtensionPassed: Boolean!
+#   totalExtensionSupport: BigInt!
+#   extensionVoteEndTime: BigInt!
+#   repaymentInterval: BigInt!
+#   lastVotedExtension: BigInt! # how to associate lender with it?
+
+#   lenders: [Lenders!]! @derivedFrom(field: "LenderAddress")  
+# }
+
+# type PoolTimeLine @entity {
+#   id: ID!
+#   pool: Pools!
+#   timestamp: BigInt
+#   poolOperation: PoolOperations
+#   amount: BigInt
+# }
+
+# type Lenders @entity {
+#   id: ID!
+#   pool: [Pools!]! 
+#   LenderAddress: String!
+#   interestWithdrawn: BigInt!
+#   marginCallEndTime: BigInt!
+#   extraLiquidityShares: BigInt!
+# }
+
 type CreditLine @entity {
   #creditLine number
   id: ID!
