@@ -151,5 +151,5 @@ dataSources:
           handler: handleUserUnregistered
         - event: VerifierAdded(indexed address)
           handler: handleVerifierAdded
-        - event: VerifierAdded(indexed address)
+        - event: VerifierRemoved(indexed address)
           handler: handleVerifierRemoved

@@ -30,7 +30,7 @@ type UserProfile @entity {
   id: ID!
   twitterUsername: String!
   verified: Boolean! 
-  walletAddress: [walletAddress!]!  @derivedFrom(field: "user")
+  walletAddresses: [walletAddress!]!  @derivedFrom(field: "user")
   displayName: String!
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
 }
