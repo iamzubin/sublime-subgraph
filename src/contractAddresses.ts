@@ -1,3 +1,3 @@
 import { Address } from "@graphprotocol/graph-ts";
 
-export let CREDIT_LINE_ADDRESS = Address.fromString("0xA102E6f5Bda8d1222520345a759D298B68938e5C");
+export let CREDIT_LINE_ADDRESS = Address.fromString("0x1ed8a1068234f840B723b08e502Fe118DEdA57bF");
