@@ -128,7 +128,7 @@ dataSources:
     name: Verification
     network: kovan
     source:
-      address: "0x4256a2722d60c90c39515E0Adb3E731b91480996"
+      address: "0x4e1AC30055A5be2EaCC6A52fa7dD06a06856d679"
       abi: Verification
       startBlock: 28282363
     mapping:
