@@ -30,9 +30,16 @@ type UserProfile @entity {
   id: ID!
   twitterUsername: String!
   verified: Boolean! 
+  verifiedBy: verifier!
   walletAddresses: [walletAddress!]!  @derivedFrom(field: "user")
   displayName: String!
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
+}
+
+# mapping the verifier with the pools he verified
+type verifier @entity {
+  id: ID!
+  usersVerified: [UserProfile!]! @derivedFrom(field: "verifiedBy")
 }
 
 # mapping one user to one or more wallet addresses
