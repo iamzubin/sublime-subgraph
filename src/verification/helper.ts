@@ -67,8 +67,12 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
     let _walletAddress = walletAddress.load(_linkedAddress);
 
     if(Unlink == true) {
+        let _walletList = _userProfile.walletAddresses;
+        let index = _walletList.indexOf(_walletAddress.id);
+        _walletList.splice(index, 1);
+        _userProfile.walletAddresses = _walletList;
+        _userProfile.save();
         store.remove("walletAddress",_walletAddress.id);
-        // TODO: remove the wallet address in the array of the user
     }
     else {
         if(_walletAddress == null) {
