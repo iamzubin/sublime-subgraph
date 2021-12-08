@@ -28,18 +28,25 @@ enum PoolOperations {
 # storing User details
 type UserProfile @entity {
   id: ID!
-  twitterUsername: String!
   verified: Boolean! 
-  verifiedBy: verifier!
+  userMatadata: UserMetadata!
   walletAddresses: [walletAddress!]!  @derivedFrom(field: "user")
-  displayName: String!
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
 }
 
 # mapping the verifier with the pools he verified
 type verifier @entity {
   id: ID!
-  usersVerified: [UserProfile!]! @derivedFrom(field: "verifiedBy")
+  usersVerified: [UserMetadata!]! @derivedFrom(field: "verifiedBy")
+}
+
+type UserMetadata @entity {
+  id: ID! # verifier + userID from profile
+  verifierChannel: String!
+  userName: String! # username from the verifier channel
+  displayName: String! # username for Sublime
+  userID: UserProfile!
+  verifiedBy: verifier!
 }
 
 # mapping one user to one or more wallet addresses
