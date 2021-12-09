@@ -8,7 +8,18 @@ export function updateVerifiers(Verifier: Address, Remove: boolean): void{
 
     if(Remove == true) {
         store.remove("verifier", _verifier.id);
-        // TODO: Check what happens to user verified by this verifier
+        // updating the user information verified by this verifier
+        let _usersVerified = _verifier.usersVerified;
+        for(var i=0; i<_usersVerified.length; i++) {
+            let _userMetadata = UserMetadata.load(_usersVerified[i]);
+            let _userID = _userMetadata.userID;
+            let _userProfile = UserProfile.load(_userID);
+
+            _userProfile.verified = !Remove;
+            store.remove("UserMetadata", _userMetadata.id);
+
+            _userProfile.save();
+        }
     }
     else {
         if(_verifier == null) {
