@@ -38,7 +38,7 @@ type UserProfile @entity {
 # mapping the verifier with the pools he verified
 type verifier @entity {
   id: ID!
-  usersVerified: [UserMetadataPerVerifier!]!
+  usersVerified: [UserMetadataPerVerifier!]! @derivedFrom(field: "verifiedBy")
 }
 
 type UserMetadataPerVerifier @entity {
