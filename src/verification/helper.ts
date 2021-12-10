@@ -2,6 +2,8 @@ import { Address, store, BigInt } from "@graphprotocol/graph-ts";
 
 import { UserMetadataPerVerifier, UserProfile, verifier, walletAddress } from "../../generated/schema";
 
+let Activation_Delay: BigInt;
+
 export function updateVerifiers(Verifier: Address, Remove: boolean): void{
     let _verifierAddress = Verifier.toHexString();
     let _verifier = verifier.load(_verifierAddress);
@@ -105,6 +107,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
     
         _walletAddress.user = _userProfile.id;
         _walletAddress.linkStatus = "MASTER";
+        _walletAddress.activationDelay = Activation_Delay;
         
         _userProfile.save();
         _userMetadata.save();
@@ -145,6 +148,7 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
         walletList.push(_linkedAddress);
         _userProfile.walletAddresses = walletList;
         _walletAddress.linkStatus = "LINKED";
+        _walletAddress.activationDelay = Activation_Delay;
     
         _userProfile.save();
         _walletAddress.save();
@@ -154,6 +158,7 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
             _walletAddress = new walletAddress(_linkedAddress);
         }
         _walletAddress.linkStatus = "REQUESTED";
+        _walletAddress.activationDelay = Activation_Delay;
     
         _walletAddress.save();
     }
@@ -162,6 +167,7 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
             _walletAddress = new walletAddress(_linkedAddress);
         }
         _walletAddress.linkStatus = "CANCELLED";
+        _walletAddress.activationDelay = Activation_Delay;
     
         _walletAddress.save();
     }
@@ -180,4 +186,8 @@ export function getAddressLinkStatus(value: i32): string {
       default:
         return "UNLINK";
     }
-  }
+}
+
+export function updateActivationDelay(value: BigInt): void {
+    Activation_Delay = value;
+}

@@ -62,6 +62,7 @@ type walletAddress @entity {
   id: ID!
   user: UserProfile!
   linkStatus: AddressLinkStatus
+  activationDelay: BigInt
 }
 
 ## Dashboard information

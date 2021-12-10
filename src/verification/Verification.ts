@@ -1,4 +1,4 @@
-import { updateVerifiers, updateMasterAddresses, updateLinkedAddresses } from "./helper";
+import { updateVerifiers, updateMasterAddresses, updateLinkedAddresses, updateActivationDelay } from "./helper";
 import {
     AddressLinked,
     AddressUnlinked,
@@ -9,6 +9,7 @@ import {
     VerifierRemoved,
     AddressLinkingRequested,
     AddressLinkingRequestCancelled,
+    ActivationDelayUpdated,
     Verification as VerificationContract
 } from "../../generated/Verification/Verification";
 
@@ -57,4 +58,9 @@ export function handleAddressLinkingRequestCancelled(event: AddressLinkingReques
     let linkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;
     updateLinkedAddresses(masterAddress,linkedAddress,3);
+}
+
+export function handleActivationDelayUpdated(event: ActivationDelayUpdated): void {
+    let _delay = event.params.activationDelay;
+    updateActivationDelay(_delay);
 }

@@ -159,3 +159,5 @@ dataSources:
           handler: handleAddressLinkingRequested
         - event: AddressLinkingRequestCancelled(indexed address,indexed address)
           handler: handleAddressLinkingRequestCancelled
+        - event: ActivationDelayUpdated(uint256)
+          handler: handleActivationDelayUpdated
