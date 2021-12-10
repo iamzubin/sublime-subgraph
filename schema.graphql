@@ -25,6 +25,14 @@ enum PoolOperations {
   TERMINATED
 }
 
+# Address linking status
+enum AddressLinkStatus {
+  REQUESTED
+  CANCELLED
+  LINKED
+  MASTER
+}
+
 # storing User details
 type UserProfile @entity {
   id: ID!
@@ -53,6 +61,7 @@ type UserMetadataPerVerifier @entity {
 type walletAddress @entity {
   id: ID!
   user: UserProfile!
+  linkStatus: AddressLinkStatus
 }
 
 ## Dashboard information

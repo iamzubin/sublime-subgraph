@@ -104,6 +104,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
         _verifier.usersVerified = _userList;
     
         _walletAddress.user = _userProfile.id;
+        _walletAddress.linkStatus = "MASTER";
         
         _userProfile.save();
         _userMetadata.save();
@@ -111,7 +112,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
     }
 }
 
-export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Address, Unlink: boolean): void {
+export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Address, linkStatusCode: i32): void {
     let _masterAddress = masterAddress.toHexString();
     let _linkedAddress = linkedAddress.toHexString();
 
@@ -119,7 +120,9 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
     let _userProfile = UserProfile.load(_masterAddress);
     let _walletAddress = walletAddress.load(_linkedAddress);
 
-    if(Unlink == true) {
+    let linkStatus = getAddressLinkStatus(linkStatusCode);
+
+    if(linkStatus == "UNLINK") {
         if(_userProfile != null && _walletAddress != null) {
             let _walletList = _userProfile.walletAddresses;
             let index = _walletList.indexOf(_walletAddress.id);
@@ -132,7 +135,7 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
             return;
         }
     }
-    else {
+    else if(linkStatus == "LINK") {
         if(_walletAddress == null) {
             _walletAddress = new walletAddress(_linkedAddress);
         }
@@ -141,8 +144,40 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
         let walletList = _userProfile.walletAddresses;
         walletList.push(_linkedAddress);
         _userProfile.walletAddresses = walletList;
+        _walletAddress.linkStatus = "LINKED";
     
         _userProfile.save();
         _walletAddress.save();
     }
+    else if(linkStatus == "REQUEST") {
+        if(_walletAddress == null) {
+            _walletAddress = new walletAddress(_linkedAddress);
+        }
+        _walletAddress.linkStatus = "REQUESTED";
+    
+        _walletAddress.save();
+    }
+    else if(linkStatus == "CANCEL") {
+        if(_walletAddress == null) {
+            _walletAddress = new walletAddress(_linkedAddress);
+        }
+        _walletAddress.linkStatus = "CANCELLED";
+    
+        _walletAddress.save();
+    }
 }
+
+export function getAddressLinkStatus(value: i32): string {
+    switch (value) {
+      case 0:
+        return "REQUEST";
+      case 1:
+        return "LINK";
+      case 2:
+        return "MASTER";
+      case 3:
+        return "CANCEL";
+      default:
+        return "UNLINK";
+    }
+  }

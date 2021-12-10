@@ -7,19 +7,21 @@ import {
     UserUnregistered,
     VerifierAdded,
     VerifierRemoved,
+    AddressLinkingRequested,
+    AddressLinkingRequestCancelled,
     Verification as VerificationContract
 } from "../../generated/Verification/Verification";
 
 export function handleAddressLinked(event: AddressLinked): void {
     let linkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,linkedAddress, false);
+    updateLinkedAddresses(masterAddress,linkedAddress, 1);
 }
 
 export function handleAddressUnlinked(event: AddressUnlinked): void {
     let unLinkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,unLinkedAddress, true);
+    updateLinkedAddresses(masterAddress,unLinkedAddress, 4);
 }
 
 export function handleUserRegistered(event: UserRegistered): void {
@@ -42,4 +44,17 @@ export function handleVerifierAdded(event: VerifierAdded): void {
 export function handleVerifierRemoved(event: VerifierRemoved): void {
     let verifier = event.params.verifier;
     updateVerifiers(verifier,true);
+}
+
+export function handleAddressLinkingRequested(event: AddressLinkingRequested): void {
+    let linkedAddress = event.params.linkedAddress;
+    let masterAddress = event.params.masterAddress;
+    updateLinkedAddresses(masterAddress,linkedAddress,0);
+
+}
+
+export function handleAddressLinkingRequestCancelled(event: AddressLinkingRequestCancelled): void {
+    let linkedAddress = event.params.linkedAddress;
+    let masterAddress = event.params.masterAddress;
+    updateLinkedAddresses(masterAddress,linkedAddress,3);
 }
