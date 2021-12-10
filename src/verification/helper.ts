@@ -1,25 +1,36 @@
 import { Address, store, BigInt } from "@graphprotocol/graph-ts";
 
-import { UserMetadata, UserProfile, verifier, walletAddress } from "../../generated/schema";
+import { UserMetadataPerVerifier, UserProfile, verifier, walletAddress } from "../../generated/schema";
 
 export function updateVerifiers(Verifier: Address, Remove: boolean): void{
     let _verifierAddress = Verifier.toHexString();
     let _verifier = verifier.load(_verifierAddress);
 
     if(Remove == true) {
-        store.remove("verifier", _verifier.id);
         // updating the user information verified by this verifier
         let _usersVerified = _verifier.usersVerified;
         for(var i=0; i<_usersVerified.length; i++) {
-            let _userMetadata = UserMetadata.load(_usersVerified[i]);
+            let _userMetadata = UserMetadataPerVerifier.load(_usersVerified[i]);
             let _userID = _userMetadata.userID;
             let _userProfile = UserProfile.load(_userID);
 
-            _userProfile.verified = !Remove;
+            // Removing verifier from the user profile
+            let _verifierList = _userProfile.verifiedBy;
+            let _index = _verifierList.indexOf(_verifier.id);
+            _verifierList.splice(_index, 1);
+            _userProfile.verifiedBy = _verifierList;
+
+            // Removing metadata from the user profile
+            let _metadataList = _userProfile.userMetadataPerVerifier;
+            let _metaindex = _metadataList.indexOf(_verifier.id + '_' + _userProfile.id);
+            _metadataList.splice(_metaindex, 1);
+            _userProfile.userMetadataPerVerifier = _metadataList;
+
             store.remove("UserMetadata", _userMetadata.id);
 
             _userProfile.save();
         }
+        store.remove("verifier", _verifier.id);
     }
     else {
         if(_verifier == null) {
@@ -32,16 +43,28 @@ export function updateVerifiers(Verifier: Address, Remove: boolean): void{
 export function updateMasterAddresses(masterAddress: Address, Verifier: Address, Unregister: boolean): void {
     let _masterAddress = masterAddress.toHexString();
     let _verifierAddress = Verifier.toHexString();
+
     let _userProfile = UserProfile.load(_masterAddress);
     let _walletAddress = walletAddress.load(_masterAddress);
     let _verifier = verifier.load(_verifierAddress); // Assuming verifier exists
-    let _userID = _verifier.id + '_' + _userProfile.id;
-    let _userMetadata = UserMetadata.load(_userID);
 
     if(Unregister == true) {
-        store.remove("UserProfile", _userProfile.id);
-        store.remove("UserMetadata", _userMetadata.id);
-        store.remove("walletAddress", _walletAddress.id);
+        // If userProfile exists
+        if(_userProfile != null && _walletAddress != null) {
+            // If userProfile is verified
+            if(_verifier != null) { 
+                let _userID = _verifier.id + '_' + _userProfile.id;
+                let _userMetadata = UserMetadataPerVerifier.load(_userID);
+                if(_userMetadata != null) {
+                    store.remove("UserMetadata", _userMetadata.id);
+                }
+            }
+            store.remove("UserProfile", _userProfile.id);
+            store.remove("walletAddress", _walletAddress.id);
+        }
+        else {
+            return;
+        }
     }
     else {
         if(_userProfile == null) {
@@ -52,19 +75,26 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
             _walletAddress = new walletAddress(_masterAddress);
         }
 
+        let _userID = _verifier.id + '_' + _userProfile.id;
+        let _userMetadata = UserMetadataPerVerifier.load(_userID);
         if(_userMetadata == null) {
-            _userMetadata = new UserMetadata(_userID);
+            _userMetadata = new UserMetadataPerVerifier(_userID);
         }
 
         _userMetadata.userID = _userProfile.id;
-        _userMetadata.verifierChannel = "Twitter"; // Assuming only twitter as of now
-        _userMetadata.userName = "Twitter_UserName"; // hardcoding dummy values
-        _userMetadata.displayName = "Sublime_UserName"; //hardcoding dummy values
+        _userMetadata.verifier = "Twitter"; // Assuming only twitter as of now
         _userMetadata.verifiedBy = _verifier.id;
 
-        _userProfile.verified = !Unregister;
-        _userProfile.userMatadata = _userMetadata.id;
-    
+        _userProfile.masterAddress = _masterAddress;
+
+        let _metadataList = _userProfile.userMetadataPerVerifier;
+        _metadataList.push(_userMetadata.id);
+        _userProfile.userMetadataPerVerifier = _metadataList;
+
+        let _verifierList = _userProfile.verifiedBy;
+        _verifierList.push(_verifier.id);
+        _userProfile.verifiedBy = _verifierList;
+
         let _walletList = _userProfile.walletAddresses;
         _walletList.push(_masterAddress);
         _userProfile.walletAddresses = _walletList;
@@ -90,12 +120,17 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
     let _walletAddress = walletAddress.load(_linkedAddress);
 
     if(Unlink == true) {
-        let _walletList = _userProfile.walletAddresses;
-        let index = _walletList.indexOf(_walletAddress.id);
-        _walletList.splice(index, 1);
-        _userProfile.walletAddresses = _walletList;
-        _userProfile.save();
-        store.remove("walletAddress",_walletAddress.id);
+        if(_userProfile != null && _walletAddress != null) {
+            let _walletList = _userProfile.walletAddresses;
+            let index = _walletList.indexOf(_walletAddress.id);
+            _walletList.splice(index, 1);
+            _userProfile.walletAddresses = _walletList;
+            _userProfile.save();
+            store.remove("walletAddress",_walletAddress.id);
+        }
+        else {
+            return;
+        }
     }
     else {
         if(_walletAddress == null) {

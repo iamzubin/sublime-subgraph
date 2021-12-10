@@ -28,23 +28,23 @@ enum PoolOperations {
 # storing User details
 type UserProfile @entity {
   id: ID!
-  verified: Boolean! 
-  userMatadata: UserMetadata!
-  walletAddresses: [walletAddress!]!  @derivedFrom(field: "user")
+  masterAddress: String!
+  verifiedBy: [verifier!]
+  userMetadataPerVerifier: [UserMetadataPerVerifier!]
+  walletAddresses: [walletAddress!]!
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
 }
 
 # mapping the verifier with the pools he verified
 type verifier @entity {
   id: ID!
-  usersVerified: [UserMetadata!]! @derivedFrom(field: "verifiedBy")
+  usersVerified: [UserMetadataPerVerifier!]!
 }
 
-type UserMetadata @entity {
+type UserMetadataPerVerifier @entity {
   id: ID! # verifier + userID from profile
-  verifierChannel: String!
-  userName: String! # username from the verifier channel
-  displayName: String! # username for Sublime
+  verifier: String!
+  metadata: Bytes
   userID: UserProfile!
   verifiedBy: verifier!
 }
@@ -54,6 +54,10 @@ type walletAddress @entity {
   id: ID!
   user: UserProfile!
 }
+
+## Dashboard information
+
+
 
 # # pool details along with events to fill the timeline
 # type Pools @entity {

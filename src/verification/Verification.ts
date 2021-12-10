@@ -22,11 +22,6 @@ export function handleAddressUnlinked(event: AddressUnlinked): void {
     updateLinkedAddresses(masterAddress,unLinkedAddress, true);
 }
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-    let Owner = event.params.newOwner;
-    let previousOwner = event.params.previousOwner;
-}
-
 export function handleUserRegistered(event: UserRegistered): void {
     let RegisteredUser = event.params.masterAddress;
     let verifier = event.params.verifier;
