@@ -67,8 +67,6 @@ type walletAddress @entity {
 
 ## Dashboard information
 
-
-
 # # pool details along with events to fill the timeline
 # type Pools @entity {
 #   id: ID!
@@ -120,7 +118,7 @@ type walletAddress @entity {
 #   repaymentInterval: BigInt!
 #   lastVotedExtension: BigInt! # how to associate lender with it?
 
-#   lenders: [Lenders!]! @derivedFrom(field: "LenderAddress")  
+#   lenders: [Lenders!]! @derivedFrom(field: "LenderAddress")
 # }
 
 # type PoolTimeLine @entity {
@@ -133,7 +131,7 @@ type walletAddress @entity {
 
 # type Lenders @entity {
 #   id: ID!
-#   pool: [Pools!]! 
+#   pool: [Pools!]!
 #   LenderAddress: String!
 #   interestWithdrawn: BigInt!
 #   marginCallEndTime: BigInt!
