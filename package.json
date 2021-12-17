@@ -7,7 +7,7 @@
     "create": "graph create sublime-finance/sublime --node https://api.thegraph.com/deploy/",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy KalpitaMandal/Verification --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token 67672257050b4ed386624b525bdc5606",
+    "deploy": "graph deploy KalpitaMandal/Verification --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token 97d834301d4242988433498f77ece13b",
     "prettier": "prettier --write ."
   },
   "devDependencies": {

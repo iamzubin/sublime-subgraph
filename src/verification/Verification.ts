@@ -47,20 +47,20 @@ export function handleVerifierRemoved(event: VerifierRemoved): void {
     updateVerifiers(verifier,true);
 }
 
-export function handleAddressLinkingRequested(event: AddressLinkingRequested): void {
-    let linkedAddress = event.params.linkedAddress;
-    let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,linkedAddress,0);
+// export function handleAddressLinkingRequested(event: AddressLinkingRequested): void {
+//     let linkedAddress = event.params.linkedAddress;
+//     let masterAddress = event.params.masterAddress;
+//     updateLinkedAddresses(masterAddress,linkedAddress,0);
 
-}
+// }
 
-export function handleAddressLinkingRequestCancelled(event: AddressLinkingRequestCancelled): void {
-    let linkedAddress = event.params.linkedAddress;
-    let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,linkedAddress,3);
-}
+// export function handleAddressLinkingRequestCancelled(event: AddressLinkingRequestCancelled): void {
+//     let linkedAddress = event.params.linkedAddress;
+//     let masterAddress = event.params.masterAddress;
+//     updateLinkedAddresses(masterAddress,linkedAddress,3);
+// }
 
-export function handleActivationDelayUpdated(event: ActivationDelayUpdated): void {
-    let _delay = event.params.activationDelay;
-    updateActivationDelay(_delay);
-}
+// export function handleActivationDelayUpdated(event: ActivationDelayUpdated): void {
+//     let _delay = event.params.activationDelay;
+//     updateActivationDelay(_delay);
+// }

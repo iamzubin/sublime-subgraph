@@ -27,10 +27,11 @@ enum PoolOperations {
 
 # Address linking status
 enum AddressLinkStatus {
-  REQUESTED
-  CANCELLED
+  # REQUESTED
+  # CANCELLED
   LINKED
   MASTER
+  UNLINKED # if unlinked then directly removed ?
 }
 
 # storing User details

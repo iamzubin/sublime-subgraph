@@ -3,19 +3,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "activationDelay",
-        "type": "uint256"
-      }
-    ],
-    "name": "ActivationDelayUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "linkedAddress",
@@ -26,53 +13,9 @@
         "internalType": "address",
         "name": "masterAddress",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "activatesAt",
-        "type": "uint256"
       }
     ],
     "name": "AddressLinked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "linkedAddress",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "masterAddress",
-        "type": "address"
-      }
-    ],
-    "name": "AddressLinkingRequestCancelled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "linkedAddress",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "masterAddress",
-        "type": "address"
-      }
-    ],
-    "name": "AddressLinkingRequested",
     "type": "event"
   },
   {
@@ -129,10 +72,10 @@
         "type": "address"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "activatesAt",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "bool",
+        "name": "isMasterLinked",
+        "type": "bool"
       }
     ],
     "name": "UserRegistered",
@@ -190,19 +133,6 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "activationDelay",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -219,26 +149,8 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_linkedAddress",
-        "type": "address"
-      }
-    ],
-    "name": "cancelAddressLinkingRequest",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "_admin",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_activationDelay",
-        "type": "uint256"
       }
     ],
     "name": "initialize",
@@ -273,9 +185,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_masterAddress",
-        "type": "address"
+        "internalType": "bytes",
+        "name": "_approval",
+        "type": "bytes"
       }
     ],
     "name": "linkAddress",
@@ -295,13 +207,8 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "masterAddress",
+        "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "activatesAt",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -323,9 +230,9 @@
     "name": "masterAddresses",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "bool",
         "name": "",
-        "type": "uint256"
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -339,30 +246,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "pendingLinkAddresses",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -410,19 +293,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_linkedAddress",
-        "type": "address"
-      }
-    ],
-    "name": "requestAddressLinking",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "newOwner",
         "type": "address"
       }
@@ -459,19 +329,6 @@
       }
     ],
     "name": "unregisterMasterAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_activationDelay",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateActivationDelay",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -9,29 +9,11 @@ export function updateVerifiers(Verifier: Address, Remove: boolean): void{
     let _verifier = verifier.load(_verifierAddress);
 
     if(Remove == true) {
-        // updating the user information verified by this verifier
-        let _usersVerified = _verifier.usersVerified;
-        for(var i=0; i<_usersVerified.length; i++) {
-            let _userMetadata = UserMetadataPerVerifier.load(_usersVerified[i]);
-            let _userID = _userMetadata.userID;
-            let _userProfile = UserProfile.load(_userID);
-
-            // Removing verifier from the user profile
-            let _verifierList = _userProfile.verifiedBy;
-            let _index = _verifierList.indexOf(_verifier.id);
-            _verifierList.splice(_index, 1);
-            _userProfile.verifiedBy = _verifierList;
-
-            // Removing metadata from the user profile
-            let _metadataList = _userProfile.userMetadataPerVerifier;
-            let _metaindex = _metadataList.indexOf(_verifier.id + '_' + _userProfile.id);
-            _metadataList.splice(_metaindex, 1);
-            _userProfile.userMetadataPerVerifier = _metadataList;
-
-            store.remove("UserMetadata", _userMetadata.id);
-
-            _userProfile.save();
+        if(_verifier == null) {
+            return;
         }
+        // if(_verifier.usersVerified != null) {
+        // }
         store.remove("verifier", _verifier.id);
     }
     else {

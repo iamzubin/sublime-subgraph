@@ -138,16 +138,18 @@ dataSources:
       file: ./src/verification/Verification.ts
       entities:
         - UserProfile
+        - verifier
+        - UserMetadataPerVerifier
         - walletAddress
       abis:
         - name: Verification
           file: ./abis/Verification.json
       eventHandlers:
-        - event: AddressLinked(indexed address,indexed address,uint256)
+        - event: AddressLinked(indexed address,indexed address)
           handler: handleAddressLinked
         - event: AddressUnlinked(indexed address,indexed address)
           handler: handleAddressUnlinked
-        - event: UserRegistered(indexed address,indexed address,uint256)
+        - event: UserRegistered(indexed address,indexed address,indexed bool)
           handler: handleUserRegistered
         - event: UserUnregistered(indexed address,indexed address,indexed address)
           handler: handleUserUnregistered
@@ -155,9 +157,3 @@ dataSources:
           handler: handleVerifierAdded
         - event: VerifierRemoved(indexed address)
           handler: handleVerifierRemoved
-        - event: AddressLinkingRequested(indexed address,indexed address)
-          handler: handleAddressLinkingRequested
-        - event: AddressLinkingRequestCancelled(indexed address,indexed address)
-          handler: handleAddressLinkingRequestCancelled
-        - event: ActivationDelayUpdated(uint256)
-          handler: handleActivationDelayUpdated
