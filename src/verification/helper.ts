@@ -66,31 +66,20 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
         }
 
         _userMetadata.userID = _userProfile.id;
-        _userMetadata.verifier = "Twitter"; // Assuming only twitter as of now
+        _userMetadata.verifier = "Twitter";
         _userMetadata.verifiedBy = _verifier.id;
 
         _userProfile.masterAddress = _masterAddress;
 
-        // let _metadataList = _userProfile.userMetadataPerVerifier;
-        // _metadataList.push(_userMetadata.id);
-        // _userProfile.userMetadataPerVerifier = _metadataList;
-
         let _verifierList = _userProfile.verifiedBy;
         _verifierList.push(_verifier.id);
         _userProfile.verifiedBy = _verifierList;
-
-        // let _walletList = _userProfile.walletAddresses;
-        // _walletList.push(_masterAddress);
-        // _userProfile.walletAddresses = _walletList;
-
-        // let _userList = _verifier.usersVerified;
-        // _userList.push(_userMetadata.id);
-        // _verifier.usersVerified = _userList;
     
         _walletAddress.user = _userProfile.id;
         _walletAddress.linkStatus = "MASTER";
         
         _userProfile.save();
+        _verifier.save();
         _userMetadata.save();
         _walletAddress.save();
     }
