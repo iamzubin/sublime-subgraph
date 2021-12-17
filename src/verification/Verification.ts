@@ -7,16 +7,13 @@ import {
     UserUnregistered,
     VerifierAdded,
     VerifierRemoved,
-    AddressLinkingRequested,
-    AddressLinkingRequestCancelled,
-    ActivationDelayUpdated,
     Verification as VerificationContract
 } from "../../generated/Verification/Verification";
 
 export function handleAddressLinked(event: AddressLinked): void {
     let linkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,linkedAddress, 1);
+    updateLinkedAddresses(masterAddress,linkedAddress, 0);
 }
 
 export function handleAddressUnlinked(event: AddressUnlinked): void {

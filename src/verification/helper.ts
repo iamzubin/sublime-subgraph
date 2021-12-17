@@ -89,7 +89,6 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
     
         _walletAddress.user = _userProfile.id;
         _walletAddress.linkStatus = "MASTER";
-        _walletAddress.activationDelay = Activation_Delay;
         
         _userProfile.save();
         _userMetadata.save();
@@ -130,41 +129,36 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
         walletList.push(_linkedAddress);
         _userProfile.walletAddresses = walletList;
         _walletAddress.linkStatus = "LINKED";
-        _walletAddress.activationDelay = Activation_Delay;
     
         _userProfile.save();
         _walletAddress.save();
     }
-    else if(linkStatus == "REQUEST") {
-        if(_walletAddress == null) {
-            _walletAddress = new walletAddress(_linkedAddress);
-        }
-        _walletAddress.linkStatus = "REQUESTED";
-        _walletAddress.activationDelay = Activation_Delay;
+    // else if(linkStatus == "REQUEST") {
+    //     if(_walletAddress == null) {
+    //         _walletAddress = new walletAddress(_linkedAddress);
+    //     }
+    //     _walletAddress.linkStatus = "REQUESTED";
+    //     _walletAddress.activationDelay = Activation_Delay;
     
-        _walletAddress.save();
-    }
-    else if(linkStatus == "CANCEL") {
-        if(_walletAddress == null) {
-            _walletAddress = new walletAddress(_linkedAddress);
-        }
-        _walletAddress.linkStatus = "CANCELLED";
-        _walletAddress.activationDelay = Activation_Delay;
+    //     _walletAddress.save();
+    // }
+    // else if(linkStatus == "CANCEL") {
+    //     if(_walletAddress == null) {
+    //         _walletAddress = new walletAddress(_linkedAddress);
+    //     }
+    //     _walletAddress.linkStatus = "CANCELLED";
+    //     _walletAddress.activationDelay = Activation_Delay;
     
-        _walletAddress.save();
-    }
+    //     _walletAddress.save();
+    // }
 }
 
 export function getAddressLinkStatus(value: i32): string {
     switch (value) {
       case 0:
-        return "REQUEST";
-      case 1:
         return "LINK";
-      case 2:
+      case 1:
         return "MASTER";
-      case 3:
-        return "CANCEL";
       default:
         return "UNLINK";
     }

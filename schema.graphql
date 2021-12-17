@@ -31,7 +31,6 @@ enum AddressLinkStatus {
   # CANCELLED
   LINKED
   MASTER
-  UNLINKED # if unlinked then directly removed ?
 }
 
 # storing User details
@@ -63,7 +62,7 @@ type walletAddress @entity {
   id: ID!
   user: UserProfile!
   linkStatus: AddressLinkStatus
-  activationDelay: BigInt
+  # activationDelay: BigInt
 }
 
 ## Dashboard information
