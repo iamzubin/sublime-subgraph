@@ -75,9 +75,9 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
         // _metadataList.push(_userMetadata.id);
         // _userProfile.userMetadataPerVerifier = _metadataList;
 
-        // let _verifierList = _userProfile.verifiedBy;
-        // _verifierList.push(_verifier.id);
-        // _userProfile.verifiedBy = _verifierList;
+        let _verifierList = _userProfile.verifiedBy;
+        _verifierList.push(_verifier.id);
+        _userProfile.verifiedBy = _verifierList;
 
         // let _walletList = _userProfile.walletAddresses;
         // _walletList.push(_masterAddress);
