@@ -24,13 +24,15 @@ export function handleAddressUnlinked(event: AddressUnlinked): void {
 export function handleUserRegistered(event: UserRegistered): void {
     let RegisteredUser = event.params.masterAddress;
     let verifier = event.params.verifier;
-    updateMasterAddresses(RegisteredUser,verifier, false);
+    let link = event.params.isMasterLinked;
+    updateMasterAddresses(RegisteredUser,verifier, link, false);
 }
 
 export function handleUserUnregistered(event: UserUnregistered): void {
     let unRegisteredUser = event.params.masterAddress;
     let verifier = event.params.verifier;
-    updateMasterAddresses(unRegisteredUser,verifier,true);
+    let unregisteredBy = event.params.unregisteredBy;
+    updateMasterAddresses(unRegisteredUser,verifier, true, true);
 }
 
 export function handleVerifierAdded(event: VerifierAdded): void {

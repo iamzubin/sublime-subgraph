@@ -37,7 +37,6 @@ enum AddressLinkStatus {
 type UserProfile @entity {
   id: ID!
   masterAddress: String!
-  verifiedBy: [String!]
   userMetadataPerVerifier: [UserMetadataPerVerifier!]! @derivedFrom(field: "userID")
   walletAddresses: [walletAddress!]! @derivedFrom(field: "user")
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")

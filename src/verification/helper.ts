@@ -13,6 +13,12 @@ export function updateVerifiers(Verifier: Address, Remove: boolean): void{
             return;
         }
         // if(_verifier.usersVerified != null) {
+        //     let _verifiedUsers = _verifier.usersVerified;
+        //     for(let i = 0; i < _verifiedUsers.length; i++) {
+        //         let _user = _verifiedUsers[i].toString();
+        //         let _userMetadata = UserMetadataPerVerifier.load(_user);
+        //         store.remove("UserMetadataPerVerifier",_userMetadata.id);
+        //     }
         // }
         store.remove("verifier", _verifier.id);
     }
@@ -24,7 +30,7 @@ export function updateVerifiers(Verifier: Address, Remove: boolean): void{
     }
 }
 
-export function updateMasterAddresses(masterAddress: Address, Verifier: Address, Unregister: boolean): void {
+export function updateMasterAddresses(masterAddress: Address, Verifier: Address, link: boolean, Unregister: boolean): void {
     let _masterAddress = masterAddress.toHexString();
     let _verifierAddress = Verifier.toHexString();
 
@@ -50,10 +56,6 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
         if(_userProfile == null) {
             _userProfile = new UserProfile(_masterAddress);
         }
-    
-        if(_walletAddress == null) {
-            _walletAddress = new walletAddress(_masterAddress);
-        }
 
         let _userID = _verifier.id + '_' + _userProfile.id;
         let _userMetadata = UserMetadataPerVerifier.load(_userID);
@@ -65,15 +67,15 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
         _userMetadata.verifier = "Twitter";
         _userMetadata.verifiedBy = _verifier.id;
 
+        if(link == true) {
+            if(_walletAddress == null) {
+                _walletAddress = new walletAddress(_masterAddress);
+                _walletAddress.user = _userProfile.id;
+                _walletAddress.linkStatus = "MASTER";
+            }
+        }
         _userProfile.masterAddress = _masterAddress;
-
-        let _verifierList = _userProfile.verifiedBy;
-        _verifierList.push(_verifierAddress);
-        _userProfile.verifiedBy = _verifierList;
     
-        _walletAddress.user = _userProfile.id;
-        _walletAddress.linkStatus = "MASTER";
-        
         _userProfile.save();
         _verifier.save();
         _userMetadata.save();
