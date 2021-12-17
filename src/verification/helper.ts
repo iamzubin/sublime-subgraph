@@ -71,21 +71,21 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
 
         _userProfile.masterAddress = _masterAddress;
 
-        let _metadataList = _userProfile.userMetadataPerVerifier;
-        _metadataList.push(_userMetadata.id);
-        _userProfile.userMetadataPerVerifier = _metadataList;
+        // let _metadataList = _userProfile.userMetadataPerVerifier;
+        // _metadataList.push(_userMetadata.id);
+        // _userProfile.userMetadataPerVerifier = _metadataList;
 
-        let _verifierList = _userProfile.verifiedBy;
-        _verifierList.push(_verifier.id);
-        _userProfile.verifiedBy = _verifierList;
+        // let _verifierList = _userProfile.verifiedBy;
+        // _verifierList.push(_verifier.id);
+        // _userProfile.verifiedBy = _verifierList;
 
-        let _walletList = _userProfile.walletAddresses;
-        _walletList.push(_masterAddress);
-        _userProfile.walletAddresses = _walletList;
+        // let _walletList = _userProfile.walletAddresses;
+        // _walletList.push(_masterAddress);
+        // _userProfile.walletAddresses = _walletList;
 
-        let _userList = _verifier.usersVerified;
-        _userList.push(_userMetadata.id);
-        _verifier.usersVerified = _userList;
+        // let _userList = _verifier.usersVerified;
+        // _userList.push(_userMetadata.id);
+        // _verifier.usersVerified = _userList;
     
         _walletAddress.user = _userProfile.id;
         _walletAddress.linkStatus = "MASTER";

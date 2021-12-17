@@ -38,8 +38,8 @@ type UserProfile @entity {
   id: ID!
   masterAddress: String!
   verifiedBy: [verifier!]
-  userMetadataPerVerifier: [UserMetadataPerVerifier!]
-  walletAddresses: [walletAddress!]!
+  userMetadataPerVerifier: [UserMetadataPerVerifier!]! @derivedFrom(field: "userID")
+  walletAddresses: [walletAddress!]! @derivedFrom(field: "user")
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
 }
 
