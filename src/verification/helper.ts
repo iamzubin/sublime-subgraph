@@ -1,4 +1,4 @@
-import { Address, store, BigInt } from "@graphprotocol/graph-ts";
+import { Address, store, BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 import { UserMetadataPerVerifier, UserProfile, verifier, walletAddress } from "../../generated/schema";
 
@@ -33,22 +33,18 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
     let _verifier = verifier.load(_verifierAddress); // Assuming verifier exists
 
     if(Unregister == true) {
-        // If userProfile exists
-        if(_userProfile != null && _walletAddress != null) {
-            // If userProfile is verified
-            if(_verifier != null) { 
-                let _userID = _verifier.id + '_' + _userProfile.id;
-                let _userMetadata = UserMetadataPerVerifier.load(_userID);
-                if(_userMetadata != null) {
-                    store.remove("UserMetadata", _userMetadata.id);
-                }
+        if(_userProfile == null) {
+            return
+        }
+        if(_verifier != null) {
+            let _userID = _verifier.id + '_' + _userProfile.id;
+            let _userMetadata = UserMetadataPerVerifier.load(_userID);
+            if(_userMetadata != null) {
+            store.remove("UserMetadataPerVerifier", _userMetadata.id);
             }
-            store.remove("UserProfile", _userProfile.id);
-            store.remove("walletAddress", _walletAddress.id);
         }
-        else {
-            return;
-        }
+        store.remove("UserProfile", _userProfile.id);
+        store.remove("walletAddress", _walletAddress.id);
     }
     else {
         if(_userProfile == null) {
@@ -72,7 +68,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
         _userProfile.masterAddress = _masterAddress;
 
         let _verifierList = _userProfile.verifiedBy;
-        _verifierList.push(_verifier.id);
+        _verifierList.push(_verifierAddress);
         _userProfile.verifiedBy = _verifierList;
     
         _walletAddress.user = _userProfile.id;
@@ -155,4 +151,34 @@ export function getAddressLinkStatus(value: i32): string {
 
 export function updateActivationDelay(value: BigInt): void {
     Activation_Delay = value;
+}
+
+export function updateMetadata(user: Address, verifier: Address, metadata: String, Unregister: boolean): void {
+    let _userAddress = user.toHexString();
+    let _verifier = verifier.toHexString();
+    let _userProfile = UserProfile.load(_userAddress);
+
+    if(Unregister == true){
+        if(_userProfile == null) {
+            return;
+        }
+        else {
+            store.remove("UserProfile", _userProfile.id);
+        }
+    }
+    else {
+        let _userID = _verifier + '_' + _userProfile.id;
+        let _userMetadata = UserMetadataPerVerifier.load(_userID);
+
+        if(_userMetadata == null) {
+            _userMetadata = new UserMetadataPerVerifier(_userID);
+            _userMetadata.verifier = "Twitter";
+            _userMetadata.userID = _userProfile.id;
+            _userMetadata.verifiedBy = _verifier;
+        }
+        _userMetadata.metadata = metadata.toString();
+
+        _userMetadata.save();
+        _userProfile.save();
+    }
 }

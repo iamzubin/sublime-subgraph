@@ -157,3 +157,28 @@ dataSources:
           handler: handleVerifierAdded
         - event: VerifierRemoved(indexed address)
           handler: handleVerifierRemoved
+  - kind: ethereum/contract
+    name: adminVerifier
+    network: kovan
+    source:
+      address: "0x4F592fa28A12AE4760eC7d577532921D91dCcD13"
+      abi: adminVerifier
+      startBlock: 28282363
+    mapping:
+      kind: ethereum/eventHandlers
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/verification/adminVerifier.ts
+      entities:
+        - UserProfile
+        - verifier
+        - UserMetadataPerVerifier
+        - walletAddress
+      abis:
+        - name: adminVerifier
+          file: ./abis/adminVerifier.json
+      eventHandlers:
+        - event: UserRegistered(address,bool,string)
+          handler: handleUserRegisteredByAdmin
+        - event: UserUnregistered(address)
+          handler: handleUserUnregisteredByAdmin

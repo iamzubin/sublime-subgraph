@@ -2,7 +2,6 @@ import { updateVerifiers, updateMasterAddresses, updateLinkedAddresses, updateAc
 import {
     AddressLinked,
     AddressUnlinked,
-    OwnershipTransferred,
     UserRegistered,
     UserUnregistered,
     VerifierAdded,
