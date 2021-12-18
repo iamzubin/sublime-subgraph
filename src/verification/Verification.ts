@@ -9,6 +9,8 @@ import {
     Verification as VerificationContract
 } from "../../generated/Verification/Verification";
 
+//0x0676bce87118f6bc18678afe9041333fabb7310b64b2b84e1eb505e82fb21d53522d72598fedc7d6d0d235a08ca96e481d214e4e766fa6ed6c37e8984bb70f171c
+
 export function handleAddressLinked(event: AddressLinked): void {
     let linkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;

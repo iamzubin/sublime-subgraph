@@ -111,10 +111,12 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
             _walletAddress = new walletAddress(_linkedAddress);
         }
     
+        if(_userProfile == null) {
+            _userProfile = new UserProfile(_masterAddress);
+            _userProfile.masterAddress = _masterAddress;
+        }
         _walletAddress.user = _userProfile.id;
-        let walletList = _userProfile.walletAddresses;
-        walletList.push(_linkedAddress);
-        _userProfile.walletAddresses = walletList;
+
         _walletAddress.linkStatus = "LINKED";
     
         _userProfile.save();
