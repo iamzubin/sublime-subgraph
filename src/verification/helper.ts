@@ -94,17 +94,18 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
     let linkStatus = getAddressLinkStatus(linkStatusCode);
 
     if(linkStatus == "UNLINK") {
-        if(_userProfile != null && _walletAddress != null) {
-            let _walletList = _userProfile.walletAddresses;
-            let index = _walletList.indexOf(_walletAddress.id);
-            _walletList.splice(index, 1);
-            _userProfile.walletAddresses = _walletList;
-            _userProfile.save();
-            store.remove("walletAddress",_walletAddress.id);
-        }
-        else {
+        if(_userProfile == null) {
             return;
         }
+        if(_walletAddress == null) {
+            return;
+        }
+        let _walletList = _userProfile.walletAddresses;
+        let index = _walletList.indexOf(_walletAddress.id);
+        _walletList.splice(index, 1);
+        _userProfile.walletAddresses = _walletList;
+        _userProfile.save();
+        store.remove("walletAddress",_walletAddress.id);
     }
     else if(linkStatus == "LINK") {
         if(_walletAddress == null) {
