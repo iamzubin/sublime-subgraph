@@ -38,7 +38,7 @@ type UserProfile @entity {
   id: ID!
   masterAddress: String!
   userMetadataPerVerifier: [UserMetadataPerVerifier!]! @derivedFrom(field: "userID")
-  walletAddresses: [walletAddress!]! @derivedFrom(field: "user")
+  walletAddresses: [walletAddr!]! @derivedFrom(field: "user")
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
 }
 
@@ -57,7 +57,7 @@ type UserMetadataPerVerifier @entity {
 }
 
 # mapping one user to one or more wallet addresses
-type walletAddress @entity {
+type walletAddr @entity {
   id: ID!
   user: UserProfile!
   linkStatus: AddressLinkStatus

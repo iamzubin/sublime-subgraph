@@ -1,6 +1,6 @@
 import { Address, store, BigInt, Bytes } from "@graphprotocol/graph-ts";
 
-import { UserMetadataPerVerifier, UserProfile, verifier, walletAddress } from "../../generated/schema";
+import { UserMetadataPerVerifier, UserProfile, verifier, walletAddr } from "../../generated/schema";
 
 let Activation_Delay: BigInt;
 
@@ -35,7 +35,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
     let _verifierAddress = Verifier.toHexString();
 
     let _userProfile = UserProfile.load(_masterAddress);
-    let _walletAddress = walletAddress.load(_masterAddress);
+    let _walletAddress = walletAddr.load(_masterAddress);
     let _verifier = verifier.load(_verifierAddress); // Assuming verifier exists
 
     if(Unregister == true) {
@@ -50,7 +50,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
             }
         }
         store.remove("UserProfile", _userProfile.id);
-        store.remove("walletAddress", _walletAddress.id);
+        store.remove("walletAddr", _walletAddress.id);
     }
     else {
         if(_userProfile == null) {
@@ -69,7 +69,7 @@ export function updateMasterAddresses(masterAddress: Address, Verifier: Address,
 
         if(link == true) {
             if(_walletAddress == null) {
-                _walletAddress = new walletAddress(_masterAddress);
+                _walletAddress = new walletAddr(_masterAddress);
                 _walletAddress.user = _userProfile.id;
                 _walletAddress.linkStatus = "MASTER";
             }
@@ -89,7 +89,7 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
 
     // Assuming user profile exists for given master address
     let _userProfile = UserProfile.load(_masterAddress);
-    let _walletAddress = walletAddress.load(_linkedAddress);
+    let _walletAddress = walletAddr.load(_linkedAddress);
 
     let linkStatus = getAddressLinkStatus(linkStatusCode);
 
@@ -105,11 +105,11 @@ export function updateLinkedAddresses(masterAddress: Address, linkedAddress: Add
         _walletList.splice(index, 1);
         _userProfile.walletAddresses = _walletList;
         _userProfile.save();
-        store.remove("walletAddress",_walletAddress.id);
+        store.remove("walletAddr",_walletAddress.id);
     }
     else if(linkStatus == "LINK") {
         if(_walletAddress == null) {
-            _walletAddress = new walletAddress(_linkedAddress);
+            _walletAddress = new walletAddr(_linkedAddress);
         }
     
         if(_userProfile == null) {
