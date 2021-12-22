@@ -1,4 +1,4 @@
-import { updateVerifiers, updateMasterAddresses, updateLinkedAddresses, updateActivationDelay } from "./helper";
+import { addVerifier, removeVerifier, createMasterAddress, removeMasterAddress, addLinkedAddress, removeLinkedAddress, updateActivationDelay } from "./helper";
 import {
     AddressLinked,
     AddressUnlinked,
@@ -12,37 +12,37 @@ import {
 export function handleAddressLinked(event: AddressLinked): void {
     let linkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,linkedAddress, 0);
+    addLinkedAddress(masterAddress,linkedAddress);
 }
 
 export function handleAddressUnlinked(event: AddressUnlinked): void {
     let unLinkedAddress = event.params.linkedAddress;
     let masterAddress = event.params.masterAddress;
-    updateLinkedAddresses(masterAddress,unLinkedAddress, 4);
+    removeLinkedAddress(masterAddress,unLinkedAddress);
 }
 
 export function handleUserRegistered(event: UserRegistered): void {
     let RegisteredUser = event.params.masterAddress;
     let verifier = event.params.verifier;
     let link = event.params.isMasterLinked;
-    updateMasterAddresses(RegisteredUser,verifier, link, false);
+    createMasterAddress(RegisteredUser,verifier, link);
 }
 
 export function handleUserUnregistered(event: UserUnregistered): void {
     let unRegisteredUser = event.params.masterAddress;
     let verifier = event.params.verifier;
     let unregisteredBy = event.params.unregisteredBy;
-    updateMasterAddresses(unRegisteredUser,verifier, true, true);
+    removeMasterAddress(unRegisteredUser,verifier);
 }
 
 export function handleVerifierAdded(event: VerifierAdded): void {
     let verifier = event.params.verifier;
-    updateVerifiers(verifier,false);
+    addVerifier(verifier);
 }
 
 export function handleVerifierRemoved(event: VerifierRemoved): void {
     let verifier = event.params.verifier;
-    updateVerifiers(verifier,true);
+    removeVerifier(verifier);
 }
 
 // export function handleAddressLinkingRequested(event: AddressLinkingRequested): void {

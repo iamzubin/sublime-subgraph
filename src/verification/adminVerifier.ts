@@ -8,19 +8,13 @@ import {
 export function handleUserRegisteredByAdmin(event: UserRegistered): void {
     let user = event.params.user;
     let metadata = event.params.metadata;
+    let verifier = event.address;
 
-    let adminVerifierInstance = adminVerifierContract.bind(event.address);
-    let verifier = adminVerifierInstance.owner();
-
-    updateMetadata(user, verifier, metadata, false);
+    updateMetadata(user, verifier, metadata);
 
 }
 
-export function handleUserUnregisteredByAdmin(event: UserUnregistered): void {
-    let user = event.params.user;
-
-    let adminVerifierInstance = adminVerifierContract.bind(event.address);
-    let verifier = adminVerifierInstance.owner();
-
-    updateMetadata(user, verifier, "NULL", true);
-}
+// export function handleUserUnregisteredByAdmin(event: UserUnregistered): void {
+//     let user = event.params.user;
+//     let verifier = event.address;
+// }

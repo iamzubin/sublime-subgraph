@@ -33,6 +33,11 @@ enum AddressLinkStatus {
   MASTER
 }
 
+type VerificationGlobalParam @entity {
+  id: ID!
+  activationDelay: BigInt
+}
+
 # storing User details
 type UserProfile @entity {
   id: ID!
@@ -61,7 +66,6 @@ type walletAddr @entity {
   id: ID!
   user: UserProfile!
   linkStatus: AddressLinkStatus
-  # activationDelay: BigInt
 }
 
 ## Dashboard information
