@@ -18,8 +18,8 @@ export function removeVerifier(verifierAddress: Address): void {
   let verifierAddr = verifierAddress.toHexString();
   let _verifier = verifier.load(verifierAddr);
 
-  if(_verifier == null) {
-      throw new Error('Verifier does not exist.');
+  if (_verifier == null) {
+    throw new Error("Verifier does not exist.");
   }
 
   // if(_verifier.usersVerified != null) {
@@ -78,8 +78,8 @@ export function removeMasterAddress(masterAddress: Address, verifierAddress: Add
   let _walletAddress = walletAddr.load(masterAddr);
   let _verifier = verifier.load(verifierAddr); // Assuming verifier exists
 
-  if(_userProfile == null) {
-    throw new Error('User profile does not exist.');
+  if (_userProfile == null) {
+    throw new Error("User profile does not exist.");
   }
 
   if (_walletAddress != null) {
@@ -128,8 +128,8 @@ export function removeLinkedAddress(masterAddress: Address, linkedAddress: Addre
   let _userProfile = UserProfile.load(masterAddr);
   let _walletAddress = walletAddr.load(linkedAddr);
 
-  if(_walletAddress == null) {
-    throw new Error('Address does not exist.');
+  if (_walletAddress == null) {
+    throw new Error("Address does not exist.");
   }
 
   let walletList = _userProfile.walletAddresses;
