@@ -12,7 +12,6 @@ export function addVerifier(verifierAddress: Address): void {
   }
 
   _verifier.status = "VALID";
-
   _verifier.save();
 }
 
@@ -29,6 +28,7 @@ export function removeVerifier(verifierAddress: Address): void {
   //     }
   // }
   _verifier.status = "INVALID";
+  _verifier.save();
 }
 
 export function createMasterAddress(masterAddress: Address, verifierAddress: Address, link: boolean): void {
