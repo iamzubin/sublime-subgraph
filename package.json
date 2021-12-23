@@ -10,7 +10,13 @@
     "deploy": "graph deploy KalpitaMandal/Verification --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token 97d834301d4242988433498f77ece13b",
     "prettier": "prettier --write ."
   },
+  "pre-commit": [
+    "prettier",
+    "codegen",
+    "build"
+  ],
   "devDependencies": {
+    "pre-commit": "^1.2.2",
     "prettier": "^2.4.0"
   },
   "dependencies": {
