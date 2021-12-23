@@ -85,7 +85,7 @@ export function removeMasterAddress(masterAddress: Address, verifierAddress: Add
   if (_userMetadata != null) {
     store.remove("UserMetadataPerVerifier", _userMetadata.id);
   }
-  
+
   store.remove("UserProfile", _userProfile.id);
 }
 
