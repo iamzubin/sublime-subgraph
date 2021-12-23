@@ -27,19 +27,23 @@ enum PoolOperations {
 
 # Address linking status
 enum AddressLinkStatus {
-  REQUESTED
-  CANCELLED
+  # REQUESTED
+  # CANCELLED
   LINKED
   MASTER
+}
+
+type VerificationGlobalParam @entity {
+  id: ID!
+  activationDelay: BigInt
 }
 
 # storing User details
 type UserProfile @entity {
   id: ID!
   masterAddress: String!
-  verifiedBy: [verifier!]
-  userMetadataPerVerifier: [UserMetadataPerVerifier!]
-  walletAddresses: [walletAddress!]!
+  userMetadataPerVerifier: [UserMetadataPerVerifier!]! @derivedFrom(field: "userID")
+  walletAddresses: [walletAddr!]! @derivedFrom(field: "user")
   # poolsCreated: [Pools!]! @derivedFrom(field: "borrower")
 }
 
@@ -52,17 +56,36 @@ type verifier @entity {
 type UserMetadataPerVerifier @entity {
   id: ID! # verifier + userID from profile
   verifier: String!
-  metadata: Bytes
+  metadata: String
   userID: UserProfile!
   verifiedBy: verifier!
 }
 
 # mapping one user to one or more wallet addresses
-type walletAddress @entity {
+type walletAddr @entity {
   id: ID!
-  user: UserProfile!
+  user: UserProfile
   linkStatus: AddressLinkStatus
-  activationDelay: BigInt
+}
+
+type walletLenderCreditLineIndex @entity {
+  id: ID!
+
+  # use walletAddr.ID here
+  wallet: walletAddr
+
+  # use creditLine here
+  creditLine: CreditLine
+}
+
+type walletBorrowreCreditLineIndex @entity {
+  id: ID!
+
+  # use walletAddr.ID here
+  wallet: walletAddr
+
+  # use creditLine here
+  creditLine: CreditLine
 }
 
 ## Dashboard information
@@ -146,7 +169,9 @@ type CreditLine @entity {
 
   # Credit Line Constants
   lender: String
+  lenderWalletDetails: walletLenderCreditLineIndex! @derivedFrom(field: "creditLine")
   borrower: String
+  borrowerWalletDetails: walletLenderCreditLineIndex! @derivedFrom(field: "creditLine")
   borrowLimit: BigInt
   idealCollateralRatio: BigInt
   borrowRate: BigInt
