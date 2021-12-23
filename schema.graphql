@@ -33,6 +33,11 @@ enum AddressLinkStatus {
   MASTER
 }
 
+enum VerifierStatus {
+  VALID
+  INVALID
+}
+
 type VerificationGlobalParam @entity {
   id: ID!
   activationDelay: BigInt
@@ -51,6 +56,7 @@ type UserProfile @entity {
 type verifier @entity {
   id: ID!
   usersVerified: [UserMetadataPerVerifier!]! @derivedFrom(field: "verifiedBy")
+  status: VerifierStatus
 }
 
 type UserMetadataPerVerifier @entity {
@@ -69,8 +75,6 @@ type walletAddr @entity {
 }
 
 ## Dashboard information
-
-
 
 # # pool details along with events to fill the timeline
 # type Pools @entity {
@@ -123,7 +127,7 @@ type walletAddr @entity {
 #   repaymentInterval: BigInt!
 #   lastVotedExtension: BigInt! # how to associate lender with it?
 
-#   lenders: [Lenders!]! @derivedFrom(field: "LenderAddress")  
+#   lenders: [Lenders!]! @derivedFrom(field: "LenderAddress")
 # }
 
 # type PoolTimeLine @entity {
@@ -136,7 +140,7 @@ type walletAddr @entity {
 
 # type Lenders @entity {
 #   id: ID!
-#   pool: [Pools!]! 
+#   pool: [Pools!]!
 #   LenderAddress: String!
 #   interestWithdrawn: BigInt!
 #   marginCallEndTime: BigInt!
