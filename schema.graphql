@@ -70,8 +70,28 @@ type UserMetadataPerVerifier @entity {
 # mapping one user to one or more wallet addresses
 type walletAddr @entity {
   id: ID!
-  user: UserProfile!
+  user: UserProfile
   linkStatus: AddressLinkStatus
+}
+
+type walletLenderCreditLineIndex @entity {
+  id: ID!
+
+  # use walletAddr.ID here
+  wallet: walletAddr
+
+  # use creditLine here
+  creditLine: CreditLine
+}
+
+type walletBorrowreCreditLineIndex @entity {
+  id: ID!
+
+  # use walletAddr.ID here
+  wallet: walletAddr
+
+  # use creditLine here
+  creditLine: CreditLine
 }
 
 ## Dashboard information
@@ -155,7 +175,9 @@ type CreditLine @entity {
 
   # Credit Line Constants
   lender: String
+  lenderWalletDetails: walletLenderCreditLineIndex! @derivedFrom(field: "creditLine")
   borrower: String
+  borrowerWalletDetails: walletLenderCreditLineIndex! @derivedFrom(field: "creditLine")
   borrowLimit: BigInt
   idealCollateralRatio: BigInt
   borrowRate: BigInt

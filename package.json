@@ -6,8 +6,8 @@
     "deploy-local": "graph deploy sublime-finance/sublime --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
     "create": "graph create sublime-finance/sublime --node https://api.thegraph.com/deploy/",
     "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy KalpitaMandal/Verification --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token 97d834301d4242988433498f77ece13b",
+    "build": "graph codegen && graph build",
+    "deploy": "graph deploy akshay111meher/sublime-subgraph-august --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token f21c9a0a3a16491ca908ca7b610fa232",
     "prettier": "prettier --write ."
   },
   "pre-commit": [
@@ -19,6 +19,11 @@
     "pre-commit": "^1.2.2",
     "prettier": "^2.4.0"
   },
+  "pre-commit": [
+    "prettier",
+    "codegen",
+    "build"
+  ],
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.20.0",
     "@graphprotocol/graph-ts": "^0.20.0"
