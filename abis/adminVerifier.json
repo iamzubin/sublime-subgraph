@@ -22,6 +22,19 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "signerAddress",
+        "type": "address"
+      }
+    ],
+    "name": "SignerUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "user",
@@ -80,6 +93,11 @@
         "internalType": "address",
         "name": "_verification",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_signerAddress",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -103,22 +121,37 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_metadata",
-        "type": "string"
-      },
-      {
         "internalType": "bool",
         "name": "_isMasterLinked",
         "type": "bool"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_s",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "_twitterId",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_deadline",
+        "type": "uint256"
       }
     ],
-    "name": "registerUser",
+    "name": "registerSelf",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -128,6 +161,19 @@
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "signerAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -144,14 +190,21 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "unregisterSelf",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "_user",
+        "name": "_signerAddress",
         "type": "address"
       }
     ],
-    "name": "unregisterUser",
+    "name": "updateSignerAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

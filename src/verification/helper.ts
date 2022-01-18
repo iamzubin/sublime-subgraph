@@ -148,3 +148,11 @@ export function updateMetadata(user: Address, verifier: Address, metadata: Strin
 
   _userMetadata.save();
 }
+export function removeMetadata(user: Address, verifier: Address): void {
+  let _userAddress = user.toHexString();
+  let _verifier = verifier.toHexString();
+  let _userID = _verifier + "_" + _userAddress;
+  let _userMetadata = UserMetadataPerVerifier.load(_userID);
+  _userMetadata.metadata = null
+  _userMetadata.save();
+}

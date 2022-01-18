@@ -1,4 +1,4 @@
-import { updateMetadata } from "./helper";
+import { removeMetadata, updateMetadata } from "./helper";
 import { UserRegistered, UserUnregistered, adminVerifier as adminVerifierContract } from "../../generated/adminVerifier/adminVerifier";
 
 export function handleUserRegisteredByAdmin(event: UserRegistered): void {
@@ -9,7 +9,8 @@ export function handleUserRegisteredByAdmin(event: UserRegistered): void {
   updateMetadata(user, verifier, metadata);
 }
 
-// export function handleUserUnregisteredByAdmin(event: UserUnregistered): void {
-//     let user = event.params.user;
-//     let verifier = event.address;
-// }
+export function handleUserUnregisteredByAdmin(event: UserUnregistered): void {
+    let user = event.params.user;
+    let verifier = event.address;
+    removeMetadata(user,verifier)
+}
